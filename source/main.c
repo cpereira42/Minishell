@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:20:18 by cpereira          #+#    #+#             */
-/*   Updated: 2021/03/09 20:49:45 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/03/10 16:59:51 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include "../includes/libft.h"
 
 #include <stdio.h>
+
+char	*hist[50];
+int		qtd_hist;
 
 char	*ft_strjoin(const char *s1, const char *s2);
 int		ft_strpos(const char *palheiro, char agulha);
@@ -184,58 +187,82 @@ char *get_pwd (char **ret)
 	return (ptr);
 }
 
-
-
 char *get_line(void)
 {
 	char *buff;
 	int ret;
-
 	ret = get_next_line(0, &buff);
+	hist[qtd_hist] = malloc((1024 + 1) * sizeof(char*));
+	hist[qtd_hist] = buff;
+	qtd_hist++;
 	return (buff);
+}
+
+void	lista_hist(void)
+{
+	int i = 0;
+	printf ("\nhistorico comandos \n");
+	while (i<qtd_hist)
+	{
+		printf("%s\n",hist[i]);
+		i++;
+	}
 }
 
 int		main(int ac, char **av, char **env)
 {
 	char *ret;
+	char **comandos;
 	char **ret_split;
 	char **var_ambiente;
+	char *pasta_atual;
+	int i;
+
+	qtd_hist = 0;
+	i = 0;
 
 	printf ("env = %s av = %s ac = %d\n", env[1],av[0],ac);
 	printf ("Bem vindo ao MINISHELL\n");
 
-
 	ret  = ft_strdup("");
 	ret_split = ft_split(ret,' ');
 	var_ambiente = get_export(env,ret_split);
-	//ler_export(var_ambiente);
+	pasta_atual = ft_strdup("teste");
 
+	//ler_export(var_ambiente);
 
 	while (1)
 	{
+
+		i = 0;
 		ret = get_line();
 		ret = ft_strtrim(ret, " ");
-		ret_split = ft_split(ret,' ');
-
-		if (ft_strncmp(ret,"pwd",3) == 0)
-			printf("%s\n",get_pwd(ret_split));
-		else if(ft_strncmp(ret,"echo",4) == 0 && ft_strlen(ret_split[0]) == 4)
-			printf("%s\n",get_echo(ret_split));
-		else if(ft_strncmp(ret,"cd",2) == 0 && ft_strlen(ret_split[0]) == 2)
-			printf("%s\n",get_cd(ret_split));
-		else if(ft_strncmp(ret,"unset",5) == 0 && ft_strlen(ret_split[0]) == 5)
-			var_ambiente = exc_var(var_ambiente,ret_split);
-		else if(ft_strncmp(ret,"export",6) == 0 && ft_strlen(ret_split[0]) == 6)
-			var_ambiente = get_export(var_ambiente,ret_split);
-		else if(ft_strncmp(ret,"env",3) == 0 && ft_strlen(ret_split[0]) == 3)
-			ler_export(var_ambiente);
-		else if(ft_strncmp(ret,"exit",4) == 0 && ft_strlen(ret_split[0]) == 4)
+		comandos = ft_split(ret,';');
+		while (comandos[i] != NULL || i == 0 )
 		{
-			printf("Saindo\n");
-			break;
+			ret_split = ft_split(comandos[i],' ');
+			if (ft_strncmp(ret_split[0],"pwd",3) == 0 && ft_strlen(ret_split[0]) == 3)
+				printf("%s\n",get_pwd(ret_split));
+			else if(ft_strncmp(ret_split[0],"echo",4) == 0 && ft_strlen(ret_split[0]) == 4)
+				printf("%s\n",get_echo(ret_split));
+			else if(ft_strncmp(ret_split[0],"cd",2) == 0 && ft_strlen(ret_split[0]) == 2)
+				printf("%s\n",get_cd(ret_split));
+			else if(ft_strncmp(ret_split[0],"unset",5) == 0 && ft_strlen(ret_split[0]) == 5)
+				var_ambiente = exc_var(var_ambiente,ret_split);
+			else if(ft_strncmp(ret_split[0],"export",6) == 0 && ft_strlen(ret_split[0]) == 6)
+				var_ambiente = get_export(var_ambiente,ret_split);
+			else if(ft_strncmp(ret_split[0],"env",3) == 0 && ft_strlen(ret_split[0]) == 3)
+				ler_export(var_ambiente);
+			else if(ft_strncmp(ret_split[0],"exit",4) == 0 && ft_strlen(ret_split[0]) == 4)
+			{
+				printf("Saindo\n");
+				return(0);
+			}
+			else
+				printf ("Command not found\n");
+			i++;
+			printf("%s\n",pasta_atual); // alterar para comando write_fd
 		}
-		else
-			printf ("Command not found\n");
 	}
 	return (0);
 }
