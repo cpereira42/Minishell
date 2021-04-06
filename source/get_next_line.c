@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 21:03:54 by cpereira          #+#    #+#             */
-/*   Updated: 2021/03/10 16:14:02 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/03/16 18:03:17 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ int	get_next_line(int fd, char **line)
 	static char		*fr[5000];
 	char			buff[1000000];
 	ssize_t			ret;
-	int				BUFFER_SIZE;
 
-	BUFFER_SIZE = 12;
 	if (fd < 0 || line == NULL || BUFFER_SIZE <= 0)
 		return (-1);
 	if (fr[fd] != NULL)
