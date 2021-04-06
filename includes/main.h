@@ -6,19 +6,23 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/07 07:38:06 by cpereira          #+#    #+#             */
-/*   Updated: 2021/03/07 07:42:22 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/03/29 17:41:39 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef MAIN
+# define MAIN
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <string.h>
+# include <dirent.h>
+# include <sys/stat.h>
+# include <signal.h>
+#include <termcap.h>
+#define BUFFER_SIZE 100
 
-#define BUFFER_SIZE 12
-
+void execulta_comando (char *ret, char **var_ambiente);
 #endif
 
 

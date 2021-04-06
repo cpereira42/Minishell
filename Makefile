@@ -6,11 +6,11 @@
 #    By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/02 17:32:06 by cpereira          #+#    #+#              #
-#    Updated: 2021/03/09 18:19:37 by cpereira         ###   ########.fr        #
+#    Updated: 2021/04/01 15:03:44 by cpereira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME =			minishell
+NAME =			mini
 NAMEM =			mini2
 
 HEADER_DIR =	./includes/
@@ -30,21 +30,23 @@ INCLUDES 		= -I $(INC_DIR)
 
 CFLAGS = -Wall -Wextra -Werror
 
-LINUX_FLAGS = -L ./$(LIBFT_DIR) -lft
+LINUX_FLAGS = -L ./$(LIBFT_DIR) -lmy -lreadline -lncurses
 
-MAC_FLAGS = -L ./$(LIBFT_DIR) -lft \
+MAC_FLAGS = -L ./$(LIBFT_DIR) -lft
 
 all: $(NAME)
+	./$(NAME)
+$(NAME): $(OBJ)
+	@echo "\n"
+	@make -C libft/
+	@echo "\033[0;32mCompiling minishell..."
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT)
 
-$(NAME): $(OBJ) $(LIBFT)
-		clang -I. -L. $(LIBFT) $(OBJ) $(INCLUDES) $(CFLAGS) $(LINUX_FLAGS) -o  $@
 
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
-		mkdir -p $(OBJ_DIR)
-		clang -c $(CFLAGS) $(INCLUDES) $< -o $@
+%.o: %.c
+	@printf "\033[0;33mGenerating minishell objects... %-33.33s\r" $@
+	@${CC} ${CFLAGS} -c $< -o $@
 
-$(LIBFT):
-	make -C $(LIBFT_DIR)
 
 mini: $(NAMEM)
 
@@ -61,15 +63,27 @@ $(LIBFT):
 mac: $(NAMEM)
 
 $(NAMEM): $(OBJ) $(LIBFT)
-		gcc -I. -L. $(LIBFT) $(OBJ) $(INCLUDES) $(CFLAGS) $(MAC_FLAGS) -o $(NAMEM)
+		gcc -I. -L. $(LIBFT) $(OBJ) $(INCLUDES) $(CFLAGS) $(MAC_FLAGS) -ltermcap -o $(NAMEM)
+
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
+		mkdir -p $(OBJ_DIR)
+		clang -c $(CFLAGS) $(INCLUDES) $< -o $@
+
+$(LIBFT):
+	make -C $(LIBFT_DIR)
 
 clean:
 	make clean -C $(LIBFT_DIR)
 	/bin/rm -rf $(OBJ_DIR)
 
-fclean: clean
-	make fclean -C $(LIBFT_DIR)
-	/bin/rm -f $(NAME) $(NAME_MAC) ./libmlx.dylib
+fclean:
+	@echo "\033[0;31mCleaning libft..."
+	@make fclean -C libft/
+	@echo "\nDeleting objects..."
+	@rm -f $(OBJ)
+	@echo "\nDeleting executable..."
+	@rm -f $(NAME)
+	@echo "\033[0m"
 
 re: fclean all
 
