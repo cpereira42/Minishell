@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/07 07:38:06 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/06 19:05:15 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/06 19:42:10 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct	s_all
 	int				posic_hist;
 } 	t_all;
 
-void	execulta_comando (char *ret, char **var_ambiente, t_all *all);
+void	execulta_comando (char *ret, t_all *all);
 char	*ft_strjoin(const char *s1, const char *s2);
 int		ft_strpos(const char *palheiro, char agulha);
 char	*ft_substr(const char *s, unsigned int start, size_t len);

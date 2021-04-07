@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:20:18 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/06 19:28:10 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/06 19:41:26 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,7 +343,7 @@ int		main(int ac, char **av, char **env)
 		else if (!ft_strncmp("\n",ret,1))
 		{
 			all.posic_hist = all.qtd_hist;
-			execulta_comando (all.ret2,all.var_ambiente,&all);
+			execulta_comando (all.ret2,&all);
 			tputs(save_cursor,1,my_termprint);
 			ft_bzero(all.ret2,2048);
 			ft_bzero(all.ret,2048);
@@ -365,7 +365,7 @@ int		main(int ac, char **av, char **env)
 	return (0);
 }
 
-void execulta_comando (char *ret, char **var_ambiente, t_all *all)
+void execulta_comando (char *ret, t_all *all)
 {
 	char **comandos;
 	int i;
@@ -396,11 +396,11 @@ void execulta_comando (char *ret, char **var_ambiente, t_all *all)
 			else if(ft_strncmp(ret_split[0],"cd",2) == 0 && ft_strlen(ret_split[0]) == 2)
 				printf("%s\n",get_cd(ret_split));
 			else if(ft_strncmp(ret_split[0],"unset",5) == 0 && ft_strlen(ret_split[0]) == 5)
-				var_ambiente = exc_var(var_ambiente,ret_split);
+				all->var_ambiente = exc_var(all->var_ambiente,ret_split);
 			else if(ft_strncmp(ret_split[0],"export",6) == 0 && ft_strlen(ret_split[0]) == 6)
-				var_ambiente = get_export(var_ambiente,ret_split);
+				all->var_ambiente = get_export(all->var_ambiente,ret_split);
 			else if(ft_strncmp(ret_split[0],"env",3) == 0 && ft_strlen(ret_split[0]) == 3)
-				ler_export(var_ambiente);
+				ler_export(all->var_ambiente);
 			else if (ft_strncmp(ret_split[0],"clear",5) == 0 && ft_strlen(ret_split[0]) == 5)
 				tputs(clear_screen,1,my_termprint);
 			else if (ft_strncmp(ret_split[0],"lista",5) == 0 && ft_strlen(ret_split[0]) == 5)
