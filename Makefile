@@ -6,7 +6,7 @@
 #    By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/02 17:32:06 by cpereira          #+#    #+#              #
-#    Updated: 2021/04/01 15:03:44 by cpereira         ###   ########.fr        #
+#    Updated: 2021/04/06 17:52:23 by cpereira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC_DIR		=	./source
 SRC			=	$(SRC_DIR)/get_next_line_utils.c \
 				$(SRC_DIR)/get_next_line.c \
 				$(SRC_DIR)/main.c \
+				$(SRC_DIR)/setup.c \
 
 OBJ_DIR	=		./obj
 OBJ = $(subst .c,.o,$(SRC))
@@ -63,7 +64,7 @@ $(LIBFT):
 mac: $(NAMEM)
 
 $(NAMEM): $(OBJ) $(LIBFT)
-		gcc -I. -L. $(LIBFT) $(OBJ) $(INCLUDES) $(CFLAGS) $(MAC_FLAGS) -ltermcap -o $(NAMEM)
+		gcc -I. -L. $(LIBFT) $(OBJ) $(INCLUDES) $(CFLAGS) $(MAC_FLAGS) -ltermcap -g -o $(NAMEM)
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 		mkdir -p $(OBJ_DIR)
