@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/07 07:38:06 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/06 19:42:10 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/07 19:22:47 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 
 typedef struct	s_all
 {
+	char			**auxiliar_vet;
+	int				aux_int;
+	char			*pasta_atual;
 	char			*local;
 	long			size;
 	char			**var_ambiente;
@@ -40,6 +43,11 @@ typedef struct	s_all
 	char			*hist[50];
 	int				qtd_hist;
 	int				posic_hist;
+	char			*nome_user;
+	char			*cabecalho;
+	int				ac;
+	char			**av;
+
 } 	t_all;
 
 void	execulta_comando (char *ret, t_all *all);
@@ -47,7 +55,7 @@ char	*ft_strjoin(const char *s1, const char *s2);
 int		ft_strpos(const char *palheiro, char agulha);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *source);
-char	*get_cd (char **ret);
+char	*get_cd (char **ret,t_all *all);
 char	*get_echo (char **ret);
 char	**exc_var (char **ret, char **entrada);
 char	**get_export (char **ret, char **entrada);
@@ -61,6 +69,9 @@ int		my_termprint(int c);
 char	*term_get_cap(char* cap);
 void	reseta_flags(t_all *all, char **env);
 int		my_termprint(int c);
+char	*loc_var (char **ret, char *entrada);
+int		count_split(char	**ret);
+void	atualiza_pasta(t_all *all);
 #endif
 
 
