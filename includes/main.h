@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/07 07:38:06 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/07 19:22:47 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/07 21:54:10 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		ft_strpos(const char *palheiro, char agulha);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *source);
 char	*get_cd (char **ret,t_all *all);
-char	*get_echo (char **ret);
+char	*get_echo (char **ret, t_all *all);
 char	**exc_var (char **ret, char **entrada);
 char	**get_export (char **ret, char **entrada);
 void	ler_export(char **ret);

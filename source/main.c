@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:20:18 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/07 19:25:30 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/07 22:12:12 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ char *get_cd (char **ret,t_all *all)
 	return (ptr);
 }
 
-char *get_echo (char **ret)
+char *get_echo (char **ret, t_all *all)
 {
 	char *ptr;
+	char *termo;
 	int i;
 	int flag;
 	int count;
@@ -54,13 +55,23 @@ char *get_echo (char **ret)
 	ptr = ft_strdup("");
 	while (ret[i] != NULL)
 	{
+		if (ret[i][0]== '$')
+			termo = loc_var(all->var_ambiente,&ret[i][1]);
+		else
+			termo = ft_strdup(ret[i]);
+
+		if (termo[0] == '"' || termo[0] == '\'' )
+			termo = termo[0] == '"' ? ft_strtrim(termo,"\""): ft_strtrim(termo,"'") ;
+		//	termo = ft_strtrim(termo,termo[0]);
+
+
 		if (ft_strncmp(ret[i], "-n", 2) == 0 && count == 0)
 			flag = 1;
 		else
 		{
 			if (i-flag != 1 && count != 0 )
 				ptr = ft_strjoin (ptr, " ");
-			ptr = ft_strjoin (ptr,ret[i]);
+			ptr = ft_strjoin (ptr,termo);
 			count ++;
 		}
 		i++;
@@ -179,6 +190,29 @@ char *term_get_cap(char* cap){
     return str;
 }
 
+int teste_fork(t_all *all, char **args)
+{
+	int status;
+	char *comando;
+    //char *args[2];
+
+	//char* arr[] = {"ls", "-l", "-R", "-a", NULL};
+	//execve("/bin/ls", arr);
+	all->aux_int =0;
+	comando = ft_strdup("/bin/");
+	comando = ft_strjoin(comando,args[0]);
+
+    //args[0] = "/bin/ls";        // first arg is the full path to the executable
+    //args[1] = NULL;             // list of args must be NULL terminated
+    if ( fork() == 0 )
+		return (execv(comando, args));
+        //execve( args[0], args ,all->var_ambiente); // child: call execv with the path and the args
+    else
+        wait( &status );        // parent: wait for the child (not really necessary)
+
+	return (0);
+}
+
 int		main(int ac, char **av, char **env)
 {
 	t_all all;
@@ -207,6 +241,17 @@ int		main(int ac, char **av, char **env)
 
 	tputs(tigetstr("ce"),1,my_termprint); // ed
 	tputs(save_cursor,1,my_termprint);
+
+
+
+
+
+
+    //return 0;
+
+
+
+
 
 	while (1)
 	{
@@ -290,7 +335,7 @@ void execulta_comando (char *ret, t_all *all)
 	all->qtd_hist++;
 
 	printf ("\n");
-	//ret = ft_strtrim(ret, " ");
+	ret = ft_strtrim(ret, " ");
 		comandos = ft_split(ret,';');
 		i = 0;
 		while (comandos[i] != NULL || i == 0 )
@@ -303,10 +348,10 @@ void execulta_comando (char *ret, t_all *all)
 			ret_split = ft_split(comandos[i],' ');
 			if (ft_strncmp(ret_split[0],"pwd",3) == 0 && ft_strlen(ret_split[0]) == 3)
 				printf("%s\n",get_pwd(ret_split));
-			else if(ft_strncmp(ret_split[0],"ls",2) == 0 && ft_strlen(ret_split[0]) == 2)
-				ls();
+			//else if(ft_strncmp(ret_split[0],"ls",2) == 0 && ft_strlen(ret_split[0]) == 2)
+			//	teste_fork(all,ret_split);
 			else if(ft_strncmp(ret_split[0],"echo",4) == 0 && ft_strlen(ret_split[0]) == 4)
-				printf("%s\n",get_echo(ret_split));
+				printf("%s\n",get_echo(ret_split,all));
 			else if(ft_strncmp(ret_split[0],"cd",2) == 0 && ft_strlen(ret_split[0]) == 2)
 				printf("%s\n",get_cd(ret_split,all));
 			else if(ft_strncmp(ret_split[0],"unset",5) == 0 && ft_strlen(ret_split[0]) == 5)
@@ -318,8 +363,9 @@ void execulta_comando (char *ret, t_all *all)
 			else if (ft_strncmp(ret_split[0],"clear",5) == 0 && ft_strlen(ret_split[0]) == 5)
 				tputs(clear_screen,1,my_termprint);
 			else if (ft_strncmp(ret_split[0],"lista",5) == 0 && ft_strlen(ret_split[0]) == 5)
-				//lista_hist(all);
-				printf("retorno = %s\n", loc_var(all->var_ambiente,"cezar"));
+				lista_hist(all);
+
+				//printf("retorno = %s\n", loc_var(all->var_ambiente,"cezar"));
 			else if(ft_strncmp(ret_split[0],"exit",4) == 0 && ft_strlen(ret_split[0]) == 4)
 			{
 				printf("Saindo\n");
@@ -327,9 +373,13 @@ void execulta_comando (char *ret, t_all *all)
 			}
 			else
 			{
+				if (teste_fork(all,ret_split))
+					printf ("Command not found\n");
+
+				//teste_fork(all,ret_split);
 				ft_bzero(ret,2048);
 				//ret = ft_strdup("");
-				printf ("Command not found\n");
+				//
 			}
 			i++;
 		}
