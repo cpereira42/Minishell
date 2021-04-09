@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:26:45 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/07 19:27:44 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/08 21:11:25 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	atualiza_pasta(t_all *all)
 	all->cabecalho = ft_strjoin(all->pasta_atual, " ");
 	all->cabecalho = ft_strjoin(all->cabecalho, all->nome_user);
 	all->cabecalho = ft_strjoin(all->cabecalho, "$ ");
-
+	all->path = ft_split(loc_var(all->var_ambiente,"PATH",all),':');
 }
 
 void	reseta_flags(t_all *all, char **env)
@@ -45,8 +45,12 @@ void	reseta_flags(t_all *all, char **env)
 
 	all->ret2 = ft_strdup("");
 	all->ret_split = ft_split(all->ret2,' ');
-	all->var_ambiente = get_export(env,all->ret_split);
-	all->nome_user = loc_var(all->var_ambiente,"LOGNAME");
+	import_ambiente(env,all);
+
+	//all->var_ambiente = get_export(env,all->ret_split);
+
+	all->nome_user = loc_var(all->var_ambiente,"LOGNAME",all);
+
 	atualiza_pasta(all);
 	all->qtd_hist = 0;
 	all->l = 0;

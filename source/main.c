@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:20:18 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/07 22:12:12 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/08 22:07:16 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char *get_echo (char **ret, t_all *all)
 	while (ret[i] != NULL)
 	{
 		if (ret[i][0]== '$')
-			termo = loc_var(all->var_ambiente,&ret[i][1]);
+			termo = loc_var(all->var_ambiente,&ret[i][1],all);
 		else
 			termo = ft_strdup(ret[i]);
 
@@ -194,22 +194,31 @@ int teste_fork(t_all *all, char **args)
 {
 	int status;
 	char *comando;
+	int i;
     //char *args[2];
 
 	//char* arr[] = {"ls", "-l", "-R", "-a", NULL};
 	//execve("/bin/ls", arr);
 	all->aux_int =0;
-	comando = ft_strdup("/bin/");
+	comando = ft_strdup("/bins/");
 	comando = ft_strjoin(comando,args[0]);
 
     //args[0] = "/bin/ls";        // first arg is the full path to the executable
     //args[1] = NULL;             // list of args must be NULL terminated
-    if ( fork() == 0 )
-		return (execv(comando, args));
-        //execve( args[0], args ,all->var_ambiente); // child: call execv with the path and the args
-    else
-        wait( &status );        // parent: wait for the child (not really necessary)
-
+	i =0;
+	if ( fork() == 0 )
+	{
+		while (all->path[i] != NULL  )
+		{
+			comando = ft_strdup(all->path[i]);
+			comando = ft_strjoin(comando,"/");
+			comando = ft_strjoin(comando,args[0]);
+			execve(comando, args ,all->var_ambiente);
+			i++;
+		}
+	}
+	else
+		wait( &status );        // parent: wait for the child (not really necessary)
 	return (0);
 }
 
@@ -302,10 +311,10 @@ int		main(int ac, char **av, char **env)
 		{
 			all.posic_hist = all.qtd_hist;
 			execulta_comando (all.ret2,&all);
-			tputs(save_cursor,1,my_termprint);
 			ft_bzero(all.ret2,2048);
 			ft_bzero(all.ret,2048);
 			ft_putstr_fd(all.cabecalho,1);
+			tputs(save_cursor,1,my_termprint);
 		}
 		else if (ret[0] == 127)
 		{
@@ -332,10 +341,11 @@ void execulta_comando (char *ret, t_all *all)
 
 	all->hist[all->qtd_hist] = malloc((2048 + 1) * sizeof(char*));
 	ft_memcpy(all->hist[all->qtd_hist],ret,ft_strlen(ret));
+	all->hist[all->qtd_hist][ft_strlen(ret)]= '\0';
 	all->qtd_hist++;
 
 	printf ("\n");
-	ret = ft_strtrim(ret, " ");
+	//ret = ft_strtrim(ret, " ");
 		comandos = ft_split(ret,';');
 		i = 0;
 		while (comandos[i] != NULL || i == 0 )
@@ -346,6 +356,8 @@ void execulta_comando (char *ret, t_all *all)
 				break;
 			}
 			ret_split = ft_split(comandos[i],' ');
+			if(ret_split[0][0] == '$')
+				ret_split[0] = loc_var(all->var_ambiente,&ret_split[0][1],all);
 			if (ft_strncmp(ret_split[0],"pwd",3) == 0 && ft_strlen(ret_split[0]) == 3)
 				printf("%s\n",get_pwd(ret_split));
 			//else if(ft_strncmp(ret_split[0],"ls",2) == 0 && ft_strlen(ret_split[0]) == 2)
@@ -355,9 +367,9 @@ void execulta_comando (char *ret, t_all *all)
 			else if(ft_strncmp(ret_split[0],"cd",2) == 0 && ft_strlen(ret_split[0]) == 2)
 				printf("%s\n",get_cd(ret_split,all));
 			else if(ft_strncmp(ret_split[0],"unset",5) == 0 && ft_strlen(ret_split[0]) == 5)
-				all->var_ambiente = exc_var(all->var_ambiente,ret_split);
+				exc_var(ret_split, all);
 			else if(ft_strncmp(ret_split[0],"export",6) == 0 && ft_strlen(ret_split[0]) == 6)
-				all->var_ambiente = get_export(all->var_ambiente,ret_split);
+				export_var(all,ret_split);
 			else if(ft_strncmp(ret_split[0],"env",3) == 0 && ft_strlen(ret_split[0]) == 3)
 				ler_export(all->var_ambiente);
 			else if (ft_strncmp(ret_split[0],"clear",5) == 0 && ft_strlen(ret_split[0]) == 5)
@@ -375,11 +387,7 @@ void execulta_comando (char *ret, t_all *all)
 			{
 				if (teste_fork(all,ret_split))
 					printf ("Command not found\n");
-
-				//teste_fork(all,ret_split);
 				ft_bzero(ret,2048);
-				//ret = ft_strdup("");
-				//
 			}
 			i++;
 		}
