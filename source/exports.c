@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 18:28:51 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/08 22:33:50 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/10 15:57:40 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 void exc_var (char **entrada, t_all *all)
 {
 	int i;
-	char *var;
+	//char *var;
 	char **termo;
 	int posicao;
 
@@ -26,11 +26,11 @@ void exc_var (char **entrada, t_all *all)
 	{
 		posicao = ft_strpos(entrada[i],'=');
 		if (posicao == 0)
-			var = loc_var(all->var_ambiente,entrada[i],all);
+			loc_var(all->var_ambiente,entrada[i],all);
 		else
 		{
 			termo = ft_split(entrada[i],'=');
-			var = loc_var(all->var_ambiente,termo[0],all);
+			loc_var(all->var_ambiente,termo[0],all);
 		}
 		if (all->var_posic != -1) // exclui variavel e atualiza variavel de ambiente
 			excluir(all);

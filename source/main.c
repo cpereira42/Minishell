@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:20:18 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/08 22:07:16 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/10 19:31:06 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,23 @@ void	lista_hist(t_all *all)
 	}
 }
 
-void sighandler(int signum) {
-   printf("Caught signal %d, coming out...\n", signum);
-   exit(1);
+void sighandler(int signum)
+{
+	if (signum == 18)
+		printf("Ctrl = C\n");
+
+	if (signum == 2)
+	{
+		exit (0);
+	}
+	if (signum == 3)
+	{
+		printf("Ctrl = a\n");
+		exit (0);
+	}
+
+	//printf("Caught signal %d, coming out...\n", signum);
+
 }
 
 int my_termprint(int c){
@@ -192,7 +206,6 @@ char *term_get_cap(char* cap){
 
 int teste_fork(t_all *all, char **args)
 {
-	int status;
 	char *comando;
 	int i;
     //char *args[2];
@@ -216,28 +229,57 @@ int teste_fork(t_all *all, char **args)
 			execve(comando, args ,all->var_ambiente);
 			i++;
 		}
+		//return(1);
 	}
-	else
-		wait( &status );        // parent: wait for the child (not really necessary)
+	//else
+	//	wait( &status );        // parent: wait for the child (not really necessary)
 	return (0);
 }
 
 int		main(int ac, char **av, char **env)
 {
 	t_all all;
-	int l;
+
 
 	char ret[2048];
 	reseta_flags(&all, env);
     tgetent(ret, getenv("TERM"));
 
 	struct termios term;
+	struct termios old;
+	tcgetattr(0,&old);
 	tcgetattr(0,&term);
+
+
+
+	signal( SIGINT, sighandler );
+
 	term.c_lflag &= ~(ECHO);
 	term.c_lflag &= ~(ICANON);
+	term.c_lflag &= ~(ISIG);
 	term.c_cc[VMIN] = 1;
     term.c_cc[VTIME] = 0;
+
+	//term.c_cc[VINTR] = 4; // ^D
+	//term.c_cc[VSUSP]  = 3;
+	//term.c_cc[VEOF]  = 3;
+
+	//term.c_cc[SIGQUIT]  = 9; // ^C // 3
+	//term.c_cc[VSUSP]  = 3;
 	tcsetattr(0,TCSANOW,&term);
+
+
+	//printf("== %d\n",VQUIT);
+
+	//tcsetattr(0,TCSANOW,&term);
+	//signal(SIGINT, sighandler);
+	//signal(SIGTSTP, sighandler);
+	//signal(SIGQUIT, sighandler);
+	//signal(VSUSP,sighandler);
+	//VSUSP
+	//signal(1, sighandler);
+
+	//signal(SIGINT, SIG_IGN);
 
 	all.ac = ac;
 	all.av = av;
@@ -250,22 +292,18 @@ int		main(int ac, char **av, char **env)
 
 	tputs(tigetstr("ce"),1,my_termprint); // ed
 	tputs(save_cursor,1,my_termprint);
+	//tcsetattr(0,TCSANOW,&old);
 
+	int processo;
+	processo = 1;
 
-
-
-
-
-    //return 0;
-
-
-
-
-
-	while (1)
+  	while (1)
 	{
 		ft_bzero(ret,2048);
-		l = read (0,ret,100);
+		read (0,ret,100);
+
+		//printf("letra = %d\n",ret[0]);
+
 		if (!ft_strncmp("\e[A",ret,3)) // cima
 		{
 			tputs(restore_cursor,1,my_termprint);
@@ -276,7 +314,29 @@ int		main(int ac, char **av, char **env)
 				all.posic_hist = 0;
 			else
 				all.posic_hist --;
-				ret[0] = 0;
+			ret[0] = 0;
+		}
+		else if (ret[0] == 3) // baixo
+		{
+			ft_bzero(all.ret2,2048);
+			ft_bzero(all.ret,2048);
+			ft_putstr_fd("\n",1);
+			ft_putstr_fd(all.cabecalho,1);
+			tputs(save_cursor,1,my_termprint);
+
+		}
+		else if (ret[0] == 4) // baixo
+		{
+			ft_putstr_fd("\n",1);
+			tcsetattr(0,TCSANOW,&old);
+			exit(0);
+		}
+		else if (ret[0] == 28 && processo == 1) // baixo
+		{
+			//tcsetattr(0,TCSANOW,&old);
+			//exit(1);
+			ft_putstr_fd("^\\Quit: 3\n",1);
+			//printf("");
 		}
 		else if (!ft_strncmp("\e[B",ret,3)) // baixo
 		{
@@ -310,7 +370,7 @@ int		main(int ac, char **av, char **env)
 		else if (!ft_strncmp("\n",ret,1))
 		{
 			all.posic_hist = all.qtd_hist;
-			execulta_comando (all.ret2,&all);
+			execulta_comando (all.ret2,&all, old);
 			ft_bzero(all.ret2,2048);
 			ft_bzero(all.ret,2048);
 			ft_putstr_fd(all.cabecalho,1);
@@ -333,19 +393,24 @@ int		main(int ac, char **av, char **env)
 	return (0);
 }
 
-void execulta_comando (char *ret, t_all *all)
+void execulta_comando (char *ret, t_all *all, struct termios old)
 {
 	char **comandos;
 	int i;
 	char **ret_split;
+	char **ret_split2;
+	int filedesc;
 
 	all->hist[all->qtd_hist] = malloc((2048 + 1) * sizeof(char*));
 	ft_memcpy(all->hist[all->qtd_hist],ret,ft_strlen(ret));
 	all->hist[all->qtd_hist][ft_strlen(ret)]= '\0';
 	all->qtd_hist++;
 
+	//printf("frase = %s\n",ret);
 	printf ("\n");
 	//ret = ft_strtrim(ret, " ");
+		//if (comandos != NULL)
+
 		comandos = ft_split(ret,';');
 		i = 0;
 		while (comandos[i] != NULL || i == 0 )
@@ -355,6 +420,9 @@ void execulta_comando (char *ret, t_all *all)
 				// chama cabecalho da linha novamente
 				break;
 			}
+
+			//printf("resp = %d\n",);
+
 			ret_split = ft_split(comandos[i],' ');
 			if(ret_split[0][0] == '$')
 				ret_split[0] = loc_var(all->var_ambiente,&ret_split[0][1],all);
@@ -376,11 +444,22 @@ void execulta_comando (char *ret, t_all *all)
 				tputs(clear_screen,1,my_termprint);
 			else if (ft_strncmp(ret_split[0],"lista",5) == 0 && ft_strlen(ret_split[0]) == 5)
 				lista_hist(all);
+			else if (ft_strpos(comandos[i],'>') > 0)
+			{
+				ret_split2 = ft_split(comandos[i],'>');
+				filedesc = open(ret_split2[1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+				ft_putstr_fd(ret_split2[0],filedesc);
+				close(filedesc);
+				//printf(" %s > %s \n",ret_split2[1],ret_split2[0]);
+			}
+
+				//lista_hist(all);
 
 				//printf("retorno = %s\n", loc_var(all->var_ambiente,"cezar"));
 			else if(ft_strncmp(ret_split[0],"exit",4) == 0 && ft_strlen(ret_split[0]) == 4)
 			{
 				printf("Saindo\n");
+				tcsetattr(0,TCSANOW,&old);
 				exit(0);
 			}
 			else
@@ -391,4 +470,5 @@ void execulta_comando (char *ret, t_all *all)
 			}
 			i++;
 		}
+		free_array((void*)comandos);
 }
