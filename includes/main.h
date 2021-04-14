@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/07 07:38:06 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/10 17:33:51 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/13 18:34:43 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct	s_all
 	char			**ret_split;
 	char			*buf;
 	char			*ret2;
+	char			*ret_aux;
 	int				l;
 	char			ret[2048];
 	char			*hist[50];
@@ -50,15 +51,19 @@ typedef struct	s_all
 	char			**av;
 	char			**path;
 	int 			var_posic;
+	int				qtd_pipe;
+	int				posic_pipe;
+	char			**pipe_split;
+	int				r_comando;
+	int				pp[2];
 } 	t_all;
 
-void	execulta_comando (char *ret, t_all *all, struct termios old);
+int		execulta_comando (char *ret, t_all *all);
 char	*ft_strjoin(const char *s1, const char *s2);
 int		ft_strpos(const char *palheiro, char agulha);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *source);
-char	*get_cd (char **ret,t_all *all);
-char	*get_echo (char **ret, t_all *all);
+void	get_echo(char **ret, t_all *all, int fd);
 void	exc_var (char **entrada, t_all *all);
 void 	export_var (t_all *all, char **entrada);
 void	ler_export(char **ret);

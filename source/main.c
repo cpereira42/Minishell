@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:20:18 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/10 19:31:06 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/13 20:44:23 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,27 @@ char *get_cd (char **ret,t_all *all)
 	}
 	else
 		ptr = ft_strdup("");
-
 	atualiza_pasta(all);
+	ft_putstr_fd(ptr,1);
 	return (ptr);
 }
+int		count_pipe(char *ret, char c)
+{
+	int i;
+	int qtd;
 
-char *get_echo (char **ret, t_all *all)
+	i = 0;
+	qtd = 0;
+	while (ret[i] != '\0')
+	{
+		if (ret[i] == c)
+			qtd++;
+		i++;
+	}
+	return (qtd);
+}
+
+void get_echo (char **ret, t_all *all, int fd)
 {
 	char *ptr;
 	char *termo;
@@ -53,6 +68,7 @@ char *get_echo (char **ret, t_all *all)
 	flag = 0;
 	count = 0;
 	ptr = ft_strdup("");
+
 	while (ret[i] != NULL)
 	{
 		if (ret[i][0]== '$')
@@ -62,9 +78,6 @@ char *get_echo (char **ret, t_all *all)
 
 		if (termo[0] == '"' || termo[0] == '\'' )
 			termo = termo[0] == '"' ? ft_strtrim(termo,"\""): ft_strtrim(termo,"'") ;
-		//	termo = ft_strtrim(termo,termo[0]);
-
-
 		if (ft_strncmp(ret[i], "-n", 2) == 0 && count == 0)
 			flag = 1;
 		else
@@ -78,47 +91,26 @@ char *get_echo (char **ret, t_all *all)
 	}
 	if (flag == 1)
 		ptr = ft_strjoin (ptr,"%");
-	return (ptr);
-}
 
-void ls (void)
-{
-	DIR *folder;
-	struct dirent *entry;
-	struct stat sfile;
-	int files = 0;
-
-	folder = opendir(".");
-	if(folder == NULL)
-		perror("Unable to read directory");
-	while( (entry=readdir(folder)) )
+	if (all->qtd_pipe == 0 || all->qtd_pipe == all->posic_pipe)
 	{
-		files++;
-		if(entry->d_name[0]!= '.')
-		{
-
-
-			if(lstat(entry->d_name,&sfile)==-1)
-    			printf("Error Occurred\n");
-			else
-			{
-				printf((sfile.st_mode & S_IRUSR)? "r":"-");
-				printf((sfile.st_mode & S_IWUSR)? "w":"-");
-				printf((sfile.st_mode & S_IXUSR)? "x":"-");
-				printf((sfile.st_mode & S_IRGRP)? "r":"-");
-				printf((sfile.st_mode & S_IWGRP)? "w":"-");
-				printf((sfile.st_mode & S_IXGRP)? "x":"-");
-				printf((sfile.st_mode & S_IROTH)? "r":"-");
-				printf((sfile.st_mode & S_IWOTH)? "w":"-");
-				printf((sfile.st_mode & S_IXOTH)? "x":"-");
-			}
-			//printf(" %hu   ",sfile.st_nlink);
-			printf("   %s \n",entry->d_name);
-		}
+		ft_putstr_fd(ptr,fd);
+		ft_putstr_fd("\n",fd);
 	}
-	closedir(folder);
+	else
+	{
+		fd = open("arq1", O_CREAT | O_WRONLY | O_TRUNC, 444);
+		if (!fd)
+			ft_putstr_fd("Erro ao gerar arquivo", 1);
+		else
+			ft_putstr_fd(ptr, fd);
+		close(fd);
+		all->posic_pipe++;
+		all->ret_aux = ptr;
+		execulta_comando (all->pipe_split[all->posic_pipe],all);
+	}
+	//return (ptr);
 }
-
 
 char *get_pwd (char **ret)
 {
@@ -136,23 +128,9 @@ char *get_pwd (char **ret)
 	{
 		ptr = ft_strdup("pwd : too many arguments");
 	}
+	ft_putstr_fd(ptr,1);
 	return (ptr);
 }
-/*
-char *get_line(void)
-{
-	char *buff;
-	static
-	int ret;
-	ret = get_next_line(0, &buff);
-	hist[qtd_hist] = malloc((1024 + 1) * sizeof(char*));
-	hist[qtd_hist] = buff;
-	qtd_hist++;
-	ret = 2;
-	if (ret == 1)
-		ret = 2;
-	return (buff);
-}*/
 
 void	lista_hist(t_all *all)
 {
@@ -215,9 +193,50 @@ int teste_fork(t_all *all, char **args)
 	all->aux_int =0;
 	comando = ft_strdup("/bins/");
 	comando = ft_strjoin(comando,args[0]);
+	char *argse[5] ;//= { "/usr/bin/sed", "-e", "s/Roses/Turnips/", 0 };
+	/*argse[0] = comando;
+	argse[1] = args[1];
+	argse[2] = "arq1";
+	execve(comando, argse ,all->var_ambiente);
+	printf("passou\n");
+
+
+	//char *argv[] = { "/usr/bin/sed", "-e", "'s/Roses/Turnips/'", 0 };
 
     //args[0] = "/bin/ls";        // first arg is the full path to the executable
     //args[1] = NULL;             // list of args must be NULL terminated
+
+	if (all->qtd_pipe == 0 || all->qtd_pipe == all->posic_pipe)
+	{
+		ft_putstr_fd(ptr,fd);
+		ft_putstr_fd("\n",fd);
+	}
+	else
+	{
+		all->posic_pipe++;
+		all->ret_aux = ptr;
+		execulta_comando (all->ret_split[all->posic_pipe],&all);
+	}
+	printf("foi\n");
+
+	//echo "hello there | sed "s/hello/hi/" | sed "s/there/robots/"
+	printf("Args *%s*\n",args[1]);*/
+
+	argse[1] = ft_strtrim(args[1],"\"");
+	argse[2] = "arq1";
+	argse[3] = 0;
+	argse[4] = 0;
+	int filedesc;
+	filedesc = open("arq1", O_WRONLY | O_APPEND , 0644);
+	//ft_putstr_fd(ret_split2[0],filedesc);
+
+	if (all->qtd_pipe < all->posic_pipe)
+		dup2(filedesc, STDOUT_FILENO);
+	else
+		dup2(filedesc, STDIN_FILENO);
+
+	if (args == NULL)
+		;
 	i =0;
 	if ( fork() == 0 )
 	{
@@ -225,12 +244,23 @@ int teste_fork(t_all *all, char **args)
 		{
 			comando = ft_strdup(all->path[i]);
 			comando = ft_strjoin(comando,"/");
-			comando = ft_strjoin(comando,args[0]);
-			execve(comando, args ,all->var_ambiente);
+			comando = ft_strjoin(comando,argse[0]);
+			//printf("commando = %s\n",comando);
+			comando = "/usr/bin/sed";
+			argse[0] = comando;
+			argse[0] = "/usr/bin/sed";
+			execve(comando, &argse[0] ,all->var_ambiente);
 			i++;
 		}
 		//return(1);
 	}
+	printf("%d, %d\n ",all->qtd_pipe , all->posic_pipe);
+	if (all->qtd_pipe != 0 || all->qtd_pipe < all->posic_pipe)
+	{
+		all->posic_pipe++;
+		execulta_comando (all->pipe_split[all->posic_pipe],all);
+	}
+
 	//else
 	//	wait( &status );        // parent: wait for the child (not really necessary)
 	return (0);
@@ -293,6 +323,38 @@ int		main(int ac, char **av, char **env)
 	tputs(tigetstr("ce"),1,my_termprint); // ed
 	tputs(save_cursor,1,my_termprint);
 	//tcsetattr(0,TCSANOW,&old);
+
+
+	//char* arr[] = {"ls", "-l", "-R", "-a", NULL};
+	//tcsetattr(0,TCSANOW,&old);
+
+
+
+	int pp[2];
+	pipe(pp);
+	//dup2(pp[IN], STDOUT_FILENO);	// JOGA STDOUT PARA ENTRADA DO PIPE
+	//dup2(pp[OUT], STDIN_FILENO);
+
+
+	/*char *argse[5] ;
+	char *commandos;
+	commandos = ft_strdup("/usr/bin/sed");
+	argse[0] = "/usr/bin/sed";
+    argse[1] = "s/hello/hi/";
+	argse[2] = "arq1";
+	argse[3] = 0;
+
+	//dup2(pp[0], STDOUT_FILENO);	// JOGA STDOUT PARA ENTRADA DO PIPE
+	//dup2(pp[1], STDIN_FILENO);
+	//ft_putstr_fd("hello there\n",pp[1]);
+	execve(commandos, &argse[0] ,all.var_ambiente);*/
+	//write(, , 4);
+
+	//
+
+
+
+
 
 	int processo;
 	processo = 1;
@@ -370,7 +432,7 @@ int		main(int ac, char **av, char **env)
 		else if (!ft_strncmp("\n",ret,1))
 		{
 			all.posic_hist = all.qtd_hist;
-			execulta_comando (all.ret2,&all, old);
+			all.r_comando = execulta_comando (all.ret2,&all);
 			ft_bzero(all.ret2,2048);
 			ft_bzero(all.ret,2048);
 			ft_putstr_fd(all.cabecalho,1);
@@ -389,11 +451,17 @@ int		main(int ac, char **av, char **env)
 			all.ret2 = ft_strjoin(all.ret2,ret);
 			ft_putstr_fd(ret,1);
 		}
+		if (all.r_comando == 3)
+		{
+			printf("Saindo\n");
+			tcsetattr(0,TCSANOW,&old);
+			exit(0);
+		}
 	}
 	return (0);
 }
 
-void execulta_comando (char *ret, t_all *all, struct termios old)
+int		execulta_comando (char *ret, t_all *all)
 {
 	char **comandos;
 	int i;
@@ -406,24 +474,26 @@ void execulta_comando (char *ret, t_all *all, struct termios old)
 	all->hist[all->qtd_hist][ft_strlen(ret)]= '\0';
 	all->qtd_hist++;
 
-	//printf("frase = %s\n",ret);
-	printf ("\n");
-	//ret = ft_strtrim(ret, " ");
-		//if (comandos != NULL)
-
 		comandos = ft_split(ret,';');
 		i = 0;
 		while (comandos[i] != NULL || i == 0 )
 		{
+			all->posic_pipe = 0;
 			if (comandos[i] == NULL)
 			{
 				// chama cabecalho da linha novamente
 				break;
 			}
+			if (i == 0)
+				printf("\n");
 
-			//printf("resp = %d\n",);
+			all->pipe_split = ft_split (comandos[i],'|');
+			all->qtd_pipe = count_pipe(comandos[i],'|');
 
-			ret_split = ft_split(comandos[i],' ');
+
+			printf("qtd_pipes = %d\n",all->qtd_pipe);
+
+			ret_split = ft_split(all->pipe_split[0],' ');
 			if(ret_split[0][0] == '$')
 				ret_split[0] = loc_var(all->var_ambiente,&ret_split[0][1],all);
 			if (ft_strncmp(ret_split[0],"pwd",3) == 0 && ft_strlen(ret_split[0]) == 3)
@@ -431,9 +501,9 @@ void execulta_comando (char *ret, t_all *all, struct termios old)
 			//else if(ft_strncmp(ret_split[0],"ls",2) == 0 && ft_strlen(ret_split[0]) == 2)
 			//	teste_fork(all,ret_split);
 			else if(ft_strncmp(ret_split[0],"echo",4) == 0 && ft_strlen(ret_split[0]) == 4)
-				printf("%s\n",get_echo(ret_split,all));
+				get_echo(ret_split,all,1);
 			else if(ft_strncmp(ret_split[0],"cd",2) == 0 && ft_strlen(ret_split[0]) == 2)
-				printf("%s\n",get_cd(ret_split,all));
+				get_cd(ret_split,all);
 			else if(ft_strncmp(ret_split[0],"unset",5) == 0 && ft_strlen(ret_split[0]) == 5)
 				exc_var(ret_split, all);
 			else if(ft_strncmp(ret_split[0],"export",6) == 0 && ft_strlen(ret_split[0]) == 6)
@@ -457,18 +527,16 @@ void execulta_comando (char *ret, t_all *all, struct termios old)
 
 				//printf("retorno = %s\n", loc_var(all->var_ambiente,"cezar"));
 			else if(ft_strncmp(ret_split[0],"exit",4) == 0 && ft_strlen(ret_split[0]) == 4)
-			{
-				printf("Saindo\n");
-				tcsetattr(0,TCSANOW,&old);
-				exit(0);
-			}
+				return(3);
 			else
 			{
+				printf("aaa\n");
 				if (teste_fork(all,ret_split))
 					printf ("Command not found\n");
 				ft_bzero(ret,2048);
 			}
 			i++;
 		}
-		free_array((void*)comandos);
+		//free_array((void*)comandos);
+		return(0);
 }

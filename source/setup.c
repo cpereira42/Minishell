@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:26:45 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/08 21:11:25 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/13 18:35:20 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	atualiza_pasta(t_all *all)
 	all->cabecalho = ft_strjoin(all->cabecalho, all->nome_user);
 	all->cabecalho = ft_strjoin(all->cabecalho, "$ ");
 	all->path = ft_split(loc_var(all->var_ambiente,"PATH",all),':');
+	pipe(all->pp);
+	//all->path = loc_var(all->var_ambiente,"PATH",all);
 }
 
 void	reseta_flags(t_all *all, char **env)
