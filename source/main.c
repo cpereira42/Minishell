@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:20:18 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/13 20:44:23 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/14 05:04:53 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,9 @@ void get_echo (char **ret, t_all *all, int fd)
 		else
 			ft_putstr_fd(ptr, fd);
 		close(fd);
-		all->posic_pipe++;
+		//all->posic_pipe++;
 		all->ret_aux = ptr;
-		execulta_comando (all->pipe_split[all->posic_pipe],all);
+		//execulta_comando (all->pipe_split[all->posic_pipe],all);
 	}
 	//return (ptr);
 }
@@ -227,13 +227,15 @@ int teste_fork(t_all *all, char **args)
 	argse[3] = 0;
 	argse[4] = 0;
 	int filedesc;
-	filedesc = open("arq1", O_WRONLY | O_APPEND , 0644);
-	//ft_putstr_fd(ret_split2[0],filedesc);
+	filedesc = open("arq1", O_WRONLY , 0644);
 
-	if (all->qtd_pipe < all->posic_pipe)
+	int save_in = dup(STDIN_FILENO);
+	int save_out = dup(STDOUT_FILENO);
+
+	if (all->posic_pipe < all->qtd_pipe)
 		dup2(filedesc, STDOUT_FILENO);
-	else
-		dup2(filedesc, STDIN_FILENO);
+
+
 
 	if (args == NULL)
 		;
@@ -254,12 +256,15 @@ int teste_fork(t_all *all, char **args)
 		}
 		//return(1);
 	}
-	printf("%d, %d\n ",all->qtd_pipe , all->posic_pipe);
-	if (all->qtd_pipe != 0 || all->qtd_pipe < all->posic_pipe)
+	dup2(save_in, STDIN_FILENO);
+	dup2(save_out, STDOUT_FILENO);
+	close(filedesc);
+	//printf("%d, %d\n ",all->qtd_pipe , all->posic_pipe);
+	/*if (all->qtd_pipe != 0 || all->qtd_pipe < all->posic_pipe)
 	{
 		all->posic_pipe++;
 		execulta_comando (all->pipe_split[all->posic_pipe],all);
-	}
+	}*/
 
 	//else
 	//	wait( &status );        // parent: wait for the child (not really necessary)
@@ -486,54 +491,55 @@ int		execulta_comando (char *ret, t_all *all)
 			}
 			if (i == 0)
 				printf("\n");
-
 			all->pipe_split = ft_split (comandos[i],'|');
 			all->qtd_pipe = count_pipe(comandos[i],'|');
-
-
-			printf("qtd_pipes = %d\n",all->qtd_pipe);
-
-			ret_split = ft_split(all->pipe_split[0],' ');
-			if(ret_split[0][0] == '$')
-				ret_split[0] = loc_var(all->var_ambiente,&ret_split[0][1],all);
-			if (ft_strncmp(ret_split[0],"pwd",3) == 0 && ft_strlen(ret_split[0]) == 3)
-				printf("%s\n",get_pwd(ret_split));
-			//else if(ft_strncmp(ret_split[0],"ls",2) == 0 && ft_strlen(ret_split[0]) == 2)
-			//	teste_fork(all,ret_split);
-			else if(ft_strncmp(ret_split[0],"echo",4) == 0 && ft_strlen(ret_split[0]) == 4)
-				get_echo(ret_split,all,1);
-			else if(ft_strncmp(ret_split[0],"cd",2) == 0 && ft_strlen(ret_split[0]) == 2)
-				get_cd(ret_split,all);
-			else if(ft_strncmp(ret_split[0],"unset",5) == 0 && ft_strlen(ret_split[0]) == 5)
-				exc_var(ret_split, all);
-			else if(ft_strncmp(ret_split[0],"export",6) == 0 && ft_strlen(ret_split[0]) == 6)
-				export_var(all,ret_split);
-			else if(ft_strncmp(ret_split[0],"env",3) == 0 && ft_strlen(ret_split[0]) == 3)
-				ler_export(all->var_ambiente);
-			else if (ft_strncmp(ret_split[0],"clear",5) == 0 && ft_strlen(ret_split[0]) == 5)
-				tputs(clear_screen,1,my_termprint);
-			else if (ft_strncmp(ret_split[0],"lista",5) == 0 && ft_strlen(ret_split[0]) == 5)
-				lista_hist(all);
-			else if (ft_strpos(comandos[i],'>') > 0)
+			all->posic_pipe = 0;
+			//printf("%d %d %s",all->qtd_pipe,all->posic_pipe,all->pipe_split[0]);
+			while (all->qtd_pipe >= all->posic_pipe)
 			{
-				ret_split2 = ft_split(comandos[i],'>');
-				filedesc = open(ret_split2[1], O_WRONLY | O_APPEND | O_CREAT, 0644);
-				ft_putstr_fd(ret_split2[0],filedesc);
-				close(filedesc);
-				//printf(" %s > %s \n",ret_split2[1],ret_split2[0]);
-			}
+				//printf("qtd_pipes = %d\n",all->qtd_pipe);
+				ret_split = ft_split(all->pipe_split[all->posic_pipe],' ');
+				if(ret_split[0][0] == '$')
+					ret_split[0] = loc_var(all->var_ambiente,&ret_split[0][1],all);
+				if (ft_strncmp(ret_split[0],"pwd",3) == 0 && ft_strlen(ret_split[0]) == 3)
+					printf("%s\n",get_pwd(ret_split));
+				//else if(ft_strncmp(ret_split[0],"ls",2) == 0 && ft_strlen(ret_split[0]) == 2)
+				//	teste_fork(all,ret_split);
+				else if(ft_strncmp(ret_split[0],"echo",4) == 0 && ft_strlen(ret_split[0]) == 4)
+					get_echo(ret_split,all,1);
+				else if(ft_strncmp(ret_split[0],"cd",2) == 0 && ft_strlen(ret_split[0]) == 2)
+					get_cd(ret_split,all);
+				else if(ft_strncmp(ret_split[0],"unset",5) == 0 && ft_strlen(ret_split[0]) == 5)
+					exc_var(ret_split, all);
+				else if(ft_strncmp(ret_split[0],"export",6) == 0 && ft_strlen(ret_split[0]) == 6)
+					export_var(all,ret_split);
+				else if(ft_strncmp(ret_split[0],"env",3) == 0 && ft_strlen(ret_split[0]) == 3)
+					ler_export(all->var_ambiente);
+				else if (ft_strncmp(ret_split[0],"clear",5) == 0 && ft_strlen(ret_split[0]) == 5)
+					tputs(clear_screen,1,my_termprint);
+				else if (ft_strncmp(ret_split[0],"lista",5) == 0 && ft_strlen(ret_split[0]) == 5)
+					lista_hist(all);
+				else if (ft_strpos(comandos[i],'>') > 0)
+				{
+					ret_split2 = ft_split(comandos[i],'>');
+					filedesc = open(ret_split2[1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+					ft_putstr_fd(ret_split2[0],filedesc);
+					close(filedesc);
+					//printf(" %s > %s \n",ret_split2[1],ret_split2[0]);
+				}
 
-				//lista_hist(all);
+					//lista_hist(all);
 
-				//printf("retorno = %s\n", loc_var(all->var_ambiente,"cezar"));
-			else if(ft_strncmp(ret_split[0],"exit",4) == 0 && ft_strlen(ret_split[0]) == 4)
-				return(3);
-			else
-			{
-				printf("aaa\n");
-				if (teste_fork(all,ret_split))
-					printf ("Command not found\n");
-				ft_bzero(ret,2048);
+					//printf("retorno = %s\n", loc_var(all->var_ambiente,"cezar"));
+				else if(ft_strncmp(ret_split[0],"exit",4) == 0 && ft_strlen(ret_split[0]) == 4)
+					return(3);
+				else
+				{
+					if (teste_fork(all,ret_split))
+						printf ("Command not found\n");
+					ft_bzero(ret,2048);
+				}
+				all->posic_pipe++;
 			}
 			i++;
 		}
