@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:20:18 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/14 05:04:53 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/20 16:07:03 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void get_echo (char **ret, t_all *all, int fd)
 	//return (ptr);
 }
 
-char *get_pwd (char **ret)
+int get_pwd (char **ret, t_all *all, int fd)
 {
 	long size;
 	char *buf;
@@ -128,8 +128,28 @@ char *get_pwd (char **ret)
 	{
 		ptr = ft_strdup("pwd : too many arguments");
 	}
-	ft_putstr_fd(ptr,1);
-	return (ptr);
+
+	if (all->qtd_pipe == 0 || all->qtd_pipe == all->posic_pipe)
+	{
+		ft_putstr_fd(ptr,fd);
+		ft_putstr_fd("\n",fd);
+	}
+	else
+	{
+		fd = open("arq1", O_CREAT | O_WRONLY | O_TRUNC, 444);
+		if (!fd)
+			ft_putstr_fd("Erro ao gerar arquivo", 1);
+		else
+			ft_putstr_fd(ptr, fd);
+		close(fd);
+		//all->posic_pipe++;
+		all->ret_aux = ptr;
+		//execulta_comando (all->pipe_split[all->posic_pipe],all);
+	}
+
+
+	//ft_putstr_fd(ptr,1);
+	return (0);
 }
 
 void	lista_hist(t_all *all)
@@ -184,90 +204,139 @@ char *term_get_cap(char* cap){
 
 int teste_fork(t_all *all, char **args)
 {
-	char *comando;
 	int i;
-    //char *args[2];
-
-	//char* arr[] = {"ls", "-l", "-R", "-a", NULL};
-	//execve("/bin/ls", arr);
-	all->aux_int =0;
-	comando = ft_strdup("/bins/");
-	comando = ft_strjoin(comando,args[0]);
-	char *argse[5] ;//= { "/usr/bin/sed", "-e", "s/Roses/Turnips/", 0 };
-	/*argse[0] = comando;
-	argse[1] = args[1];
-	argse[2] = "arq1";
-	execve(comando, argse ,all->var_ambiente);
-	printf("passou\n");
+	//int in_fd;
+	//int out_fd;
+	pid_t	pid;
+	int status;
+	char *comando;
+	int filedesc;
 
 
-	//char *argv[] = { "/usr/bin/sed", "-e", "'s/Roses/Turnips/'", 0 };
+	if (all->qtd_pipe == 0)
+		;
+	printf("Args *%s*\n",args[1]);
 
-    //args[0] = "/bin/ls";        // first arg is the full path to the executable
-    //args[1] = NULL;             // list of args must be NULL terminated
+	args[1] = ft_strtrim(args[1],"\"");
+	args[2] = "arq1";
+	args[3] = NULL;
 
-	if (all->qtd_pipe == 0 || all->qtd_pipe == all->posic_pipe)
+
+	int save_in = dup(STDIN_FILENO);
+	int save_out = dup(STDOUT_FILENO);
+
+	filedesc = open("arq1", O_WRONLY , 0644);
+	if (all->posic_pipe < all->qtd_pipe)
 	{
-		ft_putstr_fd(ptr,fd);
-		ft_putstr_fd("\n",fd);
+		dup2(filedesc, STDOUT_FILENO);
+		close(filedesc);
+	}
+
+	i = 0;
+	if ((pid = fork()) < 0)
+			;//message_and_exit(ERRSYS, NULL);
+	else if (pid == 0)
+	{
+		//file_descriptor_handler(in_fd, out_fd);
+		while (all->path[i] != NULL  )
+		{
+			comando = ft_strdup(all->path[i]);
+			comando = ft_strjoin(comando,"/");
+			comando = ft_strjoin(comando,args[0]);
+			//printf("commando = %s\n",comando);
+			//comando = "/usr/bin/sed";
+			//argse[0] = comando;
+			//argse[0] = "/usr/bin/sed";
+			execve(comando, &args[0] ,all->var_ambiente);
+			i++;
+		}
+		//in_fd = all->pp[0];
 	}
 	else
+		waitpid(pid, &status, 0);
+
+	//if (all->posic_pipe == all->qtd_pipe)
+
+	//ft_putstr_fd("teste",filedesc);
+	//dup2(save_in, STDIN_FILENO);
+	save_in = 0;
+	dup2(save_out, STDOUT_FILENO);
+	//dup2(filedesc, STDOUT_FILENO);
+	close(filedesc);
+
+
+	//fd = open("arq1", O_CREAT | O_WRONLY | O_TRUNC, 444);
+
+	//if (all->posic_pipe == all->qtd_pipe)
+	//	file_descriptor_handler(in_fd, STDOUT_FILENO);
+	return (0);
+}
+
+int	file_descriptor_handler(int in, int out)
+{
+	if (in != 0)
 	{
-		all->posic_pipe++;
-		all->ret_aux = ptr;
-		execulta_comando (all->ret_split[all->posic_pipe],&all);
+		dup2(in, 0);
+		close(in);
 	}
-	printf("foi\n");
+	if (out != 1)
+	{
+		dup2(out, 1);
+		close(out);
+	}
+	return (0);
+}
 
-	//echo "hello there | sed "s/hello/hi/" | sed "s/there/robots/"
-	printf("Args *%s*\n",args[1]);*/
+int teste_fork_BKP(t_all *all, char **args)
+{
+	int i;
 
-	argse[1] = ft_strtrim(args[1],"\"");
-	argse[2] = "arq1";
-	argse[3] = 0;
-	argse[4] = 0;
+	char *comando;
+
 	int filedesc;
 	filedesc = open("arq1", O_WRONLY , 0644);
+
+	if (all->qtd_pipe == 0)
+		;
+	printf("Args *%s*\n",args[1]);
+
+	args[1] = ft_strtrim(args[1],"\"");
+	args[2] = "arq1";
+	args[3] = NULL;
 
 	int save_in = dup(STDIN_FILENO);
 	int save_out = dup(STDOUT_FILENO);
 
 	if (all->posic_pipe < all->qtd_pipe)
+	{
 		dup2(filedesc, STDOUT_FILENO);
+		close (filedesc);
+	}
 
 
 
-	if (args == NULL)
-		;
-	i =0;
+	i = 0;
 	if ( fork() == 0 )
 	{
 		while (all->path[i] != NULL  )
 		{
 			comando = ft_strdup(all->path[i]);
 			comando = ft_strjoin(comando,"/");
-			comando = ft_strjoin(comando,argse[0]);
+			comando = ft_strjoin(comando,args[0]);
 			//printf("commando = %s\n",comando);
-			comando = "/usr/bin/sed";
-			argse[0] = comando;
-			argse[0] = "/usr/bin/sed";
-			execve(comando, &argse[0] ,all->var_ambiente);
+			//comando = "/usr/bin/sed";
+			//argse[0] = comando;
+			//argse[0] = "/usr/bin/sed";
+			execve(comando, &args[0] ,all->var_ambiente);
 			i++;
 		}
 		//return(1);
 	}
+	filedesc = open("arq2", O_CREAT | O_WRONLY | O_TRUNC, 444);
 	dup2(save_in, STDIN_FILENO);
 	dup2(save_out, STDOUT_FILENO);
 	close(filedesc);
-	//printf("%d, %d\n ",all->qtd_pipe , all->posic_pipe);
-	/*if (all->qtd_pipe != 0 || all->qtd_pipe < all->posic_pipe)
-	{
-		all->posic_pipe++;
-		execulta_comando (all->pipe_split[all->posic_pipe],all);
-	}*/
 
-	//else
-	//	wait( &status );        // parent: wait for the child (not really necessary)
 	return (0);
 }
 
@@ -502,7 +571,7 @@ int		execulta_comando (char *ret, t_all *all)
 				if(ret_split[0][0] == '$')
 					ret_split[0] = loc_var(all->var_ambiente,&ret_split[0][1],all);
 				if (ft_strncmp(ret_split[0],"pwd",3) == 0 && ft_strlen(ret_split[0]) == 3)
-					printf("%s\n",get_pwd(ret_split));
+					get_pwd(ret_split,all,1);
 				//else if(ft_strncmp(ret_split[0],"ls",2) == 0 && ft_strlen(ret_split[0]) == 2)
 				//	teste_fork(all,ret_split);
 				else if(ft_strncmp(ret_split[0],"echo",4) == 0 && ft_strlen(ret_split[0]) == 4)

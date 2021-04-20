@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/07 07:38:06 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/13 18:34:43 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/20 15:33:23 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	exc_var (char **entrada, t_all *all);
 void 	export_var (t_all *all, char **entrada);
 void	ler_export(char **ret);
 void	ls (void);
-char	*get_pwd (char **ret);
+int 	get_pwd (char **ret, t_all *all, int fd);
 char	*get_line(void);
 void	lista_hist(t_all *all);
 void	sighandler(int signum);
@@ -82,6 +82,7 @@ void	atualiza_pasta(t_all *all);
 void	import_ambiente(char **ret, t_all *all);
 void	free_array(void **array);
 void	excluir(t_all *all);
+int		file_descriptor_handler(int in, int out);
 #endif
 
 
