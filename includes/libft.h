@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft.h                                               :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 20:10:30 by cpereira          #+#    #+#             */
-/*   Updated: 2020/01/31 21:39:30 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/04/28 17:08:30 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 
 size_t				ft_strlen(const char *frase);
 void				*ft_memset(void *b, int c, size_t tamanho);

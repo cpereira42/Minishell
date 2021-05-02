@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:26:45 by cpereira          #+#    #+#             */
-/*   Updated: 2021/04/13 18:35:20 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/01 19:43:35 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	reseta_flags(t_all *all, char **env)
 	all->ret2 = ft_strdup("");
 	all->ret_split = ft_split(all->ret2,' ');
 	import_ambiente(env,all);
+	all->posic_pipe = 1;
 
 	//all->var_ambiente = get_export(env,all->ret_split);
 
@@ -56,6 +57,9 @@ void	reseta_flags(t_all *all, char **env)
 	atualiza_pasta(all);
 	all->qtd_hist = 0;
 	all->l = 0;
+	all->savein = dup(STDIN_FILENO);
+	all->saveout = dup(STDOUT_FILENO);
+	all->in_fd = STDIN_FILENO;
 
 	//printf("retorno = %s\n", loc_var(all->var_ambiente,"cezar"));
 

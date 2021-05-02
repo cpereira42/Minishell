@@ -6,7 +6,7 @@
 #    By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/02 17:32:06 by cpereira          #+#    #+#              #
-#    Updated: 2021/04/13 17:45:27 by cpereira         ###   ########.fr        #
+#    Updated: 2021/05/01 20:08:27 by cpereira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ INCLUDES 		= -I $(INC_DIR)
 
 CFLAGS = -Wall -Wextra -Werror
 
-LINUX_FLAGS = -L ./$(LIBFT_DIR) -lmy -lreadline -lncurses
+LINUX_FLAGS = -L ./$(LIBFT_DIR) -lncurses -ltermcap
 
 MAC_FLAGS = -L ./$(LIBFT_DIR) -lft
 
@@ -42,7 +42,7 @@ $(NAME): $(OBJ)
 	@echo "\n"
 	@make -C libft/
 	@echo "\033[0;32mCompiling minishell..."
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -ltermcap -fsanitize=address -g
 
 
 %.o: %.c
@@ -53,7 +53,7 @@ $(NAME): $(OBJ)
 mini: $(NAMEM)
 
 $(NAMEM): $(OBJ) $(LIBFT)
-		clang -I. -L. $(LIBFT) $(OBJ) $(INCLUDES) $(CFLAGS) $(LINUX_FLAGS) -g  -o $@
+		gdb -I. -L. $(LIBFT) $(OBJ) $(INCLUDES) $(CFLAGS) $(MAC_FLAGS) -ltermcap -fsanitize=address -g -o $(NAMEM)
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
 		mkdir -p $(OBJ_DIR)
