@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/07 07:38:06 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/01 13:57:08 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/03 16:19:21 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct	s_all
 	int				saveout;
 	int				in_fd;
 	int				out_fd;
+	struct termios  term;
+	struct termios  old;
 } 	t_all;
 int 	teste_fork2(t_all *all);
 int 	teste_fork(t_all *all);
@@ -91,6 +93,13 @@ void	import_ambiente(char **ret, t_all *all);
 void	free_array(void **array);
 void	excluir(t_all *all);
 int		file_descriptor_handler(int in, int out);
+int		verify_term(t_all *all, char *ret);
+void	config_term(t_all *all);
+
+
+char 	*get_cd (char **ret,t_all *all);
+int 	get_pwd (char **ret, t_all *all, int fd);
+void	get_echo (char **ret, t_all *all, int fd);
 #endif
 
 

@@ -6,7 +6,7 @@
 #    By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/02 17:32:06 by cpereira          #+#    #+#              #
-#    Updated: 2021/05/01 20:08:27 by cpereira         ###   ########.fr        #
+#    Updated: 2021/05/03 16:28:22 by cpereira         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,9 @@ SRC			=	$(SRC_DIR)/get_next_line_utils.c \
 				$(SRC_DIR)/main.c \
 				$(SRC_DIR)/setup.c \
 				$(SRC_DIR)/exports.c \
+				$(SRC_DIR)/term_caps.c \
+				$(SRC_DIR)/builts.c \
+				$(SRC_DIR)/forks.c \
 
 OBJ_DIR	=		./obj
 OBJ = $(subst .c,.o,$(SRC))

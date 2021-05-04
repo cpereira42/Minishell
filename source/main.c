@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 18:20:18 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/01 20:10:07 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/03 16:27:52 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,6 @@ void add_hist(t_all *all, char *ret)
 	all->qtd_hist++;
 }
 
-char *get_cd (char **ret,t_all *all)
-{
-	char *ptr;
-	int resp;
-
-	if (ret[1] == NULL)
-		resp = chdir("..");
-	else
-		resp = chdir(ret[1]);
-
-	if (resp != 0)
-	{
-		ptr = ft_strdup("cd : no such file or directory: ");
-		ptr = ft_strjoin(ptr,ret[1]);
-	}
-	else
-		ptr = ft_strdup("");
-	atualiza_pasta(all);
-	ft_putstr_fd(ptr,1);
-	return (ptr);
-}
 int		count_pipe(char *ret, char c)
 {
 	int i;
@@ -63,86 +42,6 @@ int		count_pipe(char *ret, char c)
 		i++;
 	}
 	return (qtd);
-}
-
-void get_echo (char **ret, t_all *all, int fd)
-{
-	char *ptr;
-	char *termo;
-	int i;
-	int flag;
-	int count;
-
-	i = 1;
-	flag = 0;
-	count = 0;
-	ptr = ft_strdup("");
-
-	while (ret[i] != NULL)
-	{
-		if (ret[i][0]== '$')
-			termo = loc_var(all->var_ambiente,&ret[i][1],all);
-		else
-			termo = ft_strdup(ret[i]);
-
-		if (termo[0] == '"' || termo[0] == '\'' )
-			termo = termo[0] == '"' ? ft_strtrim(termo,"\""): ft_strtrim(termo,"'") ;
-		if (ft_strncmp(ret[i], "-n", 2) == 0 && count == 0)
-			flag = 1;
-		else
-		{
-			if (i-flag != 1 && count != 0 )
-				ptr = ft_strjoin (ptr, " ");
-			ptr = ft_strjoin (ptr,termo);
-			count ++;
-		}
-		i++;
-	}
-	if (flag == 1)
-		ptr = ft_strjoin (ptr,"%");
-
-	if (all->qtd_pipe == 0 || all->qtd_pipe == all->posic_pipe)
-		ft_putstr_fd(ptr,fd);
-	else
-	{
-		ft_putstr_fd(ptr, all->pp[1]);
-		teste_fork(all);
-		all->ret_aux = ptr;
-	}
-}
-
-int get_pwd (char **ret, t_all *all, int fd)
-{
-	long size;
-	char *buf;
-	char *ptr;
-
-	if (ret[2]!= NULL && ft_strlen(*ret) == 3)
-	{
-		size = pathconf(".", _PC_PATH_MAX);
-		buf = (char *)malloc((size_t)size);
-		ptr = getcwd(buf, (size_t)size);
-	}
-	else
-	{
-		ptr = ft_strdup("pwd : too many arguments");
-	}
-
-	if (all->qtd_pipe == 0 || all->qtd_pipe == all->posic_pipe)
-	{
-		ft_putstr_fd(ptr,fd);
-		ft_putstr_fd("\n",fd);
-	}
-	else
-	{
-		ft_putstr_fd(ptr, all->pp[1]);
-		teste_fork(all);
-		all->ret_aux = ptr;
-	}
-
-
-	//ft_putstr_fd(ptr,1);
-	return (0);
 }
 
 void	lista_hist(t_all *all)
@@ -170,9 +69,8 @@ void sighandler(int signum)
 		printf("Ctrl = a\n");
 		exit (0);
 	}
-
+	printf("signal %d\n",signum);
 	//printf("Caught signal %d, coming out...\n", signum);
-
 }
 
 int my_termprint(int c){
@@ -195,108 +93,7 @@ char *term_get_cap(char* cap){
     return str;
 }
 
-int teste_fork(t_all *all)
-{
-	int j;
-	int in_fd;
-	int out_fd;
-	int	fd[2];
-	int status;
-	char **ret_split;
-	if (all->pp[1] != '\0')
-	{
-		j = 1;
-		//ft_putstr_fd("cezar",all->pp[1]);
-		close(all->pp[1]);
-		in_fd = all->pp[0];
-	}
-	else
-		j = 0;
 
-	while (j < all->qtd_pipe)
-	{
-		if(pipe(fd) < 0)
-		{
-			printf("erro pipe");
-			return(127);
-		}
-		out_fd = fd[1];
-		ret_split = ft_split(all->pipe_split[j],' ');
-		status = execute_process2(all, in_fd, out_fd, ret_split);
-		close(out_fd);
-		if (in_fd != 0)
-			close(in_fd);
-		in_fd = fd[0];
-		j++;
-	}
-
-	ret_split = ft_split(all->pipe_split[all->qtd_pipe],' ');
-	status = execute_process2(all, in_fd, STDOUT_FILENO, ret_split);
-	close(all->pp[1]);
-	close(all->pp[0]);
-	return(status);
-}
-int		execute_process2(t_all *all, int in, int out, char **args)
-{
-	pid_t pid;
-	int status;
-
-	status = 0;
-
-	if ((pid = fork()) < 0)
-	{
-		printf("erro no fork\n");
-		return (127);
-	}
-	else if (pid == 0)
-	{
-		file_descriptor_handler(in,out);
-		exec_com(all, args);
-	}
-	else
-	{
-		waitpid(pid,&status,0);
-		//close(all->pp[1]);
-	}
-
-	return(0);
-}
-
-int exec_com(t_all *all, char **args)
-{
-	int i;
-	char *comando;
-	int r;
-
-	r = -1;
-	i = 0;
-
-	args[1] = ft_strtrim(args[1],"\"");
-
-	while (all->path[i] != NULL  )
-	{
-		comando = ft_strdup(all->path[i]);
-		comando = ft_strjoin(comando,"/");
-		comando = ft_strjoin(comando,args[0]);
-		r = execve(comando, &args[0] ,all->var_ambiente);
-		i++;
-	}
-	return (r);
-}
-int	file_descriptor_handler(int in, int out)
-{
-	if (in != 0)
-	{
-		dup2(in, 0);
-		close(in);
-	}
-	if (out != 1)
-	{
-		dup2(out, 1);
-		close(out);
-	}
-	return (0);
-}
 
 int		main(int ac, char **av, char **env)
 {
@@ -305,20 +102,13 @@ int		main(int ac, char **av, char **env)
 	char ret[2048];
 	reseta_flags(&all, env);
 
-	all.savein = dup(STDIN_FILENO);
-	all.saveout = dup(STDOUT_FILENO);
+	config_term(&all);
 
-
-
-    tgetent(ret, getenv("TERM"));
-
+    /*tgetent(ret, getenv("TERM"));
 	struct termios term;
 	struct termios old;
 	tcgetattr(0,&old);
 	tcgetattr(0,&term);
-
-
-
 	signal( SIGINT, sighandler );
 
 	term.c_lflag &= ~(ECHO);
@@ -333,7 +123,7 @@ int		main(int ac, char **av, char **env)
 
 	//term.c_cc[SIGQUIT]  = 9; // ^C // 3
 	//term.c_cc[VSUSP]  = 3;
-	tcsetattr(0,TCSANOW,&term);
+	tcsetattr(0,TCSANOW,&term);*/
 
 
 	//printf("== %d\n",VQUIT);
@@ -351,26 +141,17 @@ int		main(int ac, char **av, char **env)
 	all.ac = ac;
 	all.av = av;
 
-	//printf ("env = %s av = %s ac = %d\n", env[1],av[0],ac);
-
 	ft_putstr_fd("Bem vindo ao MINISHELL CPEREIRA & PCUNHA\n",1);
-
 	ft_putstr_fd(all.cabecalho,1);
-
 	tputs(tigetstr("ce"),1,my_termprint); // ed
 	tputs(save_cursor,1,my_termprint);
-	//tcsetattr(0,TCSANOW,&old);
 
-
-	//char* arr[] = {"ls", "-l", "-R", "-a", NULL};
-	//tcsetattr(0,TCSANOW,&old);
 
 
 	int processo;
 	processo = 1;
 
 	//add_hist(&all, "pwd | sed \"s/shell/IPIRANGA/\" > tess.txt");
-
 
 	add_hist(&all, "echo cezar | sed \"s/cezar/angelica/\"");
 	add_hist(&all, "echo cezar | sed \"s/cezar/angelica/\" | sed \"s/angelica/42/\"");
@@ -386,103 +167,33 @@ int		main(int ac, char **av, char **env)
 
 		//printf("letra = %d\n",ret[0]);
 
-		if (!ft_strncmp("\e[A",ret,3)) // cima
+		if (!verify_term(&all,ret))
 		{
-			tputs(restore_cursor,1,my_termprint);
-			tputs(tigetstr("ed"),1,my_termprint); //kL
-			all.ret2 = ft_strdup(all.hist[all.posic_hist]);
-			write (1,all.ret2,ft_strlen(all.ret2));
-
-			if (all.posic_hist <= 0)
-				all.posic_hist = 0;
+			if (!ft_strncmp("\n",ret,1))
+			{
+				all.posic_hist = all.qtd_hist;
+				all.r_comando = execulta_comando (all.ret2,&all);
+				ft_bzero(all.ret2,2048);
+				ft_bzero(all.ret,2048);
+				ft_putstr_fd("\n",1);
+				ft_putstr_fd(all.cabecalho,1);
+				tputs(save_cursor,1,my_termprint);
+			}
 			else
-				all.posic_hist --;
-			ret[0] = 0;
-		}
-		else if (ret[0] == 3) // baixo
-		{
-			ft_bzero(all.ret2,2048);
-			ft_bzero(all.ret,2048);
-			ft_putstr_fd("\n",1);
-			ft_putstr_fd(all.cabecalho,1);
-			tputs(save_cursor,1,my_termprint);
-
-		}
-		else if (ret[0] == 4) // baixo
-		{
-			ft_putstr_fd("\n",1);
-			tcsetattr(0,TCSANOW,&old);
-			exit(0);
-		}
-		else if (ret[0] == 28 && processo == 1) // baixo
-		{
-			//tcsetattr(0,TCSANOW,&old);
-			//exit(1);
-			ft_putstr_fd("^\\Quit: 3\n",1);
-			//printf("");
-		}
-		else if (!ft_strncmp("\e[B",ret,3)) // baixo
-		{
-			tputs(restore_cursor,1,my_termprint);
-			tputs(tigetstr("ed"),1,my_termprint);
-			all.ret2 = ft_strdup(all.hist[all.posic_hist]);
-			write (1,all.ret2,ft_strlen(all.ret2));
-
-			if (all.posic_hist >= all.qtd_hist - 1)
-				all.posic_hist = all.qtd_hist - 1;
-			else
-				all.posic_hist ++;
-		}
-		else if (!ft_strncmp("\e[C",ret,3))
-		{
-			tputs(restore_cursor,1,my_termprint);
-			tputs(tigetstr("ed"),1,my_termprint); // ed
-			//ft_bzero(ret,2048);
-			//ret2 = ft_strdup("");
-			//write (1,"dir\n",3);
-		}
-		else if (!ft_strncmp("\e[D",ret,3))
-		{
-			//tputs(restore_cursor,1,my_termprint);
-			//tputs(tigetstr("ed"),1,my_termprint);
-			tputs(clear_screen,1,my_termprint);
-			//ft_bzero(ret,2048);
-			//ret2 = ft_strdup("");
-			//write (1,"esq\n",3);
-		}
-		else if (!ft_strncmp("\n",ret,1))
-		{
-			all.posic_hist = all.qtd_hist;
-			all.r_comando = execulta_comando (all.ret2,&all);
-			ft_bzero(all.ret2,2048);
-			ft_bzero(all.ret,2048);
-			ft_putstr_fd("\n",1);
-			ft_putstr_fd(all.cabecalho,1);
-			tputs(save_cursor,1,my_termprint);
-		}
-		else if (ret[0] == 127)
-		{
-			tputs(restore_cursor,1,my_termprint);
-			tputs(tigetstr("ed"),1,my_termprint);
-			//tputs(tigetstr("kD"),1,my_termprint);
-			all.ret2[ft_strlen(all.ret2)-1] = 0;
-			ft_putstr_fd(all.ret2,1);
-		}
-		else
-		{
-			all.ret2 = ft_strjoin(all.ret2,ret);
-			ft_putstr_fd(ret,1);
-		}
-		if (all.r_comando == 3)
-		{
-			printf("Saindo\n");
-			tcsetattr(0,TCSANOW,&old);
-			exit(0);
+			{
+				all.ret2 = ft_strjoin(all.ret2,ret);
+				ft_putstr_fd(ret,1);
+			}
+			if (all.r_comando == 3)
+			{
+				printf("Logout\n");
+				tcsetattr(0,TCSANOW,&all.old);
+				exit(0);
+			}
 		}
 	}
 	return (0);
 }
-
 
 int		execulta_comando (char *ret, t_all *all)
 {
@@ -501,7 +212,7 @@ int		execulta_comando (char *ret, t_all *all)
 		i = 0;
 		while (comandos[i] != NULL || i == 0 )
 		{
-			pipe(all->pp);
+			//pipe(all->pp);
 			all->posic_pipe = 0;
 			if (comandos[i] == NULL)
 			{
@@ -550,8 +261,12 @@ int		execulta_comando (char *ret, t_all *all)
 					return(3);
 				else
 				{
-					if (teste_fork(all))
+					int t;
+					t = teste_fork(all);
+					if (t)
 						printf ("Command not found\n");
+					else
+						printf("%d\n",t);
 					ft_bzero(ret,2048);
 				}
 
