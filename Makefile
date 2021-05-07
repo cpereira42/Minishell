@@ -1,95 +1,99 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/03/02 17:32:06 by cpereira          #+#    #+#              #
-#    Updated: 2021/05/03 16:28:22 by cpereira         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME = minishell
 
-NAME =			mini
-NAMEM =			mini2
+LIBFT = ./libft/libft.a
 
-HEADER_DIR =	./includes/
+SDIR =	./srcs/
+ODIR =	./objs/
 
-LIBFT_DIR =		libft
-LIBFT =			$(LIBFT_DIR)/libft.a
+SRCS =	$(SDIR)main.c\
+		$(SDIR)get_next_line.c\
+		$(SDIR)get_next_line_utils.c\
+		$(SDIR)u_print_list.c\
+		$(SDIR)u_free_list.c\
+		$(SDIR)parse_cmd_lines.c\
+		$(SDIR)free_matrizes.c\
+		$(SDIR)u_free_array_bi.c\
+		$(SDIR)ft_conta_linhas.c\
+		$(SDIR)parse_pipelines.c\
+		$(SDIR)u_print_array_bi.c\
+		$(SDIR)parse_s.c\
+		$(SDIR)init_env.c\
+		$(SDIR)expande.c\
+		$(SDIR)parse_cmd_args.c\
+		$(SDIR)copy_until.c\
+		$(SDIR)parse_in_red.c\
+		$(SDIR)parse_out_red.c\
+		$(SDIR)u_print_struct_cmd.c\
+		$(SDIR)init_struct_cmd.c\
+		$(SDIR)ff.c\
+		$(SDIR)ft_split2.c\
+		$(SDIR)parse_sq.c\
+		$(SDIR)parse_dq.c\
+		$(SDIR)fd_handler.c\
+		$(SDIR)redirect_handler.c\
+		$(SDIR)u_print_fd.c\
+		$(SDIR)ft_split3.c\
+		$(SDIR)executa_comando.c\
+		$(SDIR)get_pwd.c\
+		$(SDIR)get_cd.c\
+		$(SDIR)update_env_var.c\
+		$(SDIR)loc_var.c\
+		$(SDIR)create_prompt.c\
+		$(SDIR)get_echo.c\
+		$(SDIR)export_var.c\
+		$(SDIR)get_var.c\
+		$(SDIR)exc_var.c\
+		$(SDIR)get_env.c\
+		$(SDIR)exit_msh.c\
+		$(SDIR)fork_process.c\
+		$(SDIR)init_path.c\
+		$(SDIR)exec_com.c\
+		$(SDIR)setup.c\
+		$(SDIR)term_caps.c\
+		$(SDIR)set_return_status.c
 
-SRC_DIR		=	./source
-SRC			=	$(SRC_DIR)/get_next_line_utils.c \
-				$(SRC_DIR)/get_next_line.c \
-				$(SRC_DIR)/main.c \
-				$(SRC_DIR)/setup.c \
-				$(SRC_DIR)/exports.c \
-				$(SRC_DIR)/term_caps.c \
-				$(SRC_DIR)/builts.c \
-				$(SRC_DIR)/forks.c \
 
-OBJ_DIR	=		./obj
-OBJ = $(subst .c,.o,$(SRC))
+OBJS =	$(patsubst $(SDIR)%.c, $(ODIR)%.o, $(SRCS))
 
-INCLUDES 		= -I $(INC_DIR)
+CC = clang
+HEADERS = -I./includes -I./libft
+C_FLAGS = -Wall -Werror -Wextra -g
+C_SANIT = -fsanitize=address
+L_FLAGS = -L ./libft -lft -lncurses -ltermcap
 
-CFLAGS = -Wall -Wextra -Werror
-
-LINUX_FLAGS = -L ./$(LIBFT_DIR) -lncurses -ltermcap
-
-MAC_FLAGS = -L ./$(LIBFT_DIR) -lft
-
-all: $(NAME)
-	./$(NAME)
-$(NAME): $(OBJ)
-	@echo "\n"
-	@make -C libft/
-	@echo "\033[0;32mCompiling minishell..."
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -ltermcap -fsanitize=address -g
+$(NAME):	$(OBJS) $(LIBFT)
+	$(CC) $(OBJS) $(C_FLAGS) $(C_SANIT) $(HEADERS) $(L_FLAGS) -o $(NAME)
+	#$(CC) $(OBJS) $(C_FLAGS) $(HEADERS) $(L_FLAGS) -o $(NAME)
+	echo CONCLUIDO
+	#./minishell
+	#valgrind --leak-check=full --track-origins=yes ,/minishell
 
 
-%.o: %.c
-	@printf "\033[0;33mGenerating minishell objects... %-33.33s\r" $@
-	@${CC} ${CFLAGS} -c $< -o $@
-
-
-mini: $(NAMEM)
-
-$(NAMEM): $(OBJ) $(LIBFT)
-		gdb -I. -L. $(LIBFT) $(OBJ) $(INCLUDES) $(CFLAGS) $(MAC_FLAGS) -ltermcap -fsanitize=address -g -o $(NAMEM)
-
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
-		mkdir -p $(OBJ_DIR)
-		clang -c $(CFLAGS) $(INCLUDES) $< -o $@
+$(ODIR)%.o: $(SDIR)%.c
+		mkdir -p $(ODIR)
+		$(CC) $(C_FLAGS) $(HEADERS) -c $< -o $@
 
 $(LIBFT):
-	make -C $(LIBFT_DIR)
+	make re -C ./libft
 
-mac: $(NAMEM)
-
-$(NAMEM): $(OBJ) $(LIBFT)
-		gcc -I. -L. $(LIBFT) $(OBJ) $(INCLUDES) $(CFLAGS) $(MAC_FLAGS) -ltermcap -fsanitize=address -g -o $(NAMEM)
-
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
-		mkdir -p $(OBJ_DIR)
-		clang -c $(CFLAGS) $(INCLUDES) $< -o $@
-
-$(LIBFT):
-	make -C $(LIBFT_DIR)
+all: minishell
 
 clean:
-	make clean -C $(LIBFT_DIR)
-	/bin/rm -rf $(OBJ_DIR)
+	make clean -C ./libft
+	rm -f $(OBJS)
+	rmdir $(ODIR)
 
-fclean:
-	@echo "\033[0;31mCleaning libft..."
-	@make fclean -C libft/
-	@echo "\nDeleting objects..."
-	@rm -f $(OBJ)
-	@echo "\nDeleting executable..."
-	@rm -f $(NAME)
-	@echo "\033[0m"
+fclean: clean
+	make fclean -C ./libft
+	rm -f $(NAME)
 
 re: fclean all
 
-.PONY: all clean fclean re mac
+run:
+	./minishell
+
+val:	$(OBJS) $(LIBFT)
+	$(CC) $(OBJS) $(C_FLAGS) $(HEADERS) $(L_FLAGS) -o $(NAME)
+	echo CONCLUIDO
+	#./minishell
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./minishell
