@@ -3,39 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/24 19:14:36 by cpereira          #+#    #+#             */
-/*   Updated: 2020/01/28 18:24:18 by cpereira         ###   ########.fr       */
+/*   Created: 2020/01/23 18:34:35 by pcunha            #+#    #+#             */
+/*   Updated: 2020/02/06 19:29:24 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#define INT_MAX 2147483647
 
 int	ft_atoi(const char *str)
 {
-	const char		*frase;
-	int				total;
-	unsigned int	i;
-	int				mult;
+	int	res;
+	int	neg;
 
-	frase = (const char *)str;
-	i = 0;
-	total = 0;
-	mult = 1;
-	if (ft_strlen(frase) == 0)
-		return (0);
-	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\r'
-			|| str[i] == '\v' || str[i] == '\f' || str[i] == ' ')
-		i++;
-	if (frase[i] == '-')
-		mult = -1;
-	if (frase[i] == '-' || frase[i] == '+')
-		i++;
-	while (ft_isdigit(frase[i]))
+	neg = 1;
+	res = 0;
+	while (*str && (*str == ' ' || *str == '\n' || *str == '\t' ||
+			*str == '\v' || *str == '\f' || *str == '\r'))
+		++str;
+	if (*str == '-')
+		neg = -1;
+	if (*str == '-' || *str == '+')
+		++str;
+	while (*str && *str >= '0' && *str <= '9')
 	{
-		total = total * 10 + frase[i] - 48;
-		i++;
+		if (res > INT_MAX / 10)
+			return ((neg == 1 ? -1 : 0));
+		res = res * 10 + (*str - '0');
+		++str;
 	}
-	return (total * mult);
+	return (res * neg);
 }

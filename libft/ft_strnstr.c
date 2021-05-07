@@ -3,36 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/21 23:06:54 by cpereira          #+#    #+#             */
-/*   Updated: 2020/02/01 21:14:23 by cpereira         ###   ########.fr       */
+/*   Created: 2020/01/23 17:43:15 by pcunha            #+#    #+#             */
+/*   Updated: 2020/02/06 18:47:25 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+char		*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	i;
 	size_t	j;
-	char	*palheiro;
-	char	*agulha;
+	char	*res;
 
-	palheiro = (char *)haystack;
-	agulha = (char *)needle;
 	i = 0;
-	if (ft_strlen(agulha) == 0)
-		return (&palheiro[0]);
-	while (i != len && palheiro[i] != '\0')
+	res = (char*)haystack;
+	if (needle[i] == '\0')
+		return (res);
+	while (res[i] != '\0' && i < len)
 	{
 		j = 0;
-		while (palheiro[i + j] == agulha[j] &&
-				agulha[j] != '\0' && (i + j) != len)
+		while (res[i + j] == needle[j] && (i + j) < len)
+		{
+			if (needle[j + 1] == '\0')
+				return (&res[i]);
 			j++;
-		if (agulha[j] == '\0')
-			return ((char *)&palheiro[i]);
+		}
 		i++;
 	}
-	return (0);
+	return (NULL);
 }

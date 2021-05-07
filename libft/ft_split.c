@@ -3,80 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/26 21:28:38 by cpereira          #+#    #+#             */
-/*   Updated: 2020/02/04 21:08:21 by cpereira         ###   ########.fr       */
+/*   Created: 2020/01/27 17:10:07 by pcunha            #+#    #+#             */
+/*   Updated: 2020/02/07 18:31:40 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-static int		count_size(char const *s, char c)
+int		ft_conta_palavras(char const *s, char c)
 {
-	int tamanho;
-	int controle;
-	int i;
+	int	count;
 
-	i = 0;
-	tamanho = 0;
-	controle = 0;
-	while (s[i] != '\0' && s[0] != '\0')
+	count = 0;
+	while (*s)
 	{
-		if (s[i] != c && controle == 0)
+		while (*s && *s == c)
+			s++;
+		if (*s && *s != c)
 		{
-			controle = 1;
-			tamanho++;
+			count++;
+			while (*s && *s != c)
+				s++;
 		}
-		else if (s[i] == c)
-			controle = 0;
-		i++;
 	}
-	return (tamanho);
+	return (count);
 }
 
-static char		*ret(const char *fr, int inicial, int final)
+char	*malloc_palavra(char const *s, char c)
 {
-	char	*string;
+	char	*palavra;
 	int		i;
 
 	i = 0;
-	string = (char*)malloc((final - inicial + 1) * sizeof(char));
-	while (final > inicial)
-	{
-		string[i] = fr[inicial];
+	while (s[i] && !(s[i] == c))
 		i++;
-		inicial++;
+	palavra = (char *)malloc(sizeof(char) * (i + 1));
+	i = 0;
+	while (s[i] && !(s[i] == c))
+	{
+		palavra[i] = s[i];
+		i++;
 	}
-	string[i] = '\0';
-	return (string);
+	palavra[i] = '\0';
+	return (palavra);
 }
 
-char			**ft_split(const char *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	char	**split;
-	int		inicial;
-	size_t	i;
-	size_t	j;
+	char	**out;
+	int		i;
 
-	if (s == 0)
+	if (s == NULL)
 		return (NULL);
-	i = -1;
-	j = 0;
-	inicial = -1;
-	split = malloc((count_size(s, c) + 1) * sizeof(char*));
-	if (split == 0)
+	out = (char **)malloc(sizeof(char *) * (ft_conta_palavras(s, c) + 1));
+	if (out == NULL)
 		return (NULL);
-	while (++i <= ft_strlen(s))
+	i = 0;
+	while (*s)
 	{
-		if (s[i] != c && inicial < 0)
-			inicial = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && inicial >= 0)
+		while (*s && (*s == c))
+			s++;
+		if (*s && !(*s == c))
 		{
-			split[j++] = ret(s, inicial, i);
-			inicial = -1;
+			out[i] = malloc_palavra(s, c);
+			i++;
+			while (*s && !(*s == c))
+				s++;
 		}
 	}
-	split[j] = NULL;
-	return (split);
+	out[i] = NULL;
+	return (out);
 }

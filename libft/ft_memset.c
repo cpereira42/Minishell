@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   memset.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/20 20:54:41 by cpereira          #+#    #+#             */
-/*   Updated: 2020/01/31 19:03:35 by cpereira         ###   ########.fr       */
+/*   Created: 2020/01/29 12:58:36 by pcunha            #+#    #+#             */
+/*   Updated: 2020/01/29 13:29:07 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memset(void *b, int letra, size_t tamanho)
+void	*ft_memset(void *b, int c, size_t len)
 {
 	size_t			i;
-	unsigned char	*frase;
+	unsigned char	*s;
 
-	frase = b;
+	s = (unsigned char *)b;
 	i = 0;
-	if (tamanho > 0)
+	while (i < len)
 	{
-		while (i < tamanho)
-		{
-			frase[i] = letra;
-			i++;
-		}
+		s[i] = c;
+		i++;
 	}
-	return (frase);
+	return (b);
 }

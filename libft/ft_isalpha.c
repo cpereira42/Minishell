@@ -1,19 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalphe.c                                       :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/22 18:40:52 by cpereira          #+#    #+#             */
-/*   Updated: 2020/01/23 01:24:37 by cpereira         ###   ########.fr       */
+/*   Created: 2020/01/21 17:58:45 by pcunha            #+#    #+#             */
+/*   Updated: 2020/02/11 16:04:22 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isalpha(int c)
+#include "libft.h"
+
+static int	ft_islower(int c)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	else
-		return (0);
+	int a;
+
+	a = (c >= 97 && c <= 122) ? 1 : 0;
+	return (a);
+}
+
+static int	ft_isupper(int c)
+{
+	int a;
+
+	a = (c >= 65 && c <= 90) ? 1 : 0;
+	return (a);
+}
+
+int			ft_isalpha(int c)
+{
+	int a;
+
+	a = (ft_islower(c) || ft_isupper(c)) ? 1 : 0;
+	return (a);
 }

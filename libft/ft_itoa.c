@@ -3,65 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/28 00:40:25 by cpereira          #+#    #+#             */
-/*   Updated: 2020/02/04 21:03:21 by cpereira         ###   ########.fr       */
+/*   Created: 2020/01/27 19:46:32 by pcunha            #+#    #+#             */
+/*   Updated: 2020/09/26 18:30:06 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	tamanho(int n)
+static int		ft_conta(long long int n)
 {
-	int tamanho;
+	int				i;
+	long long int	a;
 
-	tamanho = 0;
+	a = n;
+	i = 1;
+	while (a / 10 != 0)
+	{
+		a = a / 10;
+		i++;
+	}
+	return (i);
+}
+
+char			*ft_itoa(long long int n)
+{
+	int						i;
+	char					*c;
+	int						s;
+	long long unsigned int	nn;
+
+	nn = (n < 0) ? (-1) * (long long unsigned int)n : (long long unsigned int)n;
+	i = ft_conta(nn);
+	s = 0;
 	if (n < 0)
-		n = n * -1;
-	while (n > 0)
-	{
-		n = n / 10;
-		tamanho++;
-	}
-	return (tamanho);
-}
-
-static int	potencia(int tamanho)
-{
-	int	pot;
-
-	pot = 1;
-	while (tamanho > 0)
-	{
-		pot = pot * 10;
-		tamanho--;
-	}
-	return (pot);
-}
-
-char		*ft_itoa(int n)
-{
-	char	*ret;
-	int		pot;
-	int		i;
-
-	if (!(ret = (char*)malloc((tamanho(n) + 2) * sizeof(char))))
+		s = 1;
+	c = (char *)malloc(i + 1 + s);
+	if (c == NULL)
 		return (NULL);
-	if (n == -2147483648)
-		return (ft_substr("-2147483648", 0, 11));
-	i = 0;
-	if (n < 0)
+	c[i + s] = 0;
+	while (i > 0)
 	{
-		ret[i++] = '-';
-		n = n * -1;
+		c[i + s - 1] = (nn % 10) + '0';
+		nn = nn / 10;
+		i--;
 	}
-	pot = potencia(tamanho(n) - 1);
-	while (pot > 0)
-	{
-		ret[i++] = (n / pot % 10 + 48);
-		pot = pot / 10;
-	}
-	ret[i] = '\0';
-	return (ret);
+	if (s == 1)
+		c[0] = '-';
+	return (c);
 }

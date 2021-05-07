@@ -3,27 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/20 22:58:35 by cpereira          #+#    #+#             */
-/*   Updated: 2020/01/25 18:58:14 by cpereira         ###   ########.fr       */
+/*   Created: 2020/01/29 13:30:04 by pcunha            #+#    #+#             */
+/*   Updated: 2020/01/29 13:43:49 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_bzero(void *s, int tamanho)
-{
-	int		i;
-	char	*frase;
+#include "libft.h"
 
-	frase = s;
-	i = 0;
-	if (tamanho > 0)
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char *str;
+
+	if (n != 0)
 	{
-		while (i < tamanho)
-		{
-			if (i < tamanho)
-				frase[i] = '\0';
-			i++;
-		}
+		str = (unsigned char *)s;
+		s = ft_memset(s, 0, n);
 	}
 }

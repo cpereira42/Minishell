@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/20 19:35:41 by cpereira          #+#    #+#             */
-/*   Updated: 2020/01/23 00:52:45 by cpereira         ###   ########.fr       */
+/*   Created: 2020/01/21 18:50:46 by pcunha            #+#    #+#             */
+/*   Updated: 2020/09/26 18:36:30 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "libft.h"
 
-size_t	ft_strlen(const char *frase)
+size_t	ft_strlen(const char *s)
 {
-	int i;
+	int len;
 
-	i = 0;
-	while (frase[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
+	if (!s)
+		return (0);
+	len = 0;
+	while (s[len] != '\0')
+		len++;
+	return (len);
 }

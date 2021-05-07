@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/22 21:27:57 by cpereira          #+#    #+#             */
-/*   Updated: 2020/01/23 01:03:56 by cpereira         ###   ########.fr       */
+/*   Created: 2020/01/21 17:40:02 by pcunha            #+#    #+#             */
+/*   Updated: 2020/02/11 15:57:35 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+
 int	ft_toupper(int c)
 {
-	if (c >= 97 && c <= 122)
-		return (c - 32);
-	else
-		return (c);
+	int a;
+
+	a = (c >= 97 && c <= 122) ? c - 32 : c;
+	return (a);
 }

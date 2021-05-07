@@ -3,31 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/30 22:57:27 by cpereira          #+#    #+#             */
-/*   Updated: 2020/01/31 19:17:33 by cpereira         ###   ########.fr       */
+/*   Created: 2020/02/04 16:37:28 by pcunha            #+#    #+#             */
+/*   Updated: 2020/02/11 15:49:52 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include "libft.h"
-#include <stdio.h>
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list *map;
+	t_list *nova;
+	t_list *primeiro;
+	t_list *temp;
 
-	if (!lst)
+	if (!lst || !(nova = ft_lstnew(f(lst->content))))
 		return (NULL);
-	else
+	primeiro = nova;
+	lst = lst->next;
+	while (lst)
 	{
-		if (!(map = ft_lstnew(f(lst->content))))
+		temp = ft_lstnew(f(lst->content));
+		if (!temp)
 		{
-			ft_lstclear(&map, del);
+			ft_lstclear(&primeiro, del);
 			return (NULL);
 		}
-		map->next = ft_lstmap(lst->next, f, del);
-		return (map);
+		nova->next = temp;
+		nova = nova->next;
+		lst = lst->next;
 	}
+	return (primeiro);
 }

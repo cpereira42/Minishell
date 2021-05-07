@@ -3,25 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: pcunha <pcunha@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/06 19:28:50 by cpereira          #+#    #+#             */
-/*   Updated: 2020/02/19 00:43:53 by cpereira         ###   ########.fr       */
+/*   Created: 2020/05/22 16:07:16 by pcunha            #+#    #+#             */
+/*   Updated: 2021/01/27 20:47:33 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include <unistd.h>
+
 # include <stdlib.h>
-# include <fcntl.h>
-# include <string.h>
+# include <unistd.h>
+# include <limits.h>
+# define ERRO   -1
+# define LEU    1
+# define EOFF   0
+# define OPEN_MAX 10
+# define BUFFER_SIZE 100
 
 int		get_next_line(int fd, char **line);
-char	*ft_strjoin(const char *s1, const char *s2);
-int		ft_strpos(const char *palheiro, char agulha);
-char	*ft_substr(const char *s, unsigned int start, size_t len);
-char	*ft_strdup(const char *source);
-size_t	ft_strlen(const char *frase);
+int		ft_len(char *s);
+int		tem_barra_n(char *s);
+int		erro(char **s);
+int		extrai(char *str);
+char	*concat(char *str_a, char *str_b);
+void	salva(char *fonte, char *destino, int idx);
+void	zera_armazem(char *armazem);
 
 #endif
