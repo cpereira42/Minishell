@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/05/06 16:18:57 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/12 05:04:16 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct	s_v{
 	int		saveout;
 	int		in_fd;
 	int		r_comando;
+	int		posic_string;
 }				t_v;
 
 

@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/06 18:05:24 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/12 16:58:53 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,36 +62,44 @@ int verify_term(t_v *all, char *ret)
 		else
 			all->posic_hist --;
 		ret[0] = 0;
+		all->posic_string = ft_strlen(all->ret2);
+
 		return (1);
 	}
 	if (!ft_strncmp("\e[B",ret,3)) // baixo
 	{
 		tputs(restore_cursor,1,my_termprint);
 		tputs(tigetstr("ed"),1,my_termprint);
-		all->ret2 = ft_strdup(all->hist[all->posic_hist]);
-		ft_putstr_fd(all->ret2,1);
+		if (all->posic_hist <= all->qtd_hist)
+		{
+			all->ret2 = ft_strdup(all->hist[all->posic_hist]);
+			ft_putstr_fd(all->ret2,1);
+		}
+
 		if (all->posic_hist >= all->qtd_hist - 1)
 			all->posic_hist = all->qtd_hist - 1;
 		else
 			all->posic_hist ++;
 		ret[0] = 0;
+		all->posic_string = ft_strlen(all->ret2);
+		//printf("hist = %d\n",all->posic_hist);
 		return (1);
 	}
 	if (!ft_strncmp("\e[C",ret,3)) //  direita
 	{
-		tputs(restore_cursor,1,my_termprint);
-		tputs(tigetstr("ri"),1,my_termprint); // ed
-		//ft_putstr_fd("cc",1);
-		//ft_bzero(ret,2048);
-		//ret2 = ft_strdup("");
-		//write (1,"dir\n",3);
+		if (all->posic_string < (int)ft_strlen(all->ret2))
+			all->posic_string++;
+		tputs(tgoto(tgetstr("ch", NULL), 0, all->posic_string + (int)ft_strlen(all->cabecalho)), 0, &my_termprint);
+		tputs(save_cursor,1,my_termprint);
 		ret[0] = 0;
 		return (1);
 	}
 	else if (!ft_strncmp("\e[D",ret,3)) //  esquerda
 	{
-		tputs(restore_cursor,1,my_termprint);
-		tputs(tigetstr("le"),5,my_termprint); // ed
+		if (all->posic_string > 0)
+			all->posic_string--;
+		tputs(tgoto(tgetstr("ch", NULL), 0, all->posic_string + (int)ft_strlen(all->cabecalho)), 0, &my_termprint);
+		tputs(save_cursor,1,my_termprint);
 		ret[0] = 0;
 		return (1);
 	}
@@ -116,7 +124,4 @@ int verify_term(t_v *all, char *ret)
 	if (ret[0] == 4) // CTRL +D
 		exit_msh(all);
 	return (0);
-
-
-
 }

@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:26:45 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/06 16:14:34 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/12 05:09:27 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	reseta_flags(t_v *all)
 	all->savein = dup(STDIN_FILENO);
 	all->saveout = dup(STDOUT_FILENO);
 	all->in_fd = STDIN_FILENO;
-
+	all->posic_string = 0;
 	//printf("retorno = %s\n", loc_var(all->var_ambiente,"cezar"));
 
 
@@ -68,6 +68,9 @@ void	reseta_flags(t_v *all)
 
 void add_hist(t_v *all, char *ret)
 {
+	all->posic_hist = all->qtd_hist;
+	all->posic_string = 0;
+	all->flag_exit = 0;
 	all->hist[all->qtd_hist] = malloc((2048 + 1) * sizeof(char*));
 	ft_memcpy(all->hist[all->qtd_hist],ret,ft_strlen(ret));
 	all->hist[all->qtd_hist][ft_strlen(ret)]= '\0';
