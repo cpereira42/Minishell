@@ -17,14 +17,14 @@ void	redirect_handler(t_v *v, int i, int n)
 	int	k;
 
 	k = 0;
-	while (v->expandido[k] != 0)
+	while (v->expanded[k] != 0)
 	{
-		if (v->expandido[k] == '<')
+		if (v->expanded[k] == '<')
 			parse_in_red(v, &k, v->cmd.fd_in);
-		else if (v->expandido[k] == '>')
+		else if (v->expanded[k] == '>')
 			parse_out_red(v, &k, v->cmd.fd_out);
-		else if (v->expandido[k] == SPC)
-			ff(v->expandido, &k);
+		else if (v->expanded[k] == SPC)
+			ff(v->expanded, &k);
 		else
 			parse_cmd_args(v, &k);
 	}

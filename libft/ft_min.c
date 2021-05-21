@@ -6,7 +6,7 @@
 /*   By: pcunha <pcunha@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/08 12:40:21 by pcunha            #+#    #+#             */
-/*   Updated: 2020/09/26 18:32:51 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 17:44:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,8 @@
 
 int	ft_min(int a, int b)
 {
-	return (a < b ? a : b);
+	if (a < b)
+		return (a);
+	else
+		return (b);
 }

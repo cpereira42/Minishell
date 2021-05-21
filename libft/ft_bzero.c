@@ -6,7 +6,7 @@
 /*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 13:30:04 by pcunha            #+#    #+#             */
-/*   Updated: 2020/01/29 13:43:49 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 17:55:27 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_bzero(void *s, size_t n)
 {
-	unsigned char *str;
+	unsigned char	*str;
 
 	if (n != 0)
 	{

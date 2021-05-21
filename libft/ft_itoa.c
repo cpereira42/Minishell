@@ -6,13 +6,13 @@
 /*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/27 19:46:32 by pcunha            #+#    #+#             */
-/*   Updated: 2020/09/26 18:30:06 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:07:57 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_conta(long long int n)
+static int	ft_count(long long int n)
 {
 	int				i;
 	long long int	a;
@@ -27,15 +27,17 @@ static int		ft_conta(long long int n)
 	return (i);
 }
 
-char			*ft_itoa(long long int n)
+char	*ft_itoa(long long int n)
 {
 	int						i;
 	char					*c;
 	int						s;
 	long long unsigned int	nn;
 
-	nn = (n < 0) ? (-1) * (long long unsigned int)n : (long long unsigned int)n;
-	i = ft_conta(nn);
+	nn = (long long unsigned int)n;
+	if (n < 0)
+		nn = (-1) * (long long unsigned int)n;
+	i = ft_count(nn);
 	s = 0;
 	if (n < 0)
 		s = 1;

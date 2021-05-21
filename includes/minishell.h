@@ -6,15 +6,26 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/05/12 05:04:16 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/20 16:57:42 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# include <stdlib.h>
+# include <fcntl.h>
+# include <string.h>
+# include <dirent.h>
+# include <sys/stat.h>
+# include <signal.h>
+# include <termcap.h>
 # include <stdio.h>
+# include <curses.h>
+# include <term.h>
+
 # include "libft.h"
 # include "get_next_line.h"
 # include <string.h>
-# include <fcntl.h>
 # include <unistd.h>
 # include <sys/types.h>
 # include "dbg.h"
@@ -22,25 +33,17 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
-# include <signal.h>
-# include <termcap.h>
-# include <curses.h>
-# include <term.h>
-
-
-
-
 # define MIL 1000
 # define SPC ' '
 # define PIPE_IN 1
 # define PIPE_OUT 0
 
-typedef enum	e_estado_parse_s
+typedef enum	e_state_parse_s
 {
 				NORMAL,
 				SINGLE_QUOTE,
 				DOUBLE_QUOTE
-}				t_estado_parse_s;
+}				t_state_parse_s;
 
 typedef struct	s_cmd{
 	char *filename;
@@ -58,7 +61,7 @@ typedef struct	s_cmd{
 typedef struct	s_v{
 	char	**cmd_lines;
 	char	**pipelines;
-	char	*expandido;
+	char	*expanded;
 	char	**env;
 	t_cmd	cmd;
 	char	*prompt;
@@ -67,18 +70,22 @@ typedef struct	s_v{
 
 	struct	termios	term;
 	struct	termios	old;
-	char	*hist[50];
+	//char	*hist[50];
+	char	**hist;
 	int		qtd_hist;
 	int		posic_hist;
 	char	*ret2;
 	char	ret[2048];
-	char	*nome_user;
-	char	*cabecalho;
+	char	*name_user;
+	char	*prompt1;
 	int		savein;
 	int		saveout;
 	int		in_fd;
-	int		r_comando;
+	int		r_command;
 	int		posic_string;
+	char	*aux;
+	char	*path_cur;
+	pid_t	pid;
 }				t_v;
 
 
@@ -90,13 +97,13 @@ void	u_free_dlist(t_dlist *list);
 void	prints(void *s);
 int		parse_cmd_lines(t_v *v, char *linha);
 int		free_matrizes(char **s);
-int		ft_conta_linhas(char **s);
+int		ft_count_lines(char **s);
 void	u_free_array_bi(char **s);
 int		parse_pipelines(t_v *v, char *linha);
 void	u_print_array_bi(t_v *v, char **s);
 int		parse_s(t_v *v, char *linha);
 void	init_env(t_v *v, char **envp);
-void	expande(t_v *v, char *linha, int *i, int *j);
+void	expand(t_v *v, char *linha, int *i, int *j);
 void	parse_cmd_args(t_v *v, int *k);
 void	copy_until(char *dest, char *source, char *delimiters, int *k);
 void	parse_in_red(t_v *v, int *k, int in);
@@ -105,14 +112,14 @@ void	u_print_struct_cmd(t_v *v);
 void	init_struct_cmd(t_v *v);
 void	ff(char *str, int *k);
 char	**ft_split2(char const *s, char c);
-void	parse_sq(char c, int *i, t_estado_parse_s *estado);
-void	parse_dq(char c, int *i, t_estado_parse_s *estado);
+void	parse_dq(char c, int *i, t_state_parse_s *state);
+void	parse_sq(char c, int *i, t_state_parse_s *state);
 int		fd_handler(int fd_in, int fd_out);
 void	redirect_handler(t_v *v, int i, int n);
 void	u_print_fd(void);
 char	**ft_split3(char s[], char c);
 int		get_pwd (t_v *v);
-void	executa_comando(t_v *v);
+void	execute_command(t_v *v);
 void	get_cd (t_v *v);
 void	update_env_var(t_v *v, char *var);
 char	*loc_var (char *var, t_v *v);
@@ -133,3 +140,27 @@ void 	config_term(t_v *all);
 int		my_termprint(int c);
 void	add_hist(t_v *all, char *ret);
 int		verify_term(t_v *all, char *ret);
+void	reset_flags(t_v *all);
+void	update_folder(t_v *all);
+int		count_split(char	**ret);
+void	free_array(void **array);
+void	check_n_free(void *ptr);
+
+int		verify_term(t_v *v, char *ret);
+int		my_termprint(int c);
+void	sighandler(int signum);
+void	config_term(t_v *v);
+
+void	k_up(t_v *v);
+void	k_dn(t_v *v);
+void	k_right(t_v *v);
+void	k_left(t_v *v);
+void	k_bspace(t_v *v);
+void	k_ctrl_c(t_v *v);
+void	bye(t_v *v);
+void	*safe_malloc(size_t size);
+
+void	add_hist2(t_v *v, char *ret);
+void	init_hist(t_v *v, char *envp);
+
+#endif

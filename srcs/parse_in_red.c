@@ -17,8 +17,8 @@ void	parse_in_red(t_v *v, int *k, int in)
 	char file_redir[MIL];
 
 	ft_bzero(file_redir, MIL);
-	ff(v->expandido, k);
-	copy_until(file_redir, v->expandido, " <>", k);
+	ff(v->expanded, k);
+	copy_until(file_redir, v->expanded, " <>", k);
 	v->cmd.fd_in_red = open(file_redir, O_RDONLY | O_CREAT);
 		//dprintf(v->cmd.save_out, "%s %s\n", file_redir, strerror(errno));
 		//errno = 0;

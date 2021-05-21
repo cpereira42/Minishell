@@ -6,7 +6,7 @@
 /*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 18:01:47 by pcunha            #+#    #+#             */
-/*   Updated: 2020/01/31 19:40:44 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:14:55 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_list	*ft_lstnew(void *content)
 {
-	t_list *a;
+	t_list	*a;
 
 	a = (t_list *)malloc(sizeof(t_list));
 	if (a == NULL)

@@ -6,24 +6,21 @@
 /*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 00:37:55 by user42            #+#    #+#             */
-/*   Updated: 2021/04/19 00:39:10 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/07 00:59:28 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parse_dq(char c, int *i, t_estado_parse_s *estado)
+void	parse_dq(char c, int *i, t_state_parse_s *state)
 {
 	(void)i;
 	if (ft_is_in(c, "\""))
 	{
-		if (*estado == NORMAL)
-			*estado = DOUBLE_QUOTE;
-		else if (*estado == DOUBLE_QUOTE)
-			*estado = NORMAL;
-		//(*i)++;
-		//if (*estado == SINGLE_QUOTE)
-		//	(*i)--;
+		if (*state == NORMAL)
+			*state = DOUBLE_QUOTE;
+		else if (*state == DOUBLE_QUOTE)
+			*state = NORMAL;
 	}
 }
 

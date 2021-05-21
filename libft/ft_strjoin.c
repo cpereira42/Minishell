@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 20:16:16 by pcunha            #+#    #+#             */
-/*   Updated: 2020/02/07 16:55:55 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/19 18:08:59 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_strlen_a(const char *s)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (s[len] != '\0')
@@ -22,7 +22,7 @@ static int	ft_strlen_a(const char *s)
 	return (len);
 }
 
-char		*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		len1;
 	int		len2;

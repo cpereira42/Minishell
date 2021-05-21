@@ -19,13 +19,13 @@ void	parse_out_red(t_v *v, int *k, int out)
 
 	flags = O_WRONLY | O_CREAT | O_TRUNC;
 	ft_bzero(file_redir, MIL);
-	ff(v->expandido, k);
-	if (v->expandido[*k] == '>')
+	ff(v->expanded, k);
+	if (v->expanded[*k] == '>')
 	{
-		ff(v->expandido, k);
+		ff(v->expanded, k);
 		flags = O_WRONLY | O_CREAT | O_APPEND;
 	}
-	copy_until(file_redir, v->expandido, " <>", k);
+	copy_until(file_redir, v->expanded, " <>", k);
 	v->cmd.fd_out_red = open(file_redir, flags, 0777);
 		//dprintf(v->cmd.save_out, "%s %s\n", file_redir, strerror(errno));
 		//errno = 0;

@@ -20,7 +20,7 @@ char	**alocate_new(t_v *v)
 	i = 0;
 	while (v->env[i])
 		i++;
-	new = (char **)malloc((i + 1) * sizeof(char *));
+	new = (char **)safe_malloc((i + 1) * sizeof(char *));
 	return (new);
 }
 

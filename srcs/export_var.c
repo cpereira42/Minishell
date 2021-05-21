@@ -25,7 +25,7 @@ void	export_var(t_v *v)
 		len_arr = 0;
 		while (v->env[len_arr])
 			len_arr++;
-		new = (char **)malloc((len_arr + 2) * sizeof(char *));
+		new = (char **)safe_malloc((len_arr + 2) * sizeof(char *));
 		i = 0;
 		while (v->env[i] != 0)
 		{

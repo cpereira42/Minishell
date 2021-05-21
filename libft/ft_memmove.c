@@ -6,13 +6,13 @@
 /*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 18:07:28 by pcunha            #+#    #+#             */
-/*   Updated: 2020/02/11 15:54:43 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:16:10 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_fim_ini(void *dst, const void *src, size_t len)
+static void	ft_fin_ini(void *dst, const void *src, size_t len)
 {
 	size_t			i;
 	unsigned char	*source;
@@ -45,11 +45,11 @@ static void	ft_ini_fim(void *dst, const void *src, size_t len)
 	}
 }
 
-void		*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	if (dst > src && src + len > dst)
 	{
-		ft_fim_ini(dst, src, len);
+		ft_fin_ini(dst, src, len);
 	}
 	else
 	{

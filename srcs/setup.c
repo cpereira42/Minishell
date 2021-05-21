@@ -28,7 +28,7 @@ void	atualiza_pasta(t_v *all)
 	if ( all->savein == 99)
 		i = 5;
 	/*all->size = pathconf(".", _PC_PATH_MAX);
-	all->buf = (char *)malloc((size_t)all->size);
+	all->buf = (char *)safe_malloc((size_t)all->size);
 	all->local = getcwd(all->buf, (size_t)all->size);
 	all->auxiliar_vet = ft_split(all->local,'/');
 	i = count_split(all->auxiliar_vet) - 1;
@@ -71,7 +71,7 @@ void add_hist(t_v *all, char *ret)
 	all->posic_hist = all->qtd_hist;
 	all->posic_string = 0;
 	all->flag_exit = 0;
-	all->hist[all->qtd_hist] = malloc((2048 + 1) * sizeof(char*));
+	all->hist[all->qtd_hist] = safe_malloc((2048 + 1) * sizeof(char*));
 	ft_memcpy(all->hist[all->qtd_hist],ret,ft_strlen(ret));
 	all->hist[all->qtd_hist][ft_strlen(ret)]= '\0';
 	all->posic_hist = all->qtd_hist;

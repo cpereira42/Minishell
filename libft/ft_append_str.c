@@ -6,7 +6,7 @@
 /*   By: pcunha <pcunha@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/03 20:22:57 by pcunha            #+#    #+#             */
-/*   Updated: 2020/09/26 18:27:35 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 17:52:56 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_strlen_b(const char *s)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (s[len] != '\0')
@@ -22,7 +22,7 @@ static int	ft_strlen_b(const char *s)
 	return (len);
 }
 
-void		ft_append_str(char *s1, char *s2)
+void	ft_append_str(char *s1, char *s2)
 {
 	int		len1;
 	int		len2;

@@ -6,7 +6,7 @@
 /*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 19:27:14 by pcunha            #+#    #+#             */
-/*   Updated: 2021/04/01 18:32:27 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/18 00:04:33 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,6 @@ void			ft_lstadd_back_p(t_list **lst, char *a);
 t_dlist			*ft_dlst_create(void *content);
 void			ft_dlst_add(t_dlist **lst, void *a);
 t_dlist			*ft_dlst_last(t_dlist *lst);
+void			ft_rmvchar(char **si, char c);
 
 #endif

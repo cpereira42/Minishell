@@ -6,7 +6,7 @@
 /*   By: pcunha <pcunha@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/08 12:41:57 by pcunha            #+#    #+#             */
-/*   Updated: 2020/09/26 18:36:08 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:20:01 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_shift_right(int *arr, int n)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < n - 1)

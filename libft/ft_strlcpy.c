@@ -6,7 +6,7 @@
 /*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 22:05:46 by pcunha            #+#    #+#             */
-/*   Updated: 2020/08/14 17:56:58 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:22:00 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t i;
+	size_t	i;
 
 	if (dst == NULL || src == NULL)
 		return (0);

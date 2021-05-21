@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 03:47:00 by user42            #+#    #+#             */
-/*   Updated: 2021/05/06 17:20:59 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/19 19:14:42 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,16 @@ int	parse_pipelines(t_v *v, char *linha)
 	//char	*x = NULL;
 
 	aux = ft_split3(linha, '|');
+	i = 1;
+	while(aux[i] != NULL)
+	{
+		ft_rmvchar(&aux[i],'\"');
+		ft_rmvchar(&aux[i],'\'');
+		i++;
+	}
 		//u_print_array_bi(v, aux);
-	n = ft_conta_linhas(aux);
-	v->pipelines = (char **)malloc(sizeof(char *) * (n + 1));
+	n = ft_count_lines(aux);
+	v->pipelines = (char **)safe_malloc(sizeof(char *) * (n + 1));
 	init_struct_cmd(v);
 
 	//// SALVA STDS
@@ -75,11 +82,11 @@ int	parse_pipelines(t_v *v, char *linha)
 		fd_handler(v->cmd.fd_in, v->cmd.fd_out);
 			//dprintf(1,"Apos fd_handler\n");
 			//u_print_fd();
-		//u_print_struct_cmd(v);
+	//	u_print_struct_cmd(v);
 
 		// EXECUTA
 		//dprintf(v->cmd.save_out, "\nExecutando comando ... \n\n");
-		executa_comando(v);
+		execute_command(v);
 
 		// Close stdout e fds e remapeia entrada do proximo !
 		close(v->cmd.fd_out);
@@ -95,8 +102,8 @@ int	parse_pipelines(t_v *v, char *linha)
 		// frees
 		free(v->cmd.filename);
 		v->cmd.filename = NULL;
-		free(v->expandido);
-		v->expandido = NULL;
+		free(v->expanded);
+		v->expanded = NULL;
 		free(s);
 		s = NULL;
 		u_free_array_bi(v->cmd.cmd_args);

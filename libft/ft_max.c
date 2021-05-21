@@ -6,7 +6,7 @@
 /*   By: pcunha <pcunha@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/08 12:40:07 by pcunha            #+#    #+#             */
-/*   Updated: 2020/09/26 18:32:30 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:15:35 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,8 @@
 
 int	ft_max(int a, int b)
 {
-	return (a > b ? a : b);
+	if (a > b)
+		return (a);
+	else
+		return (b);
 }

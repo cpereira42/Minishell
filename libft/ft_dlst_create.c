@@ -6,7 +6,7 @@
 /*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 18:10:04 by user42            #+#    #+#             */
-/*   Updated: 2021/04/01 18:43:46 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/10 17:57:35 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_dlist	*ft_dlst_create(void *content)
 {
-	t_dlist *a;
+	t_dlist	*a;
 
 	a = (t_dlist *)malloc(sizeof(t_dlist));
 	if (a == NULL)

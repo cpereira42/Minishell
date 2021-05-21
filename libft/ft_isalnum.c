@@ -6,7 +6,7 @@
 /*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/21 18:09:35 by pcunha            #+#    #+#             */
-/*   Updated: 2020/02/07 19:12:19 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 17:58:57 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 int	ft_isalnum(int c)
 {
-	int a;
+	int	a;
 
-	a = (ft_isalpha(c) || ft_isdigit(c)) ? 1 : 0;
+	if (ft_isalpha(c) || ft_isdigit(c))
+		a = 1;
+	else
+		a = 0;
 	return (a);
 }

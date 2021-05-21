@@ -18,7 +18,7 @@ void	parse_cmd_args(t_v *v, int *k)
 	char aux[MIL];
 
 	ft_bzero(aux, MIL);
-	copy_until(aux, v->expandido, "<>", k);
+	copy_until(aux, v->expanded, "<>", k);
 	cmdeargs = ft_strtrim(aux, " ");
 	v->cmd.cmd_args = ft_split3(cmdeargs, ' ');
 		//u_print_array_bi(v, v->cmd.cmd_args);

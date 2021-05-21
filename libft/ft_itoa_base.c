@@ -6,16 +6,16 @@
 /*   By: pcunha <pcunha@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 12:53:27 by pcunha            #+#    #+#             */
-/*   Updated: 2020/09/26 18:32:03 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:05:40 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-int					tamanho_da_base(char *base)
+int	base_size(char *base)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (base[i] != '\0')
@@ -23,10 +23,10 @@ int					tamanho_da_base(char *base)
 	return (i);
 }
 
-static long int		ft_conta(long long unsigned int n, long unsigned int nb)
+static long int	ft_count(long long unsigned int n, long unsigned int nb)
 {
-	long long unsigned int i;
-	long long unsigned int a;
+	long long unsigned int	i;
+	long long unsigned int	a;
 
 	a = n;
 	i = 1;
@@ -38,7 +38,7 @@ static long int		ft_conta(long long unsigned int n, long unsigned int nb)
 	return (i);
 }
 
-char				*ft_itoa_base(long long int n, char *base)
+char	*ft_itoa_base(long long int n, char *base)
 {
 	int						i;
 	char					*c;
@@ -47,8 +47,8 @@ char				*ft_itoa_base(long long int n, char *base)
 	long long unsigned int	nb;
 
 	nn = (long long unsigned int)n;
-	nb = (long long unsigned int)tamanho_da_base(base);
-	i = ft_conta(nn, nb);
+	nb = (long long unsigned int)base_size(base);
+	i = ft_count(nn, nb);
 	s = 0;
 	c = (char *)malloc(i + 1 + s);
 	if (c == NULL)

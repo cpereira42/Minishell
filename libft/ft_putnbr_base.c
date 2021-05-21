@@ -6,16 +6,16 @@
 /*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 18:38:27 by pcunha            #+#    #+#             */
-/*   Updated: 2020/09/26 18:34:28 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:17:43 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "libft.h"
 
-int		tamanho_da_base(char *base)
+int	base_size(char *base)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (base[i] != '\0')
@@ -23,29 +23,29 @@ int		tamanho_da_base(char *base)
 	return (i);
 }
 
-int		checa_mais_menos(char *base)
+int	check_plus_minus(char *base)
 {
-	int i;
-	int erro;
+	int	i;
+	int	error;
 
-	erro = 0;
+	error = 0;
 	i = 0;
 	while (base[i] != '\0')
 	{
 		if (base[i] == '+' || base[i] == '-')
-			erro = 1;
+			error = 1;
 		i++;
 	}
-	return (erro);
+	return (error);
 }
 
-int		checa_repetidos(char *base)
+int	check_repeated(char *base)
 {
-	int i;
-	int j;
-	int erro;
+	int	i;
+	int	j;
+	int	error;
 
-	erro = 0;
+	error = 0;
 	i = 0;
 	while (base[i] != '\0')
 	{
@@ -53,28 +53,28 @@ int		checa_repetidos(char *base)
 		while (base[j] != '\0')
 		{
 			if (base[j] == base[i] && i != j)
-				erro = 1;
+				error = 1;
 			j++;
 		}
 		i++;
 	}
-	return (erro);
+	return (error);
 }
 
-int		checa_erros(char *base)
+int	check_errors(char *base)
 {
-	int erro;
-	int n_base;
+	int	error;
+	int	n_base;
 
-	erro = 0;
-	n_base = tamanho_da_base(base);
+	error = 0;
+	n_base = base_size(base);
 	if (n_base <= 1)
-		erro = 1;
-	if (checa_mais_menos(base) == 1)
-		erro = 1;
-	if (checa_repetidos(base) == 1)
-		erro = 1;
-	return (erro);
+		error = 1;
+	if (check_plus_minus(base) == 1)
+		error = 1;
+	if (check_repeated(base) == 1)
+		error = 1;
+	return (error);
 }
 
 void	ft_putnbr_base(int nbr, char *base)
@@ -84,9 +84,9 @@ void	ft_putnbr_base(int nbr, char *base)
 	unsigned int	n;
 
 	n = nbr;
-	if (checa_erros(base) == 0)
+	if (check_errors(base) == 0)
 	{
-		n_base = tamanho_da_base(base);
+		n_base = base_size(base);
 		if (nbr < 0)
 		{
 			write(1, "-", 1);

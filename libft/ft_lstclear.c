@@ -6,7 +6,7 @@
 /*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 16:28:10 by pcunha            #+#    #+#             */
-/*   Updated: 2020/02/04 16:34:47 by pcunha           ###   ########.fr       */
+/*   Updated: 2021/05/10 18:13:01 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	t_list *temp;
+	t_list	*temp;
 
 	if (!lst)
 		return ;
