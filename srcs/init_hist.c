@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_hist.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 01:08:00 by user42            #+#    #+#             */
-/*   Updated: 2021/05/18 01:18:34 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/22 13:05:23 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void		init_hist(t_v *v, char *envp)
 	int		i;
 
 	len_arr = 0;
-	v->hist = (char **)safe_malloc((len_arr + 1) * sizeof(char *));
+	//v->hist = (char **)safe_malloc((len_arr + 1) * sizeof(char *));
 	i = 0;
 	while (i < len_arr)
 	{

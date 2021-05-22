@@ -48,8 +48,6 @@ SRCS =	$(SDIR)main.c\
 		$(SDIR)exit_msh.c\
 		$(SDIR)fork_process.c\
 		$(SDIR)init_path.c\
-		$(SDIR)init_hist.c\
-		$(SDIR)add_hist2.c\
 		$(SDIR)safe_malloc.c\
 		$(SDIR)reset_flags.c\
 		$(SDIR)bye.c\

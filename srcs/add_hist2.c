@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 01:00:17 by user42            #+#    #+#             */
-/*   Updated: 2021/05/18 19:14:56 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/22 12:31:52 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	add_hist2(t_v *v, char *ret)
 	len_arr = 0;
 	//while (v->hist[len_arr])
 	//	len_arr++;
-	new = (char **)safe_malloc((v->qtd_hist + 2) * sizeof(char *));
+	new = (char **)safe_malloc((v->qtd_hist + 1) * sizeof(char *));
 	i = 0;
 	while (v->hist[i] != 0)
 	{

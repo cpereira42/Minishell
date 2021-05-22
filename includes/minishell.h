@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/05/20 16:57:42 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/22 13:04:45 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ typedef struct	s_v{
 
 	struct	termios	term;
 	struct	termios	old;
-	//char	*hist[50];
-	char	**hist;
+	char	*hist[50];
+	//char	**hist;
 	int		qtd_hist;
 	int		posic_hist;
 	char	*ret2;

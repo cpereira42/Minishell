@@ -13,7 +13,7 @@ int	main(void)
 	pid_t pidf;
 	v.pid = getpid();
 	pidf = getpid();
-	printf("pidc: %d\n", v.pid);
+	//printf("pidc: %d\n", v.pid);
 
 	char *s = NULL;
 	(void) s;
@@ -25,7 +25,7 @@ int	main(void)
 		//printf("Antes\n");
 		//u_print_array_bi(&v, v.env);
 	init_path(&v);
-	init_hist(&v, "teste");
+	//init_hist(&v, "teste");
 
 	reset_flags(&v);
 	config_term(&v);
@@ -46,7 +46,7 @@ int	main(void)
 	//char str[] = "echo \"ls -la";
 	//char str[] = "ls -la | grep a | grep k";
 	//char str[] = "echo $?; ls -la | grep a | grep k; echo $?";
-	char str[] = "ls";
+
 
 	add_hist(&v, "echo cezar | sed \"s/cezar/angelica/\"");
 	add_hist(&v, "echo cezar | sed \'s/cezar/angelica/\' | sed \'s/angelica/42/\"'");
@@ -72,8 +72,11 @@ int	main(void)
 	add_hist(&v, "echo \"cezar > angelica \"");
 
 	ft_putstr_fd("\033[1;33mBem vindo ao MINISHELL CPEREIRA & PCUNHA \033[0;37m\n",1);
+	v.prompt = ft_strdup("");
 	create_prompt(&v);
+	ft_putstr_fd("\033[1;34m",1);
 	ft_putstr_fd(v.prompt,1);
+	ft_putstr_fd("\033[0;37m",1);
 	tputs(tigetstr("ce"),1,my_termprint); // ed
 	tputs(save_cursor,1,my_termprint);
 
@@ -92,6 +95,8 @@ int	main(void)
 		{
 			if (!ft_strncmp("\n",ret,1))
 			{
+				v.ret2[v.posic_string] = '\0';
+
 				v.posic_hist = v.qtd_hist;
 				v.posic_string = 0;
 
@@ -111,9 +116,9 @@ int	main(void)
 
 				if (v.cmd.ret_status == -1)
 				{
-					ft_putstr_fd("bash : *",1);
+					ft_putstr_fd("bash : ",1);
 					ft_putstr_fd(v.ret2,1);
-					ft_putstr_fd("* : command not found\n",1);
+					ft_putstr_fd(" : command not found\n",1);
 					pidf = getpid();
 					kill(pidf, SIGKILL);
 					//if ()
@@ -126,10 +131,9 @@ int	main(void)
 
 				//v.r_comando = execulta_comando (v.ret2,&v);
 
-				ft_bzero(v.ret2,2048);
-				ft_bzero(v.ret,2048);
+
 				//printf("pidf: %d\n", pidf);
-				create_prompt(&v);
+				//create_prompt(&v);
 
 				//v->prompt = ft_strjoin("\033[1;34m", v->prompt);
 				ft_putstr_fd("\033[1;34m",1);
@@ -138,13 +142,19 @@ int	main(void)
 				ft_putstr_fd("\033[0;37m",1);
 				//v->prompt = ft_strjoin(v->prompt,"\033[0;37m");
 				tputs(save_cursor,1,my_termprint);
+				//ft_bzero(v.ret2,2048);
+				ft_bzero(v.ret,2048);
 			}
 			else
 			{
-				if (v.posic_string == (int)ft_strlen(v.ret2))
+				if (v.posic_string == (int)ft_strlen(v.aux))
+				{
 					v.ret2 = ft_strjoin(v.ret2,ret);
+					//ft_memcpy(v.ret2,v.aux,ft_strlen(v.aux));
+					//free (v.aux);
+				}
 				else
-					v.ret2[v.posic_string] = ret[0];
+					v.ret2[v.posic_string] = ret[0]; // alteração de posição
 				v.posic_string++;
 				ft_putstr_fd(ret,1);
 			}
@@ -156,25 +166,5 @@ int	main(void)
 		}
 	}
 	return (0);
-
-
-
-
-	printf("%s\n",str);
-	v.flag_exit = 0;
-	create_prompt(&v);
-	// CODIGO PRINCIPAL ========
-	parse_cmd_lines(&v, str);
-	// =========================
-
-	u_free_array_bi(v.env);
-	u_free_array_bi(v.cmd_lines);
-	u_free_array_bi(v.path);
-	free(v.prompt);
-	return (0);
 }
 
-// GRAMATICA
-// aaaaaaaa ; bbbbbbbb
-// aaa | aaa | aaa  ; bbb | bbb | bbb
-// a >a1 <a2 > a3 < a4 | aa arg1 arg2 | a ; b >b1 <b2 >b3 <b4 | bb arg1 arg2 | b

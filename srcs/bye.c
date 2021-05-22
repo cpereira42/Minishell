@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 03:31:30 by user42            #+#    #+#             */
-/*   Updated: 2021/05/20 16:46:37 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/22 15:25:05 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	bye(t_v *v)
 	u_free_array_bi(v->env);
 	//u_free_array_bi(v->cmd_lines);
 	u_free_array_bi(v->path);
-	printf("ret2:\n|%s|\n",v->ret2);
-	printf("hist:\n");
+	//printf("ret2:\n|%s|\n",v->ret2);
+	//printf("hist:\n");
 
 
 	int i;
@@ -28,10 +28,12 @@ void	bye(t_v *v)
 	i = 0;
 	while (i < 50 && i < v->qtd_hist)
 	{
-		printf("%d -  %s  -  %d\n",i,v->hist[i],v->qtd_hist );
+		//printf("%d -  %s  -  %d\n",i,v->hist[i],v->qtd_hist );
 		free(v->hist[i]);
 		i++;
 	}
+
+	free (v->prompt);
 	//while (v->ret2 != NULL)
 	//	check_n_free(v->ret2);
 	//check_n_free(v->ret);

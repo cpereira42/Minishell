@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 01:12:31 by user42            #+#    #+#             */
-/*   Updated: 2021/05/20 16:05:29 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/22 14:52:18 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,19 @@ void	create_prompt(t_v *v)
 {
 	//atualiza_prompt
 	//char *aux1;
-	//char *aux2;
+	char *aux;
 	char *logname;
 	char *pwd;
 
 	logname = loc_var("LOGNAME", v);
 	pwd = loc_var("PWD", v);
 
-	v->prompt = get_last_path(pwd);
+	free(v->prompt);
+	aux = get_last_path(pwd);
 	//v->prompt = ft_strjoin("\033[1;34m", v->prompt);
-	v->prompt = ft_strjoin(v->prompt,"> ");
+	aux = ft_strjoin(aux,"> ");
+	v->prompt = ft_strdup(aux);
+	free (aux);
 	//v->prompt = ft_strjoin(v->prompt,"\033[0;37m");
 	//ft_putstr_fd(v->prompt,1);
 

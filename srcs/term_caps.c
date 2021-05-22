@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/20 16:23:06 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/22 14:45:15 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int verify_term(t_v *all, char *ret)
 		//tputs(restore_cursor,1,my_termprint);
 		tputs(tgoto(tgetstr("ch", NULL), 0, (int)ft_strlen(all->prompt)), 0, &my_termprint);
 		tputs(tigetstr("ed"),1,my_termprint); //kL
+		free(all->ret2);
 		all->ret2 = ft_strdup(all->hist[all->posic_hist]);
 		ft_putstr_fd(all->ret2,1);
 		if (all->posic_hist <= 0)
@@ -75,6 +76,7 @@ int verify_term(t_v *all, char *ret)
 		tputs(tigetstr("ed"),1,my_termprint);
 		if (all->posic_hist <= all->qtd_hist)
 		{
+			free(all->ret2);
 			all->ret2 = ft_strdup(all->hist[all->posic_hist]);
 			ft_putstr_fd(all->ret2,1);
 		}
@@ -114,6 +116,9 @@ int verify_term(t_v *all, char *ret)
 	}
 	if (ret[0] == 127) //backspace
 	{
+		if (all->posic_string > 0)
+			all->posic_string--;
+		ret[0] = 0;
 		tputs(restore_cursor,1,my_termprint);
 		tputs(tigetstr("ed"),1,my_termprint);
 		//tputs(tigetstr("kD"),1,my_termprint);

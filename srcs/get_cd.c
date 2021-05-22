@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 23:15:36 by user42            #+#    #+#             */
-/*   Updated: 2021/05/19 19:23:17 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/22 10:28:28 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	get_cd (t_v *v)
 	else
 		ptr = ft_strdup("");
 	update_env_var(v, "PWD");
-	//create_prompt(v);
+	create_prompt(v);
 
 	check_n_free(ptr);
 	set_return_status(v, resp);
