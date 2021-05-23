@@ -3,19 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   reset_flags.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 17:14:09 by user42            #+#    #+#             */
-/*   Updated: 2021/05/10 17:15:33 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/23 15:27:47 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	reset_flags(t_v *all)
+void	reset_flags(t_v *v)
 {
-	all->qtd_hist = 0;
-	all->savein = dup(STDIN_FILENO);
-	all->saveout = dup(STDOUT_FILENO);
-	all->in_fd = STDIN_FILENO;
+	v->curr_comand = ft_strdup("");
+	v->qtd_hist = 0;
+	v->savein = dup(STDIN_FILENO);
+	v->saveout = dup(STDOUT_FILENO);
+	v->in_fd = STDIN_FILENO;
+	v->cmd.ret_status = EXIT_SUCCESS;
+	v->r_command = 0;
+	v->ret2 = ft_strdup("");
+	v->prompt = ft_strdup("");
+	v->posic_string = 0;
+	v->pid = getpid();
+	ft_putstr_fd("\033[1;33mBem vindo ao MINISHELL CPEREIRA & PCUNHA \033[0;37m\n",1);
+	config_term(v);
 }

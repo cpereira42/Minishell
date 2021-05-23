@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 03:31:30 by user42            #+#    #+#             */
-/*   Updated: 2021/05/22 15:25:05 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/23 16:33:13 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,9 @@ void	bye(t_v *v)
 	}
 
 	free (v->prompt);
-	//while (v->ret2 != NULL)
-	//	check_n_free(v->ret2);
-	//check_n_free(v->ret);
-
-	//free_array((void*)v->cmd_lines);
-
-	//u_print_array_bi(v, v->hist);
-
-	//u_free_array_bi(v->hist);
-	//free(v->prompt);
+	free(v->curr_comand);
+	ft_bzero(v->ret2,ft_strlen(v->ret2));
+	free(v->ret2);
 	exit(0);
 }
 

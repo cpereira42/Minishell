@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 00:42:52 by user42            #+#    #+#             */
-/*   Updated: 2021/05/07 01:12:08 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/23 16:19:10 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	expand(t_v *v, char *line, int *i, int *j)
 				get_var_content(v, &substr, q);
 		}
 	}
+	write_return(v);
 	ft_memcpy(&v->expanded[(*j)], substr, ft_strlen(substr));
 	(*j) = (*j) + ft_strlen(substr);
 	(*i) = (*i) + k;

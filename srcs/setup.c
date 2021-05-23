@@ -6,65 +6,11 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:26:45 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/22 13:09:27 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/23 15:30:40 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		count_split(char	**ret)
-{
-	int	i;
-
-	i = 0;
-	while (ret[i] != NULL)
-		i++;
-	return (i);
-}
-
-void	atualiza_pasta(t_v *all)
-{
-	int i;
-	if ( all->savein == 99)
-		i = 5;
-	/*all->size = pathconf(".", _PC_PATH_MAX);
-	all->buf = (char *)safe_malloc((size_t)all->size);
-	all->local = getcwd(all->buf, (size_t)all->size);
-	all->auxiliar_vet = ft_split(all->local,'/');
-	i = count_split(all->auxiliar_vet) - 1;
-	all->pasta_atual = all->auxiliar_vet[i];
-	all->cabecalho = ft_strjoin(all->pasta_atual, " ");
-	all->cabecalho = ft_strjoin(all->cabecalho, all->nome_user);
-	all->cabecalho = ft_strjoin(all->cabecalho, "$ ");
-	all->path = ft_split(loc_var(all->var_ambiente,"PATH",all),':');
-	//pipe(all->pp);*/
-	//all->path = loc_var(all->var_ambiente,"PATH",all);
-}
-
-void	reseta_flags(t_v *all)
-{
-
-	//all->ret2 = ft_strdup("");
-	//all->ret_split = ft_split(all->ret2,' ');
-	//import_ambiente(env,all);
-	//all->posic_pipe = 1;
-
-	//all->var_ambiente = get_export(env,all->ret_split);
-
-	//all->nome_user = loc_var(all->var_ambiente,"LOGNAME",all);
-
-	//atualiza_pasta(all);
-
-	//all->l = 0;
-	all->qtd_hist = 0;
-	all->savein = dup(STDIN_FILENO);
-	all->saveout = dup(STDOUT_FILENO);
-	all->in_fd = STDIN_FILENO;
-	all->posic_string = 0;
-	//printf("retorno = %s\n", loc_var(all->var_ambiente,"cezar"));
-
-
-}
 
 void add_hist(t_v *all, char *ret)
 {
@@ -76,4 +22,34 @@ void add_hist(t_v *all, char *ret)
 	all->hist[all->qtd_hist][ft_strlen(ret)]= '\0';
 	all->posic_hist = all->qtd_hist;
 	all->qtd_hist++;
+}
+
+void add_samples(t_v *v)
+{
+	add_hist(v, "echo cezar | sed \"s/cezar/angelica/\"");
+	add_hist(v, "echo cezar | sed \'s/cezar/angelica/\' | sed \'s/angelica/42/\"'");
+	add_hist(v, "echo cezar | sed s/cezar/angelica/ | sed s/angelica/42/");
+	add_hist(v, "echo daniel | sed \"s/cezar/angelica/\"");
+	add_hist(v, "0\"\'1$TERM 3\'\"; >a1 <a2 abc  > a3 < a4 | aa arg1 arg2 | a ; b >b1 <b2 >b3 <b4 | bb arg1 arg2 | b ; x; y   ; z");
+	add_hist(v, "pwd ; pwd a");
+	add_hist(v, "xx yy |  >a1 <a2 abc  >a3 < a4 | aa arg1 arg2; z > a5'");
+	add_hist(v, "echo \'asd\'     \"djfjdkf\" $PWD \"$PWD\" \'$PWD\'");
+	add_hist(v, "cd srcs | pwd >> arq");
+	add_hist(v, "echo \'asd\'  $PWD \"$PWD\" \'$PWD\'; lixo a b c");
+	add_hist(v, "export a=234; export b=567");
+	add_hist(v, "export a=234; export b=567; unset a");
+	add_hist(v, "env; export a=234; export b=567; unset a; ls -la | grep mini");
+	add_hist(v, "echo \"ls -la");
+	add_hist(v, "ls");
+	add_hist(v, "ls -la | grep a | grep k");
+	add_hist(v, "echo $?; ls -la | grep a | grep k; echo $?");
+	add_hist(v, "echo cezar | sed \"s/cezar/angelica/\"");
+	add_hist(v, "echo cezar | sed \"s/cezar/angelica/\" | sed \"s/angelica/42/\"");
+	add_hist(v, "echo daniel | sed \"s/cezar/angelica/\"");
+	add_hist(v, "echo \"cezar | angelica \"");
+	add_hist(v, "echo \"cezar > angelica \"");
+	add_hist(v, "echo ola mundo -n");
+	add_hist(v, "echo -n -n ola mundo");
+	add_hist(v, "echo -n ola mundo");
+	add_hist(v, "ls;la;ls");
 }

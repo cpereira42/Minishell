@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   copy_until.c                                       :+:      :+:    :+:   */
+/*   utilits.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/10 00:13:47 by user42            #+#    #+#             */
-/*   Updated: 2021/04/12 03:01:57 by user42           ###   ########.fr       */
+/*   Created: 2021/05/22 18:14:43 by cpereira          #+#    #+#             */
+/*   Updated: 2021/05/23 08:41:49 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_count_lines(char **s)
+{
+	int i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 void	copy_until(char *dest, char *source, char *delimiters, int *k)
 {
@@ -21,4 +31,14 @@ void	copy_until(char *dest, char *source, char *delimiters, int *k)
 		i++;
 	ft_memcpy(dest, &source[*k], i);
 	*k += i;
+}
+
+int	count_split(char	**ret)
+{
+	int	i;
+
+	i = 0;
+	while (ret[i] != NULL)
+		i++;
+	return (i);
 }

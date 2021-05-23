@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/22 14:45:15 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/23 15:45:47 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ int verify_term(t_v *all, char *ret)
 {
 	if (!ft_strncmp("\e[A",ret,3)) // cima
 	{
-		//printf("qtd_hist %d, posic = %d\n",all->qtd_hist,all->posic_hist);
-		//tputs(restore_cursor,1,my_termprint);
 		tputs(tgoto(tgetstr("ch", NULL), 0, (int)ft_strlen(all->prompt)), 0, &my_termprint);
 		tputs(tigetstr("ed"),1,my_termprint); //kL
 		free(all->ret2);
@@ -68,6 +66,30 @@ int verify_term(t_v *all, char *ret)
 		all->posic_string = ft_strlen(all->ret2);
 		return (1);
 	}
+	if (ret[0] == 3) //CTRL C
+	{
+		ft_bzero(all->ret2,2048);
+		ft_bzero(all->ret,2048);
+		ft_putstr_fd("\n",1);
+		write_prompt(all);
+		tputs(save_cursor,1,my_termprint);
+
+	}
+	if (ret[0] == 4) // CTRL D
+	{
+		ft_putstr_fd("\n",1);
+		tcsetattr(0,TCSANOW,&all->old);
+		bye(all);
+	}
+	if (ret[0] == 28 /*&& processo == 1*/) // baixo
+	{
+		ft_putstr_fd("CTRL /",1);
+		//tcsetattr(0,TCSANOW,&old);
+		//exit(1);
+		ft_putstr_fd("^\\Quit: 3\n",1);
+	}
+
+
 	if (!ft_strncmp("\e[B",ret,3)) // baixo
 	{
 		//printf("qtd_hist %d, posic = %d\n",all->qtd_hist,all->posic_hist);
