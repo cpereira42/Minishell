@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:26:45 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/23 15:30:40 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/24 18:30:32 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,5 @@ void add_samples(t_v *v)
 	add_hist(v, "echo -n -n ola mundo");
 	add_hist(v, "echo -n ola mundo");
 	add_hist(v, "ls;la;ls");
+	add_hist(v, "cd / ; ls -Rla");
 }

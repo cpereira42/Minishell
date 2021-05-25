@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 17:14:09 by user42            #+#    #+#             */
-/*   Updated: 2021/05/23 15:27:47 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/24 16:55:01 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	reset_flags(t_v *v)
 	v->prompt = ft_strdup("");
 	v->posic_string = 0;
 	v->pid = getpid();
+	printf("pid %d\n",v->pid);
 	ft_putstr_fd("\033[1;33mBem vindo ao MINISHELL CPEREIRA & PCUNHA \033[0;37m\n",1);
 	config_term(v);
 }

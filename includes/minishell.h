@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/05/23 16:24:40 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/24 19:10:53 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,14 @@ typedef struct	s_v{
 	char	*aux;
 	char	*path_cur;
 	pid_t	pid;
+	pid_t	pidc;
 	char	*curr_comand;
 	int		ret_last;
 }				t_v;
+
+
+
+
 
 
 void	u_print_list(t_list *list);

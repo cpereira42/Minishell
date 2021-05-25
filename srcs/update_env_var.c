@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 00:35:17 by user42            #+#    #+#             */
-/*   Updated: 2021/05/19 19:05:19 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/24 19:28:57 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,12 @@ void	update_env_var(t_v *v, char *var)
 		free(aux);
 	}
 	free(buf);
+}
+
+void	update_folder(t_v *all)
+{
+	int	i;
+
+	if (all->savein == 99)
+		i = 5;
 }

@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 00:41:53 by user42            #+#    #+#             */
-/*   Updated: 2021/05/23 15:44:33 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/24 19:10:58 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	parse_cmd_lines(t_v *v, char *linha)
 	int		p;
 	int		i;
 	int		z;
-	pid_t	pidf;
+	//pid_t	pidf;
 
 	v->cmd = (t_cmd){0};
 	aux = ft_split3(linha, ';');
@@ -48,8 +48,8 @@ int	parse_cmd_lines(t_v *v, char *linha)
 				write_error(v);
 				free(v->curr_comand);
 				ft_bzero(v->ret,2048);
-				pidf = getpid();
-				kill(pidf, SIGKILL);
+				v->pidc = getpid();
+				kill(v->pidc, SIGKILL);
 			}
 
 		}

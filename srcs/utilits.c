@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 18:14:43 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/23 08:41:49 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/24 19:28:31 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_count_lines(char **s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s[i])
@@ -24,10 +24,11 @@ int	ft_count_lines(char **s)
 
 void	copy_until(char *dest, char *source, char *delimiters, int *k)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while ((*k + i) < (int)ft_strlen(source) && !ft_is_in(source[*k + i], delimiters))
+	while ((*k + i) < (int)ft_strlen(source)
+		&& !ft_is_in(source[*k + i], delimiters))
 		i++;
 	ft_memcpy(dest, &source[*k], i);
 	*k += i;

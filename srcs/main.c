@@ -58,19 +58,14 @@ int	main(void)
 				add_hist(&v,v.ret2);
 				v.flag_exit = 0;
 				ft_putstr_fd("\n",1);
-				if (ft_strlen(v.ret2) > 1)
+				if (ft_strlen(v.ret2) >= 1 && v.ret2[0] != '>' && v.ret2[0] != '<' )
 					parse_cmd_lines(&v, v.ret2);
 				if (v.flag_exit == 1)
 					bye(&v);
-				/*if (v.cmd.ret_status == -1)
-				{
-					write_error(&v);
-					pidf = getpid();
-					kill(pidf, SIGKILL);
-				}*/
 				write_prompt(&v);
 				ft_bzero(v.ret,2048);
-				ft_bzero(v.ret2,ft_strlen(v.ret2 + 1));
+				ft_bzero(v.ret2,ft_strlen(v.ret2) + 1);
+				//ft_bzero(v.ret2,2048);
 				//free(v.ret2);
 				//v.ret2 = ft_strdup("");
 
