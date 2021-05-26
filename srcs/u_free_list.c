@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   u_free_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 02:04:22 by user42            #+#    #+#             */
-/*   Updated: 2021/04/09 17:51:33 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/25 18:06:51 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	u_free_list(t_list *list)
 {
 	t_list	*aux;
 
-	printf("FREE LISTA LIGADA !!!!\n");
 	while (list)
 	{
 		aux = list;

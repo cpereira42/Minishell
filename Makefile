@@ -10,8 +10,6 @@ SDIR =	./srcs/
 ODIR =	./objs/
 
 SRCS =	$(SDIR)main.c\
-		$(SDIR)get_next_line.c\
-		$(SDIR)get_next_line_utils.c\
 		$(SDIR)parse_pipelines.c\
 		$(SDIR)parse_cmd_lines.c\
 		$(SDIR)parse_s.c\
@@ -20,14 +18,10 @@ SRCS =	$(SDIR)main.c\
 		$(SDIR)parse_out_red.c\
 		$(SDIR)parse_sq.c\
 		$(SDIR)parse_dq.c\
-		$(SDIR)u_print_array_bi.c\
-		$(SDIR)u_print_list.c\
 		$(SDIR)u_free_list.c\
 		$(SDIR)u_free_array_bi.c\
-		$(SDIR)u_print_struct_cmd.c\
-		$(SDIR)init_env.c\
+		$(SDIR)initialize.c\
 		$(SDIR)expand.c\
-		$(SDIR)init_struct_cmd.c\
 		$(SDIR)ff.c\
 		$(SDIR)ft_split3.c\
 		$(SDIR)fd_handler.c\
@@ -40,7 +34,6 @@ SRCS =	$(SDIR)main.c\
 		$(SDIR)gets.c\
 		$(SDIR)exit_msh.c\
 		$(SDIR)fork_process.c\
-		$(SDIR)init_path.c\
 		$(SDIR)safe_malloc.c\
 		$(SDIR)reset_flags.c\
 		$(SDIR)bye.c\

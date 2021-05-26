@@ -6,15 +6,15 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 01:12:31 by user42            #+#    #+#             */
-/*   Updated: 2021/05/22 18:40:12 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/26 15:43:47 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *get_last_path(char *ret)
+static char	*get_last_path(char *ret)
 {
-	int i;
+	int	i;
 
 	i = ft_strlen(ret);
 	while (i > 0)
@@ -22,16 +22,16 @@ static char *get_last_path(char *ret)
 		if (ret[i] != '/')
 			i--;
 		else
-			break;
+			break ;
 	}
-	return(&ret[i]);
+	return (&ret[i]);
 }
 
 void	create_prompt(t_v *v)
 {
-	char *aux;
-	char *logname;
-	char *pwd;
+	char	*aux;
+	char	*logname;
+	char	*pwd;
 
 	logname = loc_var("LOGNAME", v);
 	pwd = loc_var("PWD", v);

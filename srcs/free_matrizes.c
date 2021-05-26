@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_matrizes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 01:32:49 by user42            #+#    #+#             */
-/*   Updated: 2021/04/09 17:49:16 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/26 15:35:19 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	free_matrizes(char **s)
 {
-	int i;
-	int n;
+	int	i;
+	int	n;
 
 	i = 0;
 	n = ft_conta_linhas(s);

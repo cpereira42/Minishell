@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 21:06:58 by user42            #+#    #+#             */
-/*   Updated: 2021/05/06 00:29:35 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/25 18:54:44 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,5 @@ void	export_var(t_v *v)
 		v->env = new;
 		u_free_array_bi(aux);
 	}
-	u_print_array_bi(v, v->env);
-	set_return_status(v, EXIT_SUCCESS); // checar se nome da variavel eh valido !
+	set_return_status(v, EXIT_SUCCESS);
 }

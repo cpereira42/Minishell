@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 18:44:49 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/23 07:57:01 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/26 15:15:08 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,19 @@
 
 void	get_cd (t_v *v)
 {
-	char *ptr;
-	char *aux;
-	int resp;
+	char	*ptr;
+	char	*aux;
+	int		resp;
 
 	update_env_var(v, "OLDPWD");
 	if (v->cmd.cmd_args[1] == NULL)
 		resp = chdir("..");
 	else
 		resp = chdir(v->cmd.cmd_args[1]);
-
 	if (resp != 0)
 	{
 		aux = ft_strdup("cd : no such file or directory: ");
-		ptr = ft_strjoin(aux,v->cmd.cmd_args[1]);
+		ptr = ft_strjoin(aux, v->cmd.cmd_args[1]);
 		resp = 1;
 		printf("%s\n", ptr);
 		free(aux);
@@ -45,7 +44,7 @@ void	get_echo(t_v *v)
 	int	i;
 	int	k;
 	int	flag;
-	int cont;
+	int	cont;
 
 	flag = 0;
 	cont = 0;
@@ -59,15 +58,18 @@ void	get_echo(t_v *v)
 				ft_putchar(' ');
 			while (v->cmd.cmd_args[i][k] != 0)
 			{
-				if (v->cmd.cmd_args[i][0] == '-' && v->cmd.cmd_args[i][1]== 'n' && cont == 0)
+				if (v->cmd.cmd_args[i][0] == '-'
+					&& v->cmd.cmd_args[i][1] == 'n' && cont == 0)
 					flag = 1;
 				else
-					if (v->cmd.cmd_args[i][k] != '"' && v->cmd.cmd_args[i][k] != '\'')
+				{
+					if (v->cmd.cmd_args[i][k] != '"'
+						&& v->cmd.cmd_args[i][k] != '\'')
 					{
 						ft_putchar(v->cmd.cmd_args[i][k]);
 						cont = 1;
 					}
-
+				}
 				k++;
 			}
 			i++;
@@ -109,8 +111,6 @@ int	get_pwd (t_v *v)
 	else
 		buf = ft_strdup("pwd : too many arguments");
 	printf("%s\n", buf);
-	//ft_putstr_fd(buf, v->cmd.fd_out);
-	//ft_putstr_fd("\n", v->cmd.fd_out);
 	if (buf == NULL)
 		set_return_status(v, EXIT_FAILURE);
 	else
@@ -121,6 +121,5 @@ int	get_pwd (t_v *v)
 
 void	get_env(t_v *v)
 {
-	u_print_array_bi(v, v->env);
 	set_return_status(v, EXIT_SUCCESS);
 }

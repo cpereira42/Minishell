@@ -59,7 +59,7 @@ int	main(void)
 				v.flag_exit = 0;
 				ft_putstr_fd("\n",1);
 				if (ft_strlen(v.ret2) >= 1 && v.ret2[0] != '>' && v.ret2[0] != '<' )
-					parse_cmd_lines(&v, v.ret2);
+					parse_cmd_lines(&v, v.ret2, 0);
 				if (v.flag_exit == 1)
 					bye(&v);
 				write_prompt(&v);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dq.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 00:37:55 by user42            #+#    #+#             */
-/*   Updated: 2021/05/07 00:59:28 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/25 18:41:58 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,3 @@ void	parse_dq(char c, int *i, t_state_parse_s *state)
 			*state = NORMAL;
 	}
 }
-

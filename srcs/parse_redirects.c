@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redirects.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/11 18:27:17 by user42            #+#    #+#             */
-/*   Updated: 2021/04/21 23:28:57 by user42           ###   ########.fr       */
+/*   Updated: 2021/05/25 18:29:54 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,4 @@ void	parse_redirects(t_v *v)
 		else
 			parse_cmd_args(v, &k);
 	}
-	//u_print_struct_cmd(v);
 }

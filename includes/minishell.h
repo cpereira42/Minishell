@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/05/24 19:10:53 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/25 19:02:17 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	prints(void *s);
 void	u_free_list(t_list *list);
 void	u_free_dlist(t_dlist *list);
 void	prints(void *s);
-int		parse_cmd_lines(t_v *v, char *linha);
+int		parse_cmd_lines(t_v *v, char *linha, int p);
 int		free_matrizes(char **s);
 int		ft_count_lines(char **s);
 void	u_free_array_bi(char **s);
