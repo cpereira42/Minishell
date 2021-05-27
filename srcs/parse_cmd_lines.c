@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 00:41:53 by user42            #+#    #+#             */
-/*   Updated: 2021/05/25 19:01:47 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/26 17:13:42 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	kill_pid(t_v *v)
 	}
 }
 
-void	exec_parse_cmd(t_v *v, char *aux, int i, int p)
+void	exec_parse_cmd(t_v *v, char **aux, int i, int p)
 {
 	char	*s;
 
 	check_n_free(v->curr_comand);
-	v->curr_comand = ft_strdup(aux);
-	s = ft_strdup(aux);
+	v->curr_comand = ft_strdup(aux[i]);
+	s = ft_strdup(aux[i]);
 	v->cmd_lines[i] = ft_strtrim(s, " ");
 	parse_pipelines(v, v->cmd_lines[p]);
 	u_free_array_bi(v->pipelines);
@@ -43,6 +43,7 @@ int	parse_cmd_lines(t_v *v, char *linha, int p)
 {
 	char	**aux;
 	int		i;
+	char	*s;
 
 	v->cmd = (t_cmd){0};
 	aux = ft_split3(linha, ';');
@@ -52,7 +53,24 @@ int	parse_cmd_lines(t_v *v, char *linha, int p)
 	while (aux[i] && v->flag_exit == 0)
 	{
 		if (ft_strlen(aux[i]) > 0)
-			exec_parse_cmd(v, aux[i], i, p);
+		{
+			check_n_free(v->curr_comand);
+			v->curr_comand = ft_strdup(aux[i]);
+			s = ft_strdup(aux[i]);
+			v->cmd_lines[i] = ft_strtrim(s, " ");
+			parse_pipelines(v, v->cmd_lines[p]);
+			u_free_array_bi(v->pipelines);
+			free(s);
+			p++;
+			if (v->cmd.ret_status == -1)
+			{
+				write_error(v);
+				free(v->curr_comand);
+				ft_bzero(v->ret,2048);
+				v->pidc = getpid();
+				kill(v->pidc, SIGKILL);
+			}
+		}
 		i++;
 	}
 	v->cmd_lines[p] = 0;
