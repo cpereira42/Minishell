@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:26:45 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/25 18:24:41 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/28 19:08:59 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void	add_hist(t_v *all, char *ret)
 {
-	all->posic_hist = all->qtd_hist;
+
 	all->posic_string = 0;
 	all->flag_exit = 0;
 	all->hist[all->qtd_hist] = malloc ((int)(ft_strlen(ret) + 1)
 			* sizeof(char *));
 	ft_memcpy(all->hist[all->qtd_hist], ret, ft_strlen(ret));
 	all->hist[all->qtd_hist][ft_strlen(ret)] = '\0';
-	all->posic_hist = all->qtd_hist;
 	all->qtd_hist++;
+	all->posic_hist = all->qtd_hist;
 }
 
 void	add_samples(t_v *v)

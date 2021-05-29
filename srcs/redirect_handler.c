@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 01:52:30 by user42            #+#    #+#             */
-/*   Updated: 2021/05/25 18:27:48 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/27 20:13:40 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ void	redirect_handler(t_v *v, int i, int n)
 	k = 0;
 	while (v->expanded[k] != 0)
 	{
-		if (v->expanded[k] == '<')
+		if (v->expanded[k] == '\"')
+			parse_quote_in_redirect(v, &k, "\"");
+		else if (v->expanded[k] == '\'')
+			parse_quote_in_redirect(v, &k, "\'");
+		else if (v->expanded[k] == '<')
 			parse_in_red(v, &k, v->cmd.fd_in);
 		else if (v->expanded[k] == '>')
 			parse_out_red(v, &k, v->cmd.fd_out);

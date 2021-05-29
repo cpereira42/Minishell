@@ -9,15 +9,18 @@
 
 void write_error(t_v *v)
 {
-	ft_putstr_fd("bash : ",1);
+	ft_putstr_fd("bash *: ",1);
 	ft_putstr_fd(v->curr_comand,1);
+	g_ret =
+	v->cmd.ret_status = 127;
+	v->flag_exit = 1;
 	ft_putstr_fd(" : command not found\n",1);
 }
 
 void write_return(t_v *v)
 {
 	ft_putstr_fd("zsh : command not found : ",1);
-	ft_putnbr_fd(v->r_command,1);
+	ft_putnbr_fd(v->cmd.ret_status,1);
 	ft_putstr_fd("\n",1);
 	v->ret_last = 1;
 }
@@ -47,35 +50,29 @@ int	main(void)
 	{
 		ft_bzero(v.ret,2048);
 		read (0,v.ret,100);
-		if (!verify_term(&v,v.ret))
+		if (!verify_term(&v,v.ret,0))
 		{
 			if (!ft_strncmp("\n",v.ret,1))
 			{
 				v.ret_last = 0;
-				v.ret2[v.posic_string] = '\0';
+				v.ret2[v.size] = '\0';
 				v.posic_hist = v.qtd_hist;
 				v.posic_string = 0;
 				add_hist(&v,v.ret2);
 				v.flag_exit = 0;
 				ft_putstr_fd("\n",1);
-				if (ft_strlen(v.ret2) >= 1 && v.ret2[0] != '>' && v.ret2[0] != '<' )
+				if (ft_strlen(v.ret2) > 1 && v.ret2[0] != '>' && v.ret2[0] != '<')
 					parse_cmd_lines(&v, v.ret2, 0);
 				if (v.flag_exit == 1)
 					bye(&v);
 				write_prompt(&v);
 				ft_bzero(v.ret,2048);
 				ft_bzero(v.ret2,ft_strlen(v.ret2) + 1);
-				//ft_bzero(v.ret2,2048);
-				//free(v.ret2);
-				//v.ret2 = ft_strdup("");
-
 			}
 			else
 			{
-				if (v.posic_string == (int)ft_strlen(v.aux))
-					v.ret2 = ft_strjoin(v.ret2,v.ret);
-				else
-					v.ret2[v.posic_string] = v.ret[0]; // alteração de posição
+				v.ret2[v.posic_string] = v.ret[0];
+				v.size = ft_strlen(v.ret2);
 				v.posic_string++;
 				ft_putstr_fd(v.ret,1);
 			}

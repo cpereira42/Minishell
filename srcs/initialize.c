@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 01:08:00 by user42            #+#    #+#             */
-/*   Updated: 2021/05/25 19:07:07 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/27 20:12:37 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	init_env(t_v *v, char **envp)
 void	init_struct_cmd(t_v *v)
 {
 	v->cmd.filename = 0;
-	v->cmd.cmd_args = 0;
+	//v->cmd.cmd_args = 0;
 	v->cmd.fd_in_red = -1;
 	v->cmd.fd_out_red = -1;
 	v->cmd.fd_in = -1;
