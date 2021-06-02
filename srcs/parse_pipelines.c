@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 03:47:00 by user42            #+#    #+#             */
-/*   Updated: 2021/05/28 19:45:13 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/01 18:14:26 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ int	parse_pipelines(t_v *v, char *linha)
 	i = 0;
 	while (aux[i] && v->flag_exit == 0)
 	{
+		printf("p %d = %s\n",i,aux[i]);
 		s = ft_strdup(aux[i]);
 		v->pipelines[i] = ft_strtrim(s, " ");
+		printf("qtd %zu = %s \n",ft_strlen(v->pipelines[i]),v->pipelines[i]);
 		parse_s(v, v->pipelines[i]);
 		pipe(v->cmd.pipe);
 		v->cmd.fd_out = v->cmd.pipe[PIPE_IN];

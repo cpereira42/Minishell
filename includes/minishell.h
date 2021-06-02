@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/05/28 19:56:56 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/01 20:39:10 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct	s_cmd{
 	int	save_out;
 	int	fd_in;
 	int fd_out;
+	char	*commands2[30];
 }				t_cmd;
 
 typedef struct	s_v{
@@ -67,11 +68,9 @@ typedef struct	s_v{
 	char	*prompt;
 	int		flag_exit;
 	char	**path;
-
 	struct	termios	term;
 	struct	termios	old;
 	char	*hist[50];
-	//char	**hist;
 	int		qtd_hist;
 	int		posic_hist;
 	char	*ret2;
@@ -90,6 +89,7 @@ typedef struct	s_v{
 	char	*curr_comand;
 	int		ret_last;
 	int		size;
+
 }				t_v;
 
 void	u_print_list(t_list *list);
@@ -139,6 +139,7 @@ int		fork_process(t_v *v);
 void	init_path(t_v *v);
 int		exec_com(t_v *v);
 int		set_return_status(t_v *v, int status);
+char	*get_last_path(char *ret);
 
 void	reseta_flags(t_v *all);
 void 	config_term(t_v *all);
@@ -150,6 +151,7 @@ int		count_split(char	**ret);
 void	free_array(void **array);
 void	check_n_free(void *ptr);
 void	kill_pid(t_v *v);
+int		ft_count_words(char const *s, char c);
 
 int		verify_term(t_v *v, char *ret, int out);
 int		my_termprint(int c);

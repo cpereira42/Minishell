@@ -11,7 +11,6 @@ void write_error(t_v *v)
 {
 	ft_putstr_fd("bash *: ",1);
 	ft_putstr_fd(v->curr_comand,1);
-	g_ret =
 	v->cmd.ret_status = 127;
 	v->flag_exit = 1;
 	ft_putstr_fd(" : command not found\n",1);
@@ -32,6 +31,62 @@ void write_prompt(t_v *v)
 	ft_putstr_fd("\033[0;37m",1);
 	tputs(tigetstr("ce"),1,my_termprint); // ed
 	tputs(save_cursor,1,my_termprint);
+}
+
+void trata_ret(char *ret2, t_v *v)
+{
+	int i;
+	int n_command;
+	//int n_args;
+	char *aux;
+	char *commands[30];
+	//char *args[30];
+	int dupla;
+	int simples;
+	int inicial;
+
+	if (v->cmd.commands2[0]== 0)
+		;
+
+	n_command = 0;
+	//n_args = 0;
+	i = 0;
+	dupla = 0;
+	simples = 0;
+	//commands[0] = "0";
+	aux = ft_strtrim(ret2," ");
+	while (aux[i] != '\0')
+	{
+		if (aux[i] == '"')
+			dupla++;
+		if (aux[i] == '\'')
+			simples++;
+		if ((aux[i] == ';' || aux[i] == '|' ) && dupla%2 == 0 && simples%2 == 0) // verifica se tem aspas duplas e se é algum dos separadores especiais
+		{
+
+			commands[n_command] = ft_substr(aux,inicial,i  - inicial);
+			inicial = i ;
+			n_command++;
+			dupla = 0;
+			simples = 0;
+		}
+		i++;
+	}
+	commands[n_command] = ft_substr(aux,inicial,i);
+	commands[n_command + 1] = 0;
+
+	int t = 0;
+	printf("\n");
+	while(commands[t] != NULL)
+	{
+		v->cmd.commands2[t] = commands[t];
+		printf("command = %s\n",v->cmd.commands2[t]);
+		t++;
+	}
+
+
+
+
 }
 
 int	main(void)
@@ -60,9 +115,10 @@ int	main(void)
 				v.posic_string = 0;
 				add_hist(&v,v.ret2);
 				v.flag_exit = 0;
+				trata_ret(v.ret2,&v);
 				ft_putstr_fd("\n",1);
-				if (ft_strlen(v.ret2) > 1 && v.ret2[0] != '>' && v.ret2[0] != '<')
-					parse_cmd_lines(&v, v.ret2, 0);
+				//if (ft_strlen(v.ret2) > 1 && v.ret2[0] != '>' && v.ret2[0] != '<')
+				//	parse_cmd_lines(&v, v.ret2, 0);
 				if (v.flag_exit == 1)
 					bye(&v);
 				write_prompt(&v);

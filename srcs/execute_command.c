@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 01:11:30 by user42            #+#    #+#             */
-/*   Updated: 2021/05/28 19:53:50 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/01 15:48:10 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,13 @@ int	exec_com(t_v *v)
 
 	r = -1;
 	i = 0;
+
+	if (v->cmd.cmd_args[1] != NULL )
+		if (v->cmd.cmd_args[1][0] == '~' && v->cmd.cmd_args[1][1] != '~')
+			v->cmd.cmd_args[1] = (ft_strjoin(loc_var("HOME",v),&v->cmd.cmd_args[1][1]));
+
+	v->cmd.cmd_args[0] = get_last_path(v->cmd.cmd_args[0]);
+
 	while (v->path[i] != NULL)
 	{
 		aux = ft_strdup(v->path[i]);

@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 23:06:16 by user42            #+#    #+#             */
-/*   Updated: 2021/05/28 18:30:40 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/01 18:28:25 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	add_line_to_cmd_args(t_v *v, char *src)
 			len_arr++;
 		new = (char **)safe_malloc((len_arr + 2) * sizeof(char *));
 		i = 0;
+		//printf("frase %s\n",v->cmd.cmd_args[i]);
 		while (v->cmd.cmd_args[i] != 0)
 		{
 			new[i] = ft_strdup(v->cmd.cmd_args[i]);

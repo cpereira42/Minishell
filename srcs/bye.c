@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 03:31:30 by user42            #+#    #+#             */
-/*   Updated: 2021/05/26 15:46:35 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/30 08:11:51 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	bye(t_v *v)
 {
 	int	i;
 
-	printf("Logouts\n");
+	printf("Logout\n");
 	tcsetattr(0, TCSANOW, &v->old);
 	u_free_array_bi(v->env);
 	u_free_array_bi(v->path);

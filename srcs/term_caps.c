@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/27 21:11:41 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/05/31 18:05:56 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,22 @@
 
 void	sighandler(int signum)
 {
+	char	*aux;
+	long	size;
+	char	*buf;
+
+	size = MIL;
+	buf = NULL;
+	buf = getcwd(buf, (size_t)size);
+	aux = get_last_path(buf);
+	aux = ft_strjoin(aux, "> ");
+	ft_putstr_fd("\n",1);
+	ft_putstr_fd(aux,1);
+	free (aux);
+	//ft_putstr_fd("\n",1);
 	if (signum == 18 || signum == 3)
 		;
+
 }
 
 void	config_term(t_v *all)
@@ -25,9 +39,10 @@ void	config_term(t_v *all)
 	tgetent(ret, getenv("TERM"));
 	tcgetattr(0, &all->old);
 	tcgetattr(0, &all->term);
-	signal(SIGINT, sighandler);
+
 	all->term.c_lflag &= ~(ECHO);
 	all->term.c_lflag &= ~(ICANON);
+	signal(SIGINT, sighandler);
 	all->term.c_cc[VMIN] = 1;
 	all->term.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSANOW, &all->term);
