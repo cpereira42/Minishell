@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 01:11:30 by user42            #+#    #+#             */
-/*   Updated: 2021/06/05 16:38:21 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/06 08:28:52 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	exec_com(t_v *v)
 
 	while (v->path[i] != NULL)
 	{
-		printf("%d , %s\n",i,v->path[i]);
+		//printf("%d , %s\n",i,v->path[i]);
 		aux = ft_strdup(v->path[i]);
 		command = ft_strjoin(aux, "/");
 		free(aux);
