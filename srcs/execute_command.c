@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 01:11:30 by user42            #+#    #+#             */
-/*   Updated: 2021/05/28 19:53:50 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/05 16:38:21 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	exc_var(t_v *v)
 		v->env = new;
 		u_free_array_bi(aux);
 		free(var);
+		free_array((void*)v->path);
+		init_path(v);
 		set_return_status(v, EXIT_SUCCESS);
 	}
 }
@@ -90,8 +92,16 @@ int	exec_com(t_v *v)
 
 	r = -1;
 	i = 0;
+
+	if (v->cmd.cmd_args[1] != NULL )
+		if (v->cmd.cmd_args[1][0] == '~' && v->cmd.cmd_args[1][1] != '~')
+			v->cmd.cmd_args[1] = (ft_strjoin(loc_var("HOME",v),&v->cmd.cmd_args[1][1]));
+
+	v->cmd.cmd_args[0] = get_last_path(v->cmd.cmd_args[0]);
+
 	while (v->path[i] != NULL)
 	{
+		printf("%d , %s\n",i,v->path[i]);
 		aux = ft_strdup(v->path[i]);
 		command = ft_strjoin(aux, "/");
 		free(aux);

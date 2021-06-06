@@ -6,13 +6,13 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 01:12:31 by user42            #+#    #+#             */
-/*   Updated: 2021/05/26 15:43:47 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/05 15:40:55 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_last_path(char *ret)
+char	*get_last_path(char *ret)
 {
 	int	i;
 

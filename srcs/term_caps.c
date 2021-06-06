@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/27 21:11:41 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/05 16:23:03 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,34 @@
 
 void	sighandler(int signum)
 {
+	long	size;
+	char	*pwd;
+	char	*aux;
+
 	if (signum == 18 || signum == 3)
 		;
+	size = MIL;
+	pwd = NULL;
+	pwd = getcwd(pwd, (size_t)size);
+	aux = get_last_path(pwd);
+	aux = ft_strjoin(aux, "> ");
+	printf("\n");
+	ft_putstr_fd("\033[1;34m",1);
+	ft_putstr_fd(aux,1);
+	ft_putstr_fd("\033[0;37m",1);
+	tputs(tigetstr("ce"),1,my_termprint); // ed
+	tputs(save_cursor,1,my_termprint);
+	free(pwd);
+	free(aux);
 }
+
+void	sighandlerchild(int signum)
+{
+	if (signum == 18 || signum == 3)
+		;
+	printf("^C\n");
+}
+
 
 void	config_term(t_v *all)
 {
@@ -28,6 +53,7 @@ void	config_term(t_v *all)
 	signal(SIGINT, sighandler);
 	all->term.c_lflag &= ~(ECHO);
 	all->term.c_lflag &= ~(ICANON);
+	//all->term.c_lflag &= ~(ISIG);
 	all->term.c_cc[VMIN] = 1;
 	all->term.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSANOW, &all->term);
@@ -96,6 +122,26 @@ static int	verify_left_right(t_v *all, char *ret)
 		tputs(save_cursor, 1, my_termprint);
 		return (1);
 	}
+
+	if (!ft_strncmp("\e[", ret, 2)) /* ** teclas extras */
+			return (1);
+
+	if (!ft_strncmp("\e[H", ret, 3)) /* **  home */
+	{
+		all->posic_string = (int)ft_strlen(all->prompt);
+		tputs(tgoto(tgetstr("ch", NULL), 0, all->posic_string), 0, &my_termprint);
+		all->posic_string --;
+		return (1);
+	}
+	if (!ft_strncmp("\e[F", ret, 3)) /* **  end */
+	{
+		all->posic_string = (int)ft_strlen(all->ret2) + (int)ft_strlen(all->prompt);
+		tputs(tgoto(tgetstr("ch", NULL), 0, all->posic_string ), 0, &my_termprint);
+		all->posic_string ++;
+		return (1);
+	}
+	if (!ft_strncmp("\e[", ret, 2)) /* ** teclas extras */
+			return (1);
 	return (0);
 }
 
@@ -106,11 +152,26 @@ int	verify_term(t_v *all, char *ret, int out)
 		out = verify_up_down(all, ret, 0);
 	else
 	{
-		if (ret[0] == 4) /* ** CTRL D */
+		if (ret[0] == 3) /* ** CTRL C */
 		{
 			ft_putstr_fd("\n", 1);
-			tcsetattr(0, TCSANOW, &all->old);
-			bye(all);
+			write_prompt(all);
+			//printf("ola mundo\n");
+			//
+			//tcsetattr(0, TCSANOW, &all->old);
+			//bye(all);
+		}
+
+		if (ret[0] == 4) /* ** CTRL D */
+		{
+			if (all->pidc != all->pid)
+			{
+				ft_putstr_fd("\n", 1);
+				tcsetattr(0, TCSANOW, &all->old);
+				bye(all);
+			}
+			else
+				return 0;
 		}
 		if (ret[0] == 127) /* **backspace */
 		{

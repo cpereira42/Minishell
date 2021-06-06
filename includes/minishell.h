@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/05/28 19:56:56 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/06 07:55:24 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct	s_v{
 	char	*curr_comand;
 	int		ret_last;
 	int		size;
+	int		flag_perm_denied;
 }				t_v;
 
 void	u_print_list(t_list *list);
@@ -154,6 +155,7 @@ void	kill_pid(t_v *v);
 int		verify_term(t_v *v, char *ret, int out);
 int		my_termprint(int c);
 void	sighandler(int signum);
+void	sighandlerchild(int signum);
 void	config_term(t_v *v);
 void	add_samples(t_v *v);
 void	write_error(t_v *v);
@@ -166,5 +168,6 @@ void	*safe_malloc(size_t size);
 
 void	add_hist2(t_v *v, char *ret);
 void	init_hist(t_v *v, char *envp);
+char	*get_last_path(char *ret);
 
 #endif

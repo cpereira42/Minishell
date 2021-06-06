@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 01:57:38 by user42            #+#    #+#             */
-/*   Updated: 2021/05/25 18:41:15 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/06 07:57:07 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ void	parse_out_red(t_v *v, int *k, int out)
 	}
 	copy_until(file_redir, v->expanded, " <>", k);
 	v->cmd.fd_out_red = open(file_redir, flags, 0777);
+	if (v->cmd.fd_out_red == -1)
+	{
+		printf("zsh: permission denied: %s\n", file_redir);
+		v->flag_perm_denied = 1;
+		//exit_msh(v);
+		//bye(v);
+	}
 	dup2(v->cmd.fd_out_red, out);
 	close(v->cmd.fd_out_red);
 }

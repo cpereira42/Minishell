@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 18:44:49 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/28 19:54:47 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/05 15:52:30 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	get_cd (t_v *v)
 	update_env_var(v, "OLDPWD");
 	if (v->cmd.cmd_args[1] == NULL)
 		resp = chdir("..");
+	else if (v->cmd.cmd_args[1][0] == '~')
+		resp = chdir(ft_strjoin(loc_var("HOME",v),&v->cmd.cmd_args[1][1]));
 	else
 		resp = chdir(v->cmd.cmd_args[1]);
 	if (resp != 0)

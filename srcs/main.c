@@ -11,7 +11,6 @@ void write_error(t_v *v)
 {
 	ft_putstr_fd("bash *: ",1);
 	ft_putstr_fd(v->curr_comand,1);
-	g_ret =
 	v->cmd.ret_status = 127;
 	v->flag_exit = 1;
 	ft_putstr_fd(" : command not found\n",1);
@@ -45,9 +44,12 @@ int	main(void)
 		add_samples(&v);
 	create_prompt(&v);
 	write_prompt(&v);
+	v.flag_perm_denied = 0;
 
 	while (1)
 	{
+		signal(SIGINT, sighandler);
+		signal(SIGQUIT, sighandler);
 		ft_bzero(v.ret,2048);
 		read (0,v.ret,100);
 		if (!verify_term(&v,v.ret,0))
