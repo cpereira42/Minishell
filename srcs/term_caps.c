@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/05 16:23:03 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/20 17:52:23 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,46 +17,65 @@ void	sighandler(int signum)
 	long	size;
 	char	*pwd;
 	char	*aux;
+	printf("**%d**\n",signum);
 
-	if (signum == 18 || signum == 3)
-		;
-	size = MIL;
-	pwd = NULL;
-	pwd = getcwd(pwd, (size_t)size);
-	aux = get_last_path(pwd);
-	aux = ft_strjoin(aux, "> ");
-	printf("\n");
-	ft_putstr_fd("\033[1;34m",1);
-	ft_putstr_fd(aux,1);
-	ft_putstr_fd("\033[0;37m",1);
-	tputs(tigetstr("ce"),1,my_termprint); // ed
-	tputs(save_cursor,1,my_termprint);
-	free(pwd);
-	free(aux);
+	if (signum == SIGINT)
+	{
+		printf("^C\n");
+		size = MIL;
+		pwd = NULL;
+		pwd = getcwd(pwd, (size_t)size);
+		aux = get_last_path(pwd);
+		aux = ft_strjoin(aux, "> ");
+		ft_putstr_fd("\033[1;34m",1);
+		ft_putstr_fd(aux,1);
+		ft_putstr_fd("\033[0;37m",1);
+		tputs(tigetstr("ce"),1,my_termprint); // ed
+		tputs(save_cursor,1,my_termprint);
+		free(pwd);
+		free(aux);
+
+	}
 }
 
 void	sighandlerchild(int signum)
 {
-	if (signum == 18 || signum == 3)
-		;
-	printf("^C\n");
+	if (signum == SIGINT)
+		printf("^C\n");
 }
 
 
 void	config_term(t_v *all)
 {
 	char	ret[2048];
-
 	tgetent(ret, getenv("TERM"));
 	tcgetattr(0, &all->old);
 	tcgetattr(0, &all->term);
+	tcgetattr(0, &all->intterm);
+
 	signal(SIGINT, sighandler);
 	all->term.c_lflag &= ~(ECHO);
 	all->term.c_lflag &= ~(ICANON);
-	//all->term.c_lflag &= ~(ISIG);
+	all->term.c_lflag &= ~(ISIG);
+
 	all->term.c_cc[VMIN] = 1;
 	all->term.c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, &all->term);
+	//all->term.c_cc[VEOF] = 3; // 4
+	//all->term.c_cc[SIGUSR1] = 4; // 3
+
+	tcsetattr(0, TCSANOW, &all->term);// ignora interrupção
+
+	all->intterm.c_lflag &= ~(ECHO);
+	all->intterm.c_lflag &= ~(ICANON);
+	all->intterm.c_cc[VMIN] = 1;
+	all->intterm.c_cc[VTIME] = 0;
+	//all->term.c_cc[VEOF] = 4; // 4
+	//all->term.c_cc[VINTR] = 3; // 3
+
+	//tcsetattr(0, TCSANOW, &all->intterm);// ignora interrupção
+
+
+
 }
 
 int	my_termprint(int c)
@@ -97,6 +116,7 @@ static int verify_up_down(t_v *all, char *ret, int out)
 	verify_limits(all);
 	ft_putstr_fd(all->ret2, 1);
 	all->posic_string = ft_strlen(all->ret2);
+	all->size = ft_strlen(all->ret2);
 	ret[0] = 0;
 	return (out);
 }
@@ -152,26 +172,30 @@ int	verify_term(t_v *all, char *ret, int out)
 		out = verify_up_down(all, ret, 0);
 	else
 	{
+
+		if (ret[0] == 28)
+		{
+			return(1);
+		}
 		if (ret[0] == 3) /* ** CTRL C */
 		{
-			ft_putstr_fd("\n", 1);
+			ft_putstr_fd("^C\n", 1);
+			ft_bzero(all->ret2,ft_strlen(all->ret2));
 			write_prompt(all);
-			//printf("ola mundo\n");
-			//
-			//tcsetattr(0, TCSANOW, &all->old);
-			//bye(all);
+			return (1);
 		}
 
-		if (ret[0] == 4) /* ** CTRL D */
+		if (ret[0] == 4 ) /* ** CTRL D */
 		{
-			if (all->pidc != all->pid)
+
+			if (ft_strlen(all->ret2) == 0 )
 			{
 				ft_putstr_fd("\n", 1);
 				tcsetattr(0, TCSANOW, &all->old);
 				bye(all);
 			}
 			else
-				return 0;
+				return 1;
 		}
 		if (ret[0] == 127) /* **backspace */
 		{
@@ -183,6 +207,7 @@ int	verify_term(t_v *all, char *ret, int out)
 			all->ret2[ft_strlen(all->ret2) - 1] = 0;
 			ft_putstr_fd(all->ret2, 1);
 			out = 1;
+			all->size--;
 		}
 	}
 	return (out);

@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 01:11:30 by user42            #+#    #+#             */
-/*   Updated: 2021/06/06 08:28:52 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/18 15:32:34 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,18 @@ void	execute_command(t_v *v)
 		&& ft_strlen(v->cmd.filename) == 5)
 		exc_var(v);
 	else if (ft_strncmp(v->cmd.filename, "env", 3) == 0
-		&& ft_strlen(v->cmd.filename) == 6)
+		&& ft_strlen(v->cmd.filename) == 3)
 		get_env(v);
 	else if (ft_strncmp(v->cmd.filename, "exit", 4) == 0
 		&& ft_strlen(v->cmd.filename) == 4)
 		exit_msh(v);
 	else
+	{
 		if (v->ret_last == 0)
 			v->cmd.ret_status = fork_process(v);
+		if (v->cmd.ret_status == 9)
+			v->cmd.ret_status = 127;
+	}
 }
 
 char	**alocate_new(t_v *v)
@@ -75,6 +79,9 @@ void	exc_var(t_v *v)
 		new[k] = NULL;
 		aux = v->env;
 		v->env = new;
+		// se variavel a ser excluia eh path, reseta path na struct
+		if (ft_strncmp(var, "PATH",4) == 0)
+			reset_vpath(v);
 		u_free_array_bi(aux);
 		free(var);
 		free_array((void*)v->path);
@@ -97,7 +104,14 @@ int	exec_com(t_v *v)
 		if (v->cmd.cmd_args[1][0] == '~' && v->cmd.cmd_args[1][1] != '~')
 			v->cmd.cmd_args[1] = (ft_strjoin(loc_var("HOME",v),&v->cmd.cmd_args[1][1]));
 
-	v->cmd.cmd_args[0] = get_last_path(v->cmd.cmd_args[0]);
+//		printf("cmd_args[0]: |%s|\n", v->cmd.cmd_args[0]);
+//		printf("cmd_args[1]: |%s|\n", v->cmd.cmd_args[1]);
+
+	//v->cmd.cmd_args[0] = get_last_path(v->cmd.cmd_args[0]);
+	v->cmd.cmd_args[0] = get_last_path2(v->cmd.cmd_args[0]);
+
+//		printf("cmd_args[0]: |%s|\n", v->cmd.cmd_args[0]);
+//		printf("cmd_args[1]: |%s|\n", v->cmd.cmd_args[1]);
 
 	while (v->path[i] != NULL)
 	{
@@ -107,7 +121,11 @@ int	exec_com(t_v *v)
 		free(aux);
 		aux = command;
 		command = ft_strjoin(aux, v->cmd.cmd_args[0]);
+//			printf("command: |%s|\n", command);
+//			printf("cmd_args[0]: |%s|\n", v->cmd.cmd_args[0]);
+//			printf("cmd_args[1]: |%s|\n", v->cmd.cmd_args[1]);
 		r = execve(command, &v->cmd.cmd_args[0], v->env);
+//			printf("r: %d\n", r);
 		free(aux);
 		free(command);
 		i++;

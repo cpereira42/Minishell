@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   init_cmd_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcunha <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/04 16:28:10 by pcunha            #+#    #+#             */
-/*   Updated: 2021/05/10 18:13:01 by user42           ###   ########.fr       */
+/*   Created: 2021/06/08 19:43:06 by user42            #+#    #+#             */
+/*   Updated: 2021/06/08 19:43:16 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void*))
+void	init_cmd_args(t_v *v)
 {
-	t_list	*temp;
-
-	if (!lst)
-		return ;
-	while (*lst)
-	{
-		temp = (*lst)->next;
-		ft_lstdelone(*lst, del);
-		(*lst) = temp;
-	}
+	//v->cmd = (t_cmd){0};
+	v->cmd.cmd_args = (char **)safe_malloc((0 + 1) * sizeof(char *));
+	v->cmd.cmd_args[0] = NULL;
 }

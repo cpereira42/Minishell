@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 03:47:00 by user42            #+#    #+#             */
-/*   Updated: 2021/06/06 07:59:06 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/20 15:27:40 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	parse_pipelines(t_v *v, char *linha)
 	int		n;
 	int		i;
 	char	*s;
+	pid_t	pidf;
 
 	aux = ft_split3(linha, '|');
 	i = 1;
@@ -69,6 +70,7 @@ int	parse_pipelines(t_v *v, char *linha)
 	i = 0;
 	while (aux[i] && v->flag_exit == 0)
 	{
+		init_cmd_args(v);
 		s = ft_strdup(aux[i]);
 		v->pipelines[i] = ft_strtrim(s, " ");
 		parse_s(v, v->pipelines[i]);
@@ -76,11 +78,12 @@ int	parse_pipelines(t_v *v, char *linha)
 		v->cmd.fd_out = v->cmd.pipe[PIPE_IN];
 		redirect_handler(v, i, n);
 		fd_handler(v->cmd.fd_in, v->cmd.fd_out);
-
+//				u_print_struct_cmd(v); // LINHA DE DEBUG
+		check_n_free(v->curr_comand);
+		v->curr_comand = ft_strdup(v->cmd.filename);
 		if (v->flag_perm_denied == 0)
 			execute_command(v);
 		v->flag_perm_denied = 0;
-		//execute_command(v);
 		close(v->cmd.fd_out);
 		if (v->cmd.fd_in != 0)
 			close(v->cmd.fd_in);
@@ -95,6 +98,16 @@ int	parse_pipelines(t_v *v, char *linha)
 		s = NULL;
 		u_free_array_bi(v->cmd.cmd_args);
 		i++;
+		if (v->cmd.ret_status == -1)
+		{
+			write_error(v);
+			free(v->curr_comand);
+			ft_bzero(v->ret,2048);
+			pidf = getpid();
+			v->process = 4;
+			kill(pidf, SIGKILL);
+			v->process = 5;
+		}
 	}
 	close_fds(v, i);
 	u_free_array_bi(aux);

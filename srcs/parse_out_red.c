@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 01:57:38 by user42            #+#    #+#             */
-/*   Updated: 2021/06/06 07:57:07 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/08 21:15:12 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	parse_out_red(t_v *v, int *k, int out)
 	{
 		printf("zsh: permission denied: %s\n", file_redir);
 		v->flag_perm_denied = 1;
+		v->cmd.ret_status = 1;
 		//exit_msh(v);
 		//bye(v);
 	}

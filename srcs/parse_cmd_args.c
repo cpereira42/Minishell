@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 23:06:16 by user42            #+#    #+#             */
-/*   Updated: 2021/05/28 18:30:40 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/18 15:33:17 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	parse_cmd_args(t_v *v, int *k)
 		add_line_to_cmd_args(v, temp[i]);
 		i++;
 	}
-		//u_print_array_bi(v, v->cmd.cmd_args);
 	v->cmd.filename = ft_strdup(v->cmd.cmd_args[0]);
 	free(cmdeargs);
 	u_free_array_bi(temp);

@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_in.c                                         :+:      :+:    :+:   */
+/*   get_last_path2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pcunha <pcunha@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/08 12:39:36 by pcunha            #+#    #+#             */
-/*   Updated: 2021/05/10 18:03:42 by user42           ###   ########.fr       */
+/*   Created: 2021/06/09 00:15:46 by user42            #+#    #+#             */
+/*   Updated: 2021/06/10 23:57:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_is_in(char c, char *set)
+char *get_last_path2(char *str)
 {
-	int	i;
+	char	**split_str;
+	int		i;
 
+	split_str = ft_split3(str, '/');
 	i = 0;
-	while (set[i])
-	{
-		if (c == set[i])
-			return (1);
+	while (split_str[i])
 		i++;
-	}
-	return (0);
+	if (i>0)
+		i--;
+
+	free(str);
+	str = ft_strdup(split_str[i]);
+	u_free_array_bi(split_str);
+	return (str);
 }

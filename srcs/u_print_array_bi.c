@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_rmvspc.c                                        :+:      :+:    :+:   */
+/*   u_print_array_bi.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/31 18:23:43 by user42            #+#    #+#             */
-/*   Updated: 2021/05/10 18:19:39 by user42           ###   ########.fr       */
+/*   Created: 2021/04/08 22:11:16 by user42            #+#    #+#             */
+/*   Updated: 2021/04/23 19:07:14 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_rmvspc(char **s)
+void	u_print_array_bi(t_v *v, char **s)
 {
-	int	i;
-	int	j;
-	int	size;
+	int i;
+	int aux;
+	(void) aux;
 
-	size = ft_strlen(*s);
-	i = 0;
-	while (i < size)
-	{	
-		if ((*s)[i] == ' ')
+	(void) v;
+
+	if (fcntl(v->cmd.save_out, F_GETFD) != -1)
+		aux = v->cmd.save_out;
+	else
+		aux = 1;
+
+
+	if (s!= NULL)
+	{
+		i = 0;
+		while (s[i] != 0)
 		{
-			j = i;
-			while (j < size)
-			{
-				(*s)[j] = (*s)[j + 1];
-				j++;
-			}
-		}
-		if ((*s)[i] != ' ')
+			dprintf(aux,"|%s|\n", (s[i]));
+			//dprintf(v->cmd.save_out,"|%s|\n", (s[i]));
+			//dprintf(1,"|%s|\n", (s[i]));
 			i++;
+		}
 	}
 }

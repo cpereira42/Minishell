@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 18:44:49 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/05 15:52:30 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/09 03:23:33 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	get_echo(t_v *v)
 					flag = 1;
 				else
 				{
-					if (v->cmd.cmd_args[i][k] != '"'
-						&& v->cmd.cmd_args[i][k] != '\'')
+					//if (v->cmd.cmd_args[i][k] != '"'
+					//	&& v->cmd.cmd_args[i][k] != '\'')
 					{
 						ft_putchar(v->cmd.cmd_args[i][k]);
 						cont = 1;
@@ -123,5 +123,6 @@ int	get_pwd (t_v *v)
 
 void	get_env(t_v *v)
 {
+	u_print_array_bi(v, v->env);
 	set_return_status(v, EXIT_SUCCESS);
 }

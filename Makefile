@@ -40,7 +40,16 @@ SRCS =	$(SDIR)main.c\
 		$(SDIR)setup.c\
 		$(SDIR)term_caps.c\
 		$(SDIR)utilits.c\
-		$(SDIR)set_return_status.c
+		$(SDIR)set_return_status.c\
+		$(SDIR)u_print_array_bi.c\
+		$(SDIR)u_print_struct_cmd.c\
+		$(SDIR)init_cmd_args.c\
+		$(SDIR)get_last_path2.c\
+		$(SDIR)is_abs_path.c\
+		$(SDIR)reset_vpath.c\
+		$(SDIR)exec_com2.c\
+		$(SDIR)exec_cmd3.c\
+		$(SDIR)fork_process2.c
 
 
 OBJS =	$(patsubst $(SDIR)%.c, $(ODIR)%.o, $(SRCS))
@@ -58,6 +67,8 @@ $(NAME):	$(OBJS) $(LIBFT)
 	echo CONCLUIDO
 	#./minishell
 	#valgrind --leak-check=full --track-origins=yes ,/minishell
+	clear
+
 
 
 $(ODIR)%.o: $(SDIR)%.c
