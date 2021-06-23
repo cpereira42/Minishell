@@ -100,7 +100,7 @@ int	main(void)
 				v.ret_last = 0;
 				v.ret2[v.size] = '\0';
 				v.posic_hist = v.qtd_hist;
-				v.posic_string = 0;
+				v.pos_str = 0;
 				add_hist(&v,v.ret2);
 				v.flag_exit = 0;
 				ft_putstr_fd("\n",1);
@@ -117,11 +117,11 @@ int	main(void)
 			}
 			else
 			{
-				v.ret2[v.posic_string] = v.ret[0];
+				v.ret2[v.pos_str] = v.ret[0];
 				//v.size = ft_strlen(v.ret2);
-				if (v.posic_string < (int)ft_strlen(v.ret2))
+				if (v.pos_str < (int)ft_strlen(v.ret2))
 					v.size++;
-				v.posic_string++;
+				v.pos_str++;
 				//printf("*%d*\n",v.size);
 				ft_putstr_fd(v.ret,1);
 			}

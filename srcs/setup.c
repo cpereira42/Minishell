@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:26:45 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/18 15:06:40 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/22 17:13:37 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	add_hist(t_v *all, char *ret)
 {
-
-	all->posic_string = 0;
+	all->pos_str = 0;
 	all->flag_exit = 0;
 	all->hist[all->qtd_hist] = malloc ((int)(ft_strlen(ret) + 1)
 			* sizeof(char *));
@@ -50,5 +49,5 @@ void	add_samples(t_v *v)
 	add_hist(v, "ls;la;ls");
 	add_hist(v, "cd / ; ls -Rla");
 	add_hist(v, "$?");
-	add_hist(v,"ls; echo $?; la ; echo $?; ls ; echo $?");
+	add_hist(v, "ls; echo $?; la ; echo $?; ls ; echo $?");
 }

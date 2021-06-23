@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 03:47:00 by user42            #+#    #+#             */
-/*   Updated: 2021/06/20 15:27:40 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/22 15:44:30 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	exec_parse(t_v *v, char *aux, int i, int n)
 	v->cmd.fd_in = v->cmd.pipe[PIPE_OUT];
 	dup2(v->cmd.save_in, STDIN_FILENO);
 	dup2(v->cmd.save_out, STDOUT_FILENO);
-	free(v->cmd.filename);
-	v->cmd.filename = NULL;
+	free(v->cmd.fn);
+	v->cmd.fn = NULL;
 	free(v->expanded);
 	v->expanded = NULL;
 	free(s);
@@ -80,7 +80,7 @@ int	parse_pipelines(t_v *v, char *linha)
 		fd_handler(v->cmd.fd_in, v->cmd.fd_out);
 //				u_print_struct_cmd(v); // LINHA DE DEBUG
 		check_n_free(v->curr_comand);
-		v->curr_comand = ft_strdup(v->cmd.filename);
+		v->curr_comand = ft_strdup(v->cmd.fn);
 		if (v->flag_perm_denied == 0)
 			execute_command(v);
 		v->flag_perm_denied = 0;
@@ -90,8 +90,8 @@ int	parse_pipelines(t_v *v, char *linha)
 		v->cmd.fd_in = v->cmd.pipe[PIPE_OUT];
 		dup2(v->cmd.save_in, STDIN_FILENO);
 		dup2(v->cmd.save_out, STDOUT_FILENO);
-		free(v->cmd.filename);
-		v->cmd.filename = NULL;
+		free(v->cmd.fn);
+		v->cmd.fn = NULL;
 		free(v->expanded);
 		v->expanded = NULL;
 		free(s);

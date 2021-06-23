@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/06/06 07:55:24 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/22 17:30:08 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef enum	e_state_parse_s
 }				t_state_parse_s;
 
 typedef struct	s_cmd{
-	char *filename;
+	char *fn;
 	char **cmd_args; // filename eh o arg[0];
 	int	ret_status;
 	int	fd_in_red;
@@ -67,11 +67,10 @@ typedef struct	s_v{
 	char	*prompt;
 	int		flag_exit;
 	char	**path;
-
+	struct	termios	intterm;
 	struct	termios	term;
 	struct	termios	old;
 	char	*hist[50];
-	//char	**hist;
 	int		qtd_hist;
 	int		posic_hist;
 	char	*ret2;
@@ -82,7 +81,7 @@ typedef struct	s_v{
 	int		saveout;
 	int		in_fd;
 	int		r_command;
-	int		posic_string;
+	int		pos_str;
 	char	*aux;
 	char	*path_cur;
 	pid_t	pid;
@@ -91,6 +90,7 @@ typedef struct	s_v{
 	int		ret_last;
 	int		size;
 	int		flag_perm_denied;
+	int		process;
 }				t_v;
 
 void	u_print_list(t_list *list);
@@ -115,7 +115,6 @@ void	parse_out_red(t_v *v, int *k,int out);
 void	u_print_struct_cmd(t_v *v);
 void	init_struct_cmd(t_v *v);
 void	ff(char *str, int *k);
-char	**ft_split2(char const *s, char c);
 void	parse_dq(char c, int *i, t_state_parse_s *state);
 void	parse_sq(char c, int *i, t_state_parse_s *state);
 int		fd_handler(int fd_in, int fd_out);
@@ -130,10 +129,10 @@ void	get_cd (t_v *v);
 void	update_env_var(t_v *v, char *var);
 char	*loc_var (char *var, t_v *v);
 void	create_prompt(t_v *v);
-void	get_echo(t_v *v);
-void	export_var(t_v *v);
+void	get_echo(t_v *v, int i, int flag, int cont);
+void	export_var(t_v *v, int len_arr, int i);
 char	*get_var(t_v *v);
-void	exc_var(t_v *v);
+void	exc_var(t_v *v, int i, int k);
 void	get_env(t_v *v);
 void	exit_msh(t_v *v);
 int		fork_process(t_v *v);
@@ -161,6 +160,7 @@ void	add_samples(t_v *v);
 void	write_error(t_v *v);
 void	write_prompt(t_v *v);
 void	write_return(t_v *v);
+void	verify_limits(t_v *all);
 
 
 void	bye(t_v *v);
@@ -169,5 +169,11 @@ void	*safe_malloc(size_t size);
 void	add_hist2(t_v *v, char *ret);
 void	init_hist(t_v *v, char *envp);
 char	*get_last_path(char *ret);
+void	init_cmd_args(t_v *v);
+
+char	*get_last_path2(char *str);
+int		is_abs_path(char *str);
+void	reset_vpath(t_v *v);
+int		exec_com2(t_v *v);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 00:08:16 by user42            #+#    #+#             */
-/*   Updated: 2021/06/20 17:50:38 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/22 17:49:13 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ int	fork_process(t_v *v)
 
 	status = 0;
 	pid = fork();
-	signal(SIGINT, sighandlerchild);
-	signal(SIGQUIT, sighandlerchild);
-	tcsetattr(0, TCSANOW, &v->intterm);// ignora interrupção
+	tcsetattr(0, TCSANOW, &v->intterm);
 	if (pid < 0)
 	{
 		printf("erro no fork\n");
