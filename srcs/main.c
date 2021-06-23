@@ -88,11 +88,11 @@ int	main(void)
 
 		signal(SIGINT, sighandler);
 		signal(SIGQUIT, sighandler);
-		tcsetattr(0, TCSANOW, &v.term);// ignora interrupção
+		//tcsetattr(0, TCSANOW, &v.term);// ignora interrupção
 		ft_bzero(v.ret,2048);
 		read (0,v.ret,100);
 
-		if (!verify_term(&v,v.ret,0))
+		if (!verify_term(&v,v.ret,0) || !ft_strncmp("\n",v.ret,1))
 		{
 			if (!ft_strncmp("\n",v.ret,1))
 			{

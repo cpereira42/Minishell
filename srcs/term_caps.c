@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/22 17:23:51 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/22 21:42:01 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ void	sighandler(int signum)
 	}
 }
 
-/*
+
 void	sighandlerchild(int signum)
 {
 	if (signum == SIGINT)
 		printf("^C\n");
-}*/
+}
 
 void	config_term(t_v *all)
 {

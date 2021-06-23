@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 17:18:27 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/22 17:46:18 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/22 21:56:11 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	verify_back(t_v *all, char *ret)
 		all->size--;
 		return (1);
 	}
-	if (ret[0] == 28)
+	if (ret[0] == 18)
 		return (1);
 	return (0);
 }
@@ -117,14 +117,12 @@ int	verify_home_end(t_v *all, char *ret)
 		all->pos_str = ft_strlen(all->ret2);
 		return (1);
 	}
-	if (!ft_strncmp("\e[", ret, 2))
-		return (1);
 	return (0);
 }
 
 int	verify_term(t_v *all, char *ret, int out)
 {
-	out = verify_left_right(all, ret);
+	verify_left_right(all, ret);
 	if (!ft_strncmp("\e[A", ret, 3) || !ft_strncmp("\e[B", ret, 3))
 		out = verify_up_down(all, ret, 0);
 	else
@@ -144,9 +142,11 @@ int	verify_term(t_v *all, char *ret, int out)
 				tcsetattr(0, TCSANOW, &all->old);
 				bye(all);
 			}
+			else
+				return(1);
 		}
-		out = verify_back(all, ret);
-		out = verify_home_end(all, ret);
+		verify_back(all, ret);
+		verify_home_end(all, ret);
 	}
-	return (out);
+	return (!ft_isprint(ret[0]));
 }
