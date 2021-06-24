@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/06/23 18:12:16 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/23 19:08:50 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void	close_fds(t_v *v, int i);
 
 void	bye(t_v *v);
 void	*safe_malloc(size_t size);
+int		ft_count_words(char const *s, char c);
 
 void	add_hist2(t_v *v, char *ret);
 void	init_hist(t_v *v, char *envp);

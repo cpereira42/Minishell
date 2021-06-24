@@ -28,11 +28,14 @@ int	verify_char(char *line, char letter)
 
 int	verify_line(char *line)
 {
-	int	error;
+	int		error;
+	char	*aux;
 
-	error = verify_char(line, '|');
-	error += verify_char(line, '>');
-	error += verify_char(line, '<');
+	aux = ft_strdup(line);
+	error = verify_char(aux, '|');
+	error += verify_char(aux, '>');
+	error += verify_char(aux, '<');
+	check_n_free(aux);
 	if (error > 0)
 	{
 		printf("Sintax error\n");
@@ -86,8 +89,8 @@ void	processing(t_v *v)
 	add_hist(v, v->ret2);
 	v->flag_exit = 0;
 	ft_putstr_fd("\n", 1);
-	if (ft_strlen(v->ret2) > 1 && v->ret2[0] != '>'
-		&& v->ret2[0] != '<' && verify_line(v->ret2))
+	if (ft_strlen(v->ret2) > 1 && v->ret2[0] != '>' && v->ret2[0] != '<'
+		&& verify_line(v->ret2))
 		parse_cmd_lines(v, v->ret2, 0);
 	write_prompt(v);
 	ft_bzero(v->ret, 2048);
