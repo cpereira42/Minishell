@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 17:18:27 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/22 21:56:11 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/23 17:08:03 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /* teclas especiais */
 /* \e[A = CIMA      */
 /* \e[B = BAIXO     */
-static int	verify_up_down(t_v *all, char *ret, int out)
+static void	verify_up_down(t_v *all, char *ret)
 {
 	tputs(tgoto(tgetstr("ch", NULL), 0,
 			(int)ft_strlen(all->prompt)), 0, &my_termprint);
@@ -26,7 +26,6 @@ static int	verify_up_down(t_v *all, char *ret, int out)
 		if (all->posic_hist > 0)
 			all->posic_hist--;
 		all->ret2 = ft_strdup(all->hist[all->posic_hist]);
-		out = 1;
 	}
 	if (!ft_strncmp("\e[B", ret, 3))
 	{
@@ -35,13 +34,11 @@ static int	verify_up_down(t_v *all, char *ret, int out)
 			all->ret2 = ft_strdup("");
 		else
 			all->ret2 = ft_strdup(all->hist[all->posic_hist]);
-		out = 1;
 	}
 	verify_limits(all);
 	all->pos_str = ft_strlen(all->ret2);
 	all->size = ft_strlen(all->ret2);
 	ret[0] = 0;
-	return (out);
 }
 
 /* teclas especiais */
@@ -51,7 +48,7 @@ static int	verify_up_down(t_v *all, char *ret, int out)
 /* \e[F = END       */
 /* \e[ =  OUTRAS    */
 /* **               */
-static int	verify_left_right(t_v *all, char *ret)
+static void	verify_left_right(t_v *all, char *ret)
 {
 	if (!ft_strncmp("\e[C", ret, 3))
 	{
@@ -61,7 +58,6 @@ static int	verify_left_right(t_v *all, char *ret)
 				+ (int)ft_strlen(all->prompt)), 0, &my_termprint);
 		tputs(save_cursor, 1, my_termprint);
 		ret[0] = 0;
-		return (1);
 	}
 	if (!ft_strncmp("\e[D", ret, 3))
 	{
@@ -70,9 +66,7 @@ static int	verify_left_right(t_v *all, char *ret)
 		tputs(tgoto(tgetstr("ch", NULL), 0, all->pos_str
 				+ (int)ft_strlen(all->prompt)), 0, &my_termprint);
 		tputs(save_cursor, 1, my_termprint);
-		return (1);
 	}
-	return (0);
 }
 
 /* teclas especiais */
@@ -82,7 +76,7 @@ static int	verify_left_right(t_v *all, char *ret)
 /* 27 = BACKSPACE   */
 /* **               */
 
-int	verify_back(t_v *all, char *ret)
+static void	verify_back(t_v *all, char *ret)
 {
 	if (ret[0] == 127)
 	{
@@ -94,37 +88,30 @@ int	verify_back(t_v *all, char *ret)
 		all->ret2[ft_strlen(all->ret2) - 1] = 0;
 		ft_putstr_fd(all->ret2, 1);
 		all->size--;
-		return (1);
 	}
-	if (ret[0] == 18)
-		return (1);
-	return (0);
 }
 
-int	verify_home_end(t_v *all, char *ret)
+static void	verify_home_end(t_v *all, char *ret)
 {
 	if (!ft_strncmp("\e[H", ret, 3))
 	{
 		all->pos_str = (int)ft_strlen(all->prompt);
 		tputs(tgoto(tgetstr("ch", NULL), 0, all->pos_str), 0, &my_termprint);
 		all->pos_str = 0;
-		return (1);
 	}
 	if (!ft_strncmp("\e[F", ret, 3))
 	{
 		all->pos_str = (int)ft_strlen(all->ret2) + (int)ft_strlen(all->prompt);
 		tputs(tgoto(tgetstr("ch", NULL), 0, all->pos_str), 0, &my_termprint);
 		all->pos_str = ft_strlen(all->ret2);
-		return (1);
 	}
-	return (0);
 }
 
-int	verify_term(t_v *all, char *ret, int out)
+int	verify_term(t_v *all, char *ret)
 {
 	verify_left_right(all, ret);
 	if (!ft_strncmp("\e[A", ret, 3) || !ft_strncmp("\e[B", ret, 3))
-		out = verify_up_down(all, ret, 0);
+		verify_up_down(all, ret);
 	else
 	{
 		if (ret[0] == 3)
@@ -132,7 +119,6 @@ int	verify_term(t_v *all, char *ret, int out)
 			ft_putstr_fd("^C\n", 1);
 			ft_bzero(all->ret2, ft_strlen(all->ret2));
 			write_prompt(all);
-			return (1);
 		}
 		if (ret[0] == 4 )
 		{
@@ -142,8 +128,6 @@ int	verify_term(t_v *all, char *ret, int out)
 				tcsetattr(0, TCSANOW, &all->old);
 				bye(all);
 			}
-			else
-				return(1);
 		}
 		verify_back(all, ret);
 		verify_home_end(all, ret);

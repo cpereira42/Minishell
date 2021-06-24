@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 21:06:58 by user42            #+#    #+#             */
-/*   Updated: 2021/06/22 16:23:14 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/23 18:22:57 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ void	export_var(t_v *v, int len_arr, int i)
 		v->env = new;
 		u_free_array_bi(aux);
 		if (ft_strncmp(v->cmd.cmd_args[1], "PATH", 4) == 0)
-		{
-			u_free_array_bi(v->path);
 			init_path(v);
-		}
 	}
 	set_return_status(v, EXIT_SUCCESS);
 }

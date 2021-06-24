@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 18:14:43 by cpereira          #+#    #+#             */
-/*   Updated: 2021/05/24 19:28:31 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/23 18:11:05 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,25 @@ int	count_split(char	**ret)
 	while (ret[i] != NULL)
 		i++;
 	return (i);
+}
+
+int	remov_quots(int i, char **aux)
+{
+	i = 1;
+	while (aux[i] != NULL)
+	{
+		ft_rmvchar(&aux[i], '\"');
+		ft_rmvchar(&aux[i], '\'');
+		i++;
+	}
+	return (ft_count_lines(aux));
+}
+
+void	close_fds(t_v *v, int i)
+{
+	close(v->cmd.save_in);
+	close(v->cmd.save_out);
+	close(v->cmd.pipe[0]);
+	close(v->cmd.pipe[1]);
+	v->pipelines[i] = 0;
 }

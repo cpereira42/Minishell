@@ -45,6 +45,7 @@ SRCS =	$(SDIR)main.c\
 		$(SDIR)is_abs_path.c\
 		$(SDIR)reset_vpath.c\
 		$(SDIR)verify_keys.c\
+		$(SDIR)writers.c\
 		$(SDIR)exec_com2.c
 
 

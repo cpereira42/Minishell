@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/06/22 17:30:08 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/23 18:12:16 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int		parse_cmd_lines(t_v *v, char *linha, int p);
 int		free_matrizes(char **s);
 int		ft_count_lines(char **s);
 void	u_free_array_bi(char **s);
-int		parse_pipelines(t_v *v, char *linha);
+int		parse_pipelines(t_v *v, char *linha, int i, int n);
 void	u_print_array_bi(t_v *v, char **s);
 int		parse_s(t_v *v, char *linha);
 void	init_env(t_v *v, char **envp);
@@ -139,6 +139,7 @@ int		fork_process(t_v *v);
 void	init_path(t_v *v);
 int		exec_com(t_v *v);
 int		set_return_status(t_v *v, int status);
+void	verify_ret(t_v *v);
 
 void	reseta_flags(t_v *all);
 void 	config_term(t_v *all);
@@ -151,7 +152,7 @@ void	free_array(void **array);
 void	check_n_free(void *ptr);
 void	kill_pid(t_v *v);
 
-int		verify_term(t_v *v, char *ret, int out);
+int		verify_term(t_v *v, char *ret);
 int		my_termprint(int c);
 void	sighandler(int signum);
 void	sighandlerchild(int signum);
@@ -161,7 +162,13 @@ void	write_error(t_v *v);
 void	write_prompt(t_v *v);
 void	write_return(t_v *v);
 void	verify_limits(t_v *all);
-
+void	configs(t_v *v, char **envp);
+void	processing(t_v *v);
+void	add_key(t_v *v);
+void	dups_clear(t_v *v, char *s);
+void	cleaning(t_v *v, char *s);
+int		remov_quots(int i, char **aux);
+void	close_fds(t_v *v, int i);
 
 void	bye(t_v *v);
 void	*safe_malloc(size_t size);

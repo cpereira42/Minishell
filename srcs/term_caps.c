@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/22 21:42:01 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/23 17:38:34 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	sighandler(int signum)
 	char	*pwd;
 	char	*aux;
 
-	printf("**%d**\n", signum);
 	if (signum == SIGINT)
 	{
 		printf("^C\n");
@@ -36,7 +35,6 @@ void	sighandler(int signum)
 		free(aux);
 	}
 }
-
 
 void	sighandlerchild(int signum)
 {

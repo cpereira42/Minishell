@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 01:08:00 by user42            #+#    #+#             */
-/*   Updated: 2021/06/22 16:54:54 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/23 18:22:43 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	init_path(t_v *v)
 {
 	char	*aux;
 
+	v->path = NULL;
 	aux = loc_var("PATH", v);
 	v->path = ft_split(aux, ':');
 }
