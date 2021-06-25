@@ -6,26 +6,11 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 01:08:00 by user42            #+#    #+#             */
-/*   Updated: 2021/06/23 18:22:43 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/24 19:59:26 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	init_hist(t_v *v, char *envp)
-{
-	int		len_arr;
-	int		i;
-
-	len_arr = 0;
-	i = 0;
-	while (i < len_arr)
-	{
-		v->hist[i] = ft_strdup(envp);
-		i++;
-	}
-	v->hist[i] = 0;
-}
 
 void	init_path(t_v *v)
 {

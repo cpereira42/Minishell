@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 00:42:52 by user42            #+#    #+#             */
-/*   Updated: 2021/06/23 18:51:43 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/24 19:42:07 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	get_var_content(t_v *v, char **substr, int q)
 		(*substr)++;
 }
 
-int	handle_interrogation(int r, char c, char **substr, int *k)
+int	handle_interr(int r, char c, char **substr, int *k)
 {
 	if (ft_is_in(c, "?"))
 	{
@@ -33,32 +33,29 @@ int	handle_interrogation(int r, char c, char **substr, int *k)
 
 void	expand(t_v *v, char *line, int *i, int *j)
 {
-	int		k;
-	int		q;
 	char	*substr;
-	int		aux;
 
 	line++;
 	substr = 0;
-	k = 0;
-	aux = handle_interrogation(v->cmd.ret_status, line[k], &substr, &k);
-	if (aux == 0)
+	v->k = 0;
+	v->ax2 = handle_interr(v->cmd.ret_status, line[v->k], &substr, &v->k);
+	if (v->ax2 == 0)
 	{
-		while (!(ft_is_in(line[k], " \'\"><")) && k < (int)ft_strlen(line))
-			k++;
-		q = -1;
-		while (v->env[++q] != 0)
-			if (!ft_strncmp(line, v->env[q], k))
-				get_var_content(v, &substr, q);
+		while (!(ft_is_in(line[v->k], " \'\"><")) && v->k < (int)ft_strlen(line))
+			v->k++;
+		v->q = -1;
+		while (v->env[++v->q] != 0)
+			if (!ft_strncmp(line, v->env[v->q], v->k))
+				get_var_content(v, &substr, v->q);
 		if (substr == NULL)
 		{
 			substr = ft_strdup(" ");
-			aux = 1;
+			v->ax2 = 1;
 		}
 	}
 	ft_memcpy(&v->expanded[(*j)], substr, ft_strlen(substr));
 	(*j) = (*j) + ft_strlen(substr);
-	(*i) = (*i) + k;
-	if (aux == 1)
+	(*i) = (*i) + v->k;
+	if (v->ax2 == 1)
 		free(substr);
 }
