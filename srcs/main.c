@@ -53,6 +53,7 @@ int	main(void)
 	{
 		signal(SIGINT, sighandler);
 		signal(SIGQUIT, sighandler);
+		tcsetattr(0, TCSAFLUSH, &v.term);
 		ft_bzero(v.ret, 2048);
 		read (0, v.ret, 100);
 		if (!verify_term(&v, v.ret) || !ft_strncmp("\n", v.ret, 1))

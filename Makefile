@@ -40,6 +40,7 @@ SRCS =	$(SDIR)main.c\
 		$(SDIR)setup.c\
 		$(SDIR)term_caps.c\
 		$(SDIR)utilits.c\
+		$(SDIR)utils2.c\
 		$(SDIR)set_return_status.c\
 		$(SDIR)get_last_path2.c\
 		$(SDIR)is_abs_path.c\

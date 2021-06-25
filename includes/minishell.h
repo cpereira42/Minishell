@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/06/23 19:08:50 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/24 17:10:08 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ void	dups_clear(t_v *v, char *s);
 void	cleaning(t_v *v, char *s);
 int		remov_quots(int i, char **aux);
 void	close_fds(t_v *v, int i);
+void	erase_bksp(t_v *all, int posic);
 
 void	bye(t_v *v);
 void	*safe_malloc(size_t size);
