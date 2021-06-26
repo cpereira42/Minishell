@@ -6,12 +6,13 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/06/24 20:00:08 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/26 15:44:16 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
 # include <stdlib.h>
 # include <fcntl.h>
 # include <string.h>
@@ -24,11 +25,9 @@
 # include <term.h>
 
 # include "libft.h"
-# include "get_next_line.h"
 # include <string.h>
 # include <unistd.h>
 # include <sys/types.h>
-# include "dbg.h"
 # include <errno.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -96,6 +95,7 @@ typedef struct s_v{
 int		parse_cmd_lines(t_v *v, char *linha, int p);
 int		ft_count_lines(char **s);
 void	u_free_array_bi(char **s);
+void	u_print_array_bi(t_v *v, char **s);
 int		parse_pipelines(t_v *v, char *linha, int i, int n);
 int		parse_s(t_v *v, char *linha);
 void	init_env(t_v *v, char **envp);

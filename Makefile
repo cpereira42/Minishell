@@ -20,6 +20,7 @@ SRCS =	$(SDIR)main.c\
 		$(SDIR)parse_dq.c\
 		$(SDIR)u_free_list.c\
 		$(SDIR)u_free_array_bi.c\
+		$(SDIR)u_print_array_bi.c\
 		$(SDIR)initialize.c\
 		$(SDIR)expand.c\
 		$(SDIR)ff.c\

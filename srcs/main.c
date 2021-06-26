@@ -1,11 +1,5 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <curses.h>
-#include <term.h>
-#include <termcap.h>
 #include "minishell.h"
 #include "../libft/libft.h"
-#include "../includes/get_next_line.h"
 
 int	verify_char(char *line, char letter)
 {
