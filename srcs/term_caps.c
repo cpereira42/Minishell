@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/23 17:38:34 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/26 12:01:17 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	sighandler(int signum)
 
 	if (signum == SIGINT)
 	{
-		printf("^C\n");
+		printf("^Cf\n");
 		size = MIL;
 		pwd = NULL;
 		pwd = getcwd(pwd, (size_t)size);
@@ -39,7 +39,9 @@ void	sighandler(int signum)
 void	sighandlerchild(int signum)
 {
 	if (signum == SIGINT)
-		printf("^C\n");
+		printf("\n");
+	if (signum == SIGQUIT)
+		printf("Quit (core dumped)\n");
 }
 
 void	config_term(t_v *all)
@@ -56,7 +58,7 @@ void	config_term(t_v *all)
 	all->term.c_lflag &= ~(ISIG);
 	all->term.c_cc[VMIN] = 1;
 	all->term.c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, &all->term);
+	tcsetattr(0, TCSAFLUSH, &all->term);
 	all->intterm.c_lflag &= ~(ECHO);
 	all->intterm.c_lflag &= ~(ICANON);
 	all->intterm.c_cc[VMIN] = 1;

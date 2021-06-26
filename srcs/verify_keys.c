@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 17:18:27 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/24 17:11:48 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/26 12:26:57 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,7 @@ int	verify_term(t_v *all, char *ret)
 		{
 			if (ft_strlen(all->ret2) == 0 )
 			{
-				ft_putstr_fd("\n", 1);
-				tcsetattr(0, TCSANOW, &all->old);
+				tcsetattr(0, TCSAFLUSH, &all->old);
 				bye(all);
 			}
 		}

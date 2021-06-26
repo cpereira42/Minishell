@@ -23,6 +23,8 @@ int	verify_char(char *line, char letter)
 		i++;
 	}
 	free_array((void *)ret);
+	if (letter == '>' && error == 2)
+		return (0);
 	return (error);
 }
 
@@ -56,7 +58,8 @@ int	main(void)
 		tcsetattr(0, TCSAFLUSH, &v.term);
 		ft_bzero(v.ret, 2048);
 		read (0, v.ret, 100);
-		if (!verify_term(&v, v.ret) || !ft_strncmp("\n", v.ret, 1))
+		if ((!verify_term(&v, v.ret) || !ft_strncmp("\n", v.ret, 1))
+			&& v.ret[0] != 0)
 		{
 			if (!ft_strncmp("\n", v.ret, 1))
 				processing(&v);
@@ -93,10 +96,10 @@ void	processing(t_v *v)
 	if (ft_strlen(v->ret2) > 1 && v->ret2[0] != '>' && v->ret2[0] != '<'
 		&& verify_line(v->ret2))
 		parse_cmd_lines(v, v->ret2, 0);
+	if (v->flag_exit == 1)
+		bye(v);
 	write_prompt(v);
 	ft_bzero(v->ret, 2048);
 	ft_bzero(v->ret2, ft_strlen(v->ret2) + 1);
-	if (v->flag_exit == 1)
-		bye(v);
 	v->size = 0;
 }

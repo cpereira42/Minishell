@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 00:08:16 by user42            #+#    #+#             */
-/*   Updated: 2021/06/22 22:04:04 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/26 12:20:18 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	fork_process(t_v *v)
 	pid = fork();
 	signal(SIGINT, sighandlerchild);
 	signal(SIGQUIT, sighandlerchild);
-	tcsetattr(0, TCSANOW, &v->intterm);
+	tcsetattr(0, TCSAFLUSH, &v->old);
 	if (pid < 0)
 	{
 		printf("erro no fork\n");
