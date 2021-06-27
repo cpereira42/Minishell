@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 01:11:30 by user42            #+#    #+#             */
-/*   Updated: 2021/06/26 17:58:58 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/27 12:01:49 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,7 @@ void	execute_command(t_v *v)
 	else if (ft_strncmp(v->cmd.fn, "exit", 4) == 0 && ft_strlen(v->cmd.fn) == 4)
 		exit_msh(v);
 	else
-	{
-		if (v->ret_last == 0)
-			v->cmd.ret_status = fork_process(v);
-		if (v->cmd.ret_status == 9)
-			v->cmd.ret_status = 127;
-	}
+		check_return(v);
 }
 
 void	get_env(t_v *v)

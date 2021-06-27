@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/06/26 18:36:03 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/27 12:01:25 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,5 +163,6 @@ int		is_abs_path(char *str);
 void	reset_vpath(t_v *v);
 int		exec_com2(t_v *v);
 int		ft_count_words(char const *s, char c);
+void	check_return(t_v *v);
 
 #endif

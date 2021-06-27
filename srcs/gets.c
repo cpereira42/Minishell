@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 18:44:49 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/26 17:38:52 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/27 13:47:57 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	get_cd (t_v *v)
 	if (v->cmd.cmd_args[1] == NULL)
 		resp = chdir("..");
 	else if (v->cmd.cmd_args[1][0] == '~')
-		resp = chdir(ft_strjoin(loc_var("HOME", v), &v->cmd.cmd_args[1][1]));
+		resp = chdir(loc_var("HOME", v));
 	else
 		resp = chdir(v->cmd.cmd_args[1]);
 	if (resp != 0)
