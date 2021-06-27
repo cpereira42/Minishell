@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 17:26:45 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/23 19:09:42 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/26 18:37:26 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	add_hist(t_v *all, char *ret)
 
 void	add_samples(t_v *v)
 {
-	add_hist(v, "pwd ; pwd a");
-	add_hist(v, "xx yy |  >a1 <a2 abc  >a3 < a4 | aa arg1 arg2; z > a5'");
 	add_hist(v, "echo \'asd\'     \"djfjdkf\" $PWD \"$PWD\" \'$PWD\'");
 	add_hist(v, "cd srcs | pwd >> arq");
 	add_hist(v, "echo \'asd\'  $PWD \"$PWD\" \'$PWD\'; lixo a b c");
@@ -50,4 +48,7 @@ void	add_samples(t_v *v)
 	add_hist(v, "$?");
 	add_hist(v, "ls; echo $?; la ; echo $?; ls ; echo $?");
 	add_hist(v, "echo cezar | sed \"s/cezar/angelica/\" | sed \"s/angelica/42/\"");
+	add_hist(v, "echo $cezar");
+	add_hist(v, "echo $cez");
+	add_hist(v, "export cezar=angelica");
 }

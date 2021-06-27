@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 15:20:26 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/26 12:01:17 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/26 18:14:57 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	sighandler(int signum)
 
 	if (signum == SIGINT)
 	{
-		printf("^Cf\n");
+		printf("^C\n");
 		size = MIL;
 		pwd = NULL;
 		pwd = getcwd(pwd, (size_t)size);

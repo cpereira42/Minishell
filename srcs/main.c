@@ -17,7 +17,7 @@ int	verify_char(char *line, char letter)
 		i++;
 	}
 	free_array((void *)ret);
-	if (letter == '>' && error == 2)
+	if (letter == '>' && error == 1)
 		return (0);
 	return (error);
 }
@@ -34,7 +34,7 @@ int	verify_line(char *line)
 	check_n_free(aux);
 	if (error > 0)
 	{
-		printf("Sintax error\n");
+		printf("bash: syntax error near unexpected toke '%s'\n", line);
 		return (0);
 	}
 	return (1);
@@ -84,7 +84,8 @@ void	processing(t_v *v)
 	v->ret2[v->size] = '\0';
 	v->posic_hist = v->qtd_hist;
 	v->pos_str = 0;
-	add_hist(v, v->ret2);
+	if (ft_strlen(v->ret2) > 0)
+		add_hist(v, v->ret2);
 	v->flag_exit = 0;
 	ft_putstr_fd("\n", 1);
 	if (ft_strlen(v->ret2) > 1 && v->ret2[0] != '>' && v->ret2[0] != '<'

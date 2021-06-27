@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 03:31:30 by user42            #+#    #+#             */
-/*   Updated: 2021/06/26 12:17:50 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/26 18:36:15 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	bye(t_v *v)
 	u_free_array_bi(v->env);
 	u_free_array_bi(v->path);
 	i = 0;
-	while (i < 50 && i < v->qtd_hist)
+	while (i < 500 && i < v->qtd_hist)
 	{
 		free(v->hist[i]);
 		i++;

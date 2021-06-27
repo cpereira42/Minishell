@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 17:18:27 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/26 12:26:57 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/26 16:41:04 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,13 @@ static void	verify_back(t_v *all, char *ret)
 {
 	if (ret[0] == 127 || ret[2] == 51 )
 	{
-		if (all->pos_str > 0)
+		if (ret[0] == 127 && all->pos_str > 0)
 		{
-			if (ret[0] == 127)
-			{
-				erase_bksp(all, all->pos_str);
-				all->pos_str--;
-			}
-			if (ret[2] == 51)
-				erase_bksp(all, all->pos_str + 1);
+			erase_bksp(all, all->pos_str);
+			all->pos_str--;
 		}
+		if (ret[2] == 51 && all->pos_str >= 0)
+			erase_bksp(all, all->pos_str + 1);
 		ret[0] = 0;
 		tputs(tgoto(tgetstr("ch", NULL), 0,
 				(int)ft_strlen(all->prompt)), 0, &my_termprint);
@@ -128,14 +125,15 @@ int	verify_term(t_v *all, char *ret)
 		if (ret[0] == 3)
 		{
 			ft_putstr_fd("^C\n", 1);
+			all->pos_str = 0;
 			ft_bzero(all->ret2, ft_strlen(all->ret2));
 			write_prompt(all);
 		}
 		if (ret[0] == 4 )
 		{
-			if (ft_strlen(all->ret2) == 0 )
+			if (ft_strlen(all->ret2) == 0)
 			{
-				tcsetattr(0, TCSAFLUSH, &all->old);
+				tcsetattr(0, TCSANOW, &all->old);
 				bye(all);
 			}
 		}
