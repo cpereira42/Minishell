@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 17:18:27 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/27 17:07:05 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/27 17:41:19 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ static void	verify_left_right(t_v *all, char *ret)
 /* **               */
 static void	verify_back(t_v *all, char *ret)
 {
-	if (ret[0] == 127 || ret[2] == 51 )
+	if (ret[0] == 127 || (ret[2] == 51
+			&& all->pos_str != (int) ft_strlen(all->ret2)))
 	{
 		if (ret[0] == 127 && all->pos_str > 0)
 		{
@@ -92,7 +93,7 @@ static void	verify_back(t_v *all, char *ret)
 		tputs(tgoto(tgetstr("ch", NULL), 0,
 				(int)ft_strlen(all->prompt)), 0, &my_termprint);
 		tputs(tigetstr("ed"), 1, my_termprint);
-		all->ret2[ft_strlen(all->ret2)] = 0;
+		all->ret2[ft_strlen(all->ret2)] = '\0';
 		ft_putstr_fd(all->ret2, 1);
 		tputs(tgoto(tgetstr("ch", NULL), 0, (int)ft_strlen(all->prompt)
 				+ all->pos_str), 0, &my_termprint);
