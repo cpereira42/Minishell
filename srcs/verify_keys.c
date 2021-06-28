@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 17:18:27 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/26 16:41:04 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/06/27 17:07:05 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 /* \e[B = BAIXO     */
 static void	verify_up_down(t_v *all, char *ret)
 {
+	tputs(restore_cursor, 1, my_termprint);
 	tputs(tgoto(tgetstr("ch", NULL), 0,
 			(int)ft_strlen(all->prompt)), 0, &my_termprint);
 	tputs(tigetstr("ed"), 1, my_termprint);
