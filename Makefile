@@ -33,6 +33,7 @@ SRCS =	$(SDIR)main.c\
 		$(SDIR)create_prompt.c\
 		$(SDIR)export_var.c\
 		$(SDIR)gets.c\
+		$(SDIR)get_echo.c\
 		$(SDIR)exit_msh.c\
 		$(SDIR)fork_process.c\
 		$(SDIR)safe_malloc.c\
@@ -48,22 +49,26 @@ SRCS =	$(SDIR)main.c\
 		$(SDIR)reset_vpath.c\
 		$(SDIR)verify_keys.c\
 		$(SDIR)writers.c\
-		$(SDIR)exec_com2.c
+		$(SDIR)exec_com2.c\
+		$(SDIR)u_print_struct_cmd.c\
+		$(SDIR)parse_block.c\
+		$(SDIR)handle_heredoc.c\
+		$(SDIR)add_line_to_array_bi.c
 
-
+INSTALL_READ = sudo apt-get install libreadline-dev
 OBJS =	$(patsubst $(SDIR)%.c, $(ODIR)%.o, $(SRCS))
 
 CC = clang
 HEADERS = -I./$(HEADER_DIR) -I./$(LIBFT_DIR)
 C_FLAGS = -Wall -Werror -Wextra -g
 C_SANIT = -fsanitize=address
-L_FLAGS = -L ./libft -lft -lncurses
+L_FLAGS = -L ./libft -lft -lncurses -lreadline
 
-
-$(NAME):	$(OBJS) $(LIBFT)
+$(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(OBJS) $(C_FLAGS) $(C_SANIT) $(HEADERS) $(L_FLAGS) -o $@
 
 	echo CONCLUIDO
+	#sudo apt-get install libreadline-dev
 	#./minishell
 	#valgrind --leak-check=full --track-origins=yes ,/minishell
 	clear

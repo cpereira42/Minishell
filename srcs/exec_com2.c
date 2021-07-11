@@ -6,13 +6,13 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 00:45:53 by user42            #+#    #+#             */
-/*   Updated: 2021/06/26 12:10:30 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/07/09 23:37:18 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	exec_cont (t_v *v, int r)
+static int	exec_cont(t_v *v, int r)
 {
 	int		i;
 	char	*aux;

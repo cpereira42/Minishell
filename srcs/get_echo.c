@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ff.c                                               :+:      :+:    :+:   */
+/*   get_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
+/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/11 18:15:35 by user42            #+#    #+#             */
-/*   Updated: 2021/07/09 23:38:09 by pcunha           ###   ########.fr       */
+/*   Created: 2021/06/28 17:15:59 by user42            #+#    #+#             */
+/*   Updated: 2021/06/28 17:20:27 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ff(char *str, int *k)
+void	get_echo(t_v *v, int i, int flag, int cont)
 {
-	(*k)++;
-	while (str[*k] == SPC && str[*k] != 0)
-		(*k)++;
-}
-
-void	ff_until_char(char *str, int *k, char *delimiters)
-{
-	while (!ft_is_in(str[*k], delimiters) && str[*k] != 0)
-		(*k)++;
+	if (v->cmd.cmd_args[1] == NULL)
+		printf("\n");
+	else
+		get_echo2(v, i, flag, cont);
 }

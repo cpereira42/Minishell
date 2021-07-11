@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 00:41:53 by user42            #+#    #+#             */
-/*   Updated: 2021/06/26 17:48:56 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/07/10 18:39:40 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	exec_parse_cmd(t_v *v, char **aux, int i, int p)
 	kill_pid(v);
 }
 
-static void	end_parse_cmd_lines (t_v *v, int p)
+static void	end_parse_cmd_lines(t_v *v, int p)
 {
 	int		z;
 

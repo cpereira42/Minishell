@@ -1,45 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   u_print_array_bi.c                                 :+:      :+:    :+:   */
+/*   add_line_to_array_bi.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/08 22:11:16 by user42            #+#    #+#             */
-/*   Updated: 2021/07/09 20:52:36 by user42           ###   ########.fr       */
+/*   Created: 2021/07/09 20:18:15 by user42            #+#    #+#             */
+/*   Updated: 2021/07/10 19:59:49 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	u_print_array_bi(t_v *v, char **s)
+void	add_line_to_array_bi(t_v *v, char *src)
 {
-	int	i;
+	int		len_arr;
+	int		i;
+	char	**new;
+	char	**aux;
 
-	(void) v;
-	if (s != NULL)
+	len_arr = 0;
+	while (v->cmd.heredoc[len_arr])
+		len_arr++;
+	new = (char **)safe_malloc((len_arr + 2) * sizeof(char *));
+	i = 0;
+	while (v->cmd.heredoc[i] != 0)
 	{
-		i = 0;
-		while (s[i] != 0)
-		{
-			printf("%s\n", (s[i]));
-			i++;
-		}
+		new[i] = ft_strdup(v->cmd.heredoc[i]);
+		i++;
 	}
-}
-
-void	u_print_array_bi_fd(t_v *v, char **s, int fd)
-{
-	int	i;
-
-	(void) v;
-	if (s != NULL)
-	{
-		i = 0;
-		while (s[i] != 0)
-		{
-			dprintf(fd, "%s\n", (s[i]));
-			i++;
-		}
-	}
+	new[i] = ft_strdup(src);
+	new[i + 1] = NULL;
+	aux = v->cmd.heredoc;
+	v->cmd.heredoc = new;
+	u_free_array_bi(aux);
 }

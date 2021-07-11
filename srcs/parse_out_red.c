@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 01:57:38 by user42            #+#    #+#             */
-/*   Updated: 2021/06/22 17:00:48 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/07/09 23:41:37 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	parse_out_red(t_v *v, int *k, int out)
 		v->flag_perm_denied = 1;
 		v->cmd.ret_status = 1;
 	}
+	ff_until_char(v->expanded, k, " <>\"\'");
 	dup2(v->cmd.fd_out_red, out);
 	close(v->cmd.fd_out_red);
 }

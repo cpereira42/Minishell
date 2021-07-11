@@ -34,7 +34,7 @@ int	verify_line(char *line)
 	check_n_free(aux);
 	if (error > 0)
 	{
-		printf("bash: syntax error near unexpected toke '%s'\n", line);
+		printf("bash: syntax error near unexpected token '%s'\n", line);
 		return (0);
 	}
 	return (1);
@@ -88,9 +88,7 @@ void	processing(t_v *v)
 		add_hist(v, v->ret2);
 	v->flag_exit = 0;
 	ft_putstr_fd("\n", 1);
-	if (ft_strlen(v->ret2) > 1 && v->ret2[0] != '>' && v->ret2[0] != '<'
-		&& verify_line(v->ret2))
-		parse_cmd_lines(v, v->ret2, 0);
+	parse_cmd_lines(v, v->ret2, 0);
 	if (v->flag_exit == 1)
 		bye(v);
 	write_prompt(v);

@@ -6,13 +6,13 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 18:44:49 by cpereira          #+#    #+#             */
-/*   Updated: 2021/06/27 13:47:57 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/07/09 23:37:49 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	get_cd (t_v *v)
+void	get_cd(t_v *v)
 {
 	char	*ptr;
 	char	*aux;
@@ -43,13 +43,13 @@ void	get_cd (t_v *v)
 
 static void	get_echo_cont(t_v *v, int flag)
 {
-	if (flag)
-		ft_putchar('%');
-	ft_putchar('\n');
+	(void)flag;
+	if (ft_strncmp(v->cmd.cmd_args[1], "-n", 2))
+		ft_putchar('\n');
 	set_return_status(v, EXIT_SUCCESS);
 }
 
-void	get_echo(t_v *v, int i, int flag, int cont)
+void	get_echo2(t_v *v, int i, int flag, int cont)
 {
 	int	k;
 
@@ -96,7 +96,7 @@ char	*get_var(t_v *v)
 	return (var);
 }
 
-int	get_pwd (t_v *v)
+int	get_pwd(t_v *v)
 {
 	long	size;
 	char	*buf;

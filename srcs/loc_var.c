@@ -6,13 +6,13 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 00:54:08 by user42            #+#    #+#             */
-/*   Updated: 2021/06/26 18:38:26 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/07/09 23:39:08 by pcunha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*loc_var (char *var, t_v *v)
+char	*loc_var(char *var, t_v *v)
 {
 	int		i;
 	int		n;

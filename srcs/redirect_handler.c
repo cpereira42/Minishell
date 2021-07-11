@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/22 01:52:30 by user42            #+#    #+#             */
-/*   Updated: 2021/06/23 18:05:38 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/07/08 18:12:32 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,7 @@ void	redirect_handler(t_v *v, int i, int n)
 	pipe(v->cmd.pipe);
 	v->cmd.fd_out = v->cmd.pipe[PIPE_IN];
 	k = 0;
-	while (v->expanded[k] != 0)
-	{
-		if (v->expanded[k] == '\"')
-			parse_quote_in_redirect(v, &k, "\"");
-		else if (v->expanded[k] == '\'')
-			parse_quote_in_redirect(v, &k, "\'");
-		else if (v->expanded[k] == '<')
-			parse_in_red(v, &k, v->cmd.fd_in);
-		else if (v->expanded[k] == '>')
-			parse_out_red(v, &k, v->cmd.fd_out);
-		else if (v->expanded[k] == SPC)
-			ff(v->expanded, &k);
-		else
-			parse_cmd_args(v, &k);
-	}
+	parse_block(v);
 	if (i == 0 && v->cmd.fd_in_red == -1)
 		v->cmd.fd_in = STDIN_FILENO;
 	if (i == (n - 1) && v->cmd.fd_out_red == -1)

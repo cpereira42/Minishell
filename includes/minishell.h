@@ -6,7 +6,7 @@
 /*   By: cpereira <cpereira@student.42sp.org>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 01:19:17 by user42            #+#    #+#             */
-/*   Updated: 2021/06/27 16:53:33 by cpereira         ###   ########.fr       */
+/*   Updated: 2021/07/10 18:57:34 by cpereira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # include <errno.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define MIL 10000
 # define SPC ' '
@@ -55,6 +57,7 @@ typedef struct s_cmd{
 	int		save_out;
 	int		fd_in;
 	int		fd_out;
+	char	**heredoc;
 }				t_cmd;
 
 typedef struct s_v{
@@ -90,12 +93,15 @@ typedef struct s_v{
 	int				k;
 	int				q;
 	int				ax2;
+	char			eof[MIL];
+	int				flag_heredoc;
 }				t_v;
 
 int		parse_cmd_lines(t_v *v, char *linha, int p);
 int		ft_count_lines(char **s);
 void	u_free_array_bi(char **s);
 void	u_print_array_bi(t_v *v, char **s);
+void	u_print_array_bi_fd(t_v *v, char **s, int fd);
 int		parse_pipelines(t_v *v, char *linha, int i, int n);
 int		parse_s(t_v *v, char *linha);
 void	init_env(t_v *v, char **envp);
@@ -120,6 +126,7 @@ void	update_env_var(t_v *v, char *var);
 char	*loc_var (char *var, t_v *v);
 void	create_prompt(t_v *v);
 void	get_echo(t_v *v, int i, int flag, int cont);
+void	get_echo2(t_v *v, int i, int flag, int cont);
 void	export_var(t_v *v, int len_arr, int i);
 char	*get_var(t_v *v);
 void	exc_var(t_v *v, int i, int k);
@@ -166,5 +173,10 @@ int		ft_count_words(char const *s, char c);
 void	check_return(t_v *v);
 void	u_print_struct_cmd(t_v *v);
 void	prepare_for_execution(t_v *v, int i, int n);
+void	parse_block(t_v *v);
+void	ff_until_char(char *str, int *k, char *delimiters);
+void	handle_heredoc(t_v *v, int fd_temp);
+void	add_line_to_array_bi(t_v *v, char *src);
+void	rm_file(void);
 
 #endif
